@@ -33,6 +33,7 @@ import type Fingerprint from '../../types/Fingerprint';
 import useOpenDialog from '../../hooks/useOpenDialog';
 import { openProgress, closeProgress } from '../../modules/progress';
 
+import full_logo from '../../assets/img/full_logo.png'
 const StyledFingerprintListItem = styled(ListItem)`
   padding-right: ${({ theme }) => `${theme.spacing(11)}px`};
 `;
@@ -127,7 +128,7 @@ export default function SelectKey() {
     <LayoutHero>
       <Container maxWidth="xs">
         <Flex flexDirection="column" alignItems="center" gap={3}>
-          <Logo width={130} />
+          <img src={full_logo}/>
           {hasFingerprints ? (
             <Typography variant="h5" component="h1" gutterBottom>
               <Trans>Select Key</Trans>
