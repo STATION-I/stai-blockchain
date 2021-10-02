@@ -1,0 +1,8 @@
+[submodule "staicoin-blockchain-gui"]
+	path = staicoin-blockchain-gui
+	url = https://github.com/pinksheetscrypto/staicoin-blockchain-gui.git
+	branch = pools
+[submodule "mozilla-ca"]
+	path = mozilla-ca
+	url = https://github.com/Chia-Network/mozilla-ca.git
+        branch = main
