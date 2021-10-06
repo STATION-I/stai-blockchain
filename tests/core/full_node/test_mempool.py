@@ -15,6 +15,7 @@ from staicoin.protocols import full_node_protocol
 from staicoin.simulator.simulator_protocol import FarmNewBlockProtocol
 from staicoin.types.announcement import Announcement
 from staicoin.types.blockchain_format.coin import Coin
+from chia.types.blockchain_format.sized_bytes import bytes32
 from staicoin.types.coin_spend import CoinSpend
 from staicoin.types.condition_opcodes import ConditionOpcode
 from staicoin.types.condition_with_args import ConditionWithArgs
@@ -28,6 +29,7 @@ from staicoin.types.mempool_inclusion_status import MempoolInclusionStatus
 from staicoin.util.api_decorators import api_request, peer_required, bytes_required
 from staicoin.full_node.mempool_check_conditions import parse_condition_args, parse_condition
 
+from chia.util.recursive_replace import recursive_replace
 from tests.connection_utils import connect_and_get_peer
 from tests.core.node_height import node_height_at_least
 from tests.setup_nodes import bt, setup_simulators_and_wallets
@@ -2129,3 +2131,26 @@ class TestGeneratorConditions:
 
 
 #                    assert npc_result.npc_list[0].conditions == []
+
+    @pytest.mark.asyncio
+    async def test_invalid_coin_spend_coin(self, two_nodes):
+        reward_ph = WALLET_A.get_new_puzzlehash()
+        blocks = bt.get_consecutive_blocks(
+            5,
+            guarantee_transaction_block=True,
+            farmer_reward_puzzle_hash=reward_ph,
+            pool_reward_puzzle_hash=reward_ph,
+        )
+        full_node_1, full_node_2, server_1, server_2 = two_nodes
+
+        for block in blocks:
+            await full_node_1.full_node.respond_block(full_node_protocol.RespondBlock(block))
+
+        await time_out_assert(60, node_height_at_least, True, full_node_2, blocks[-1].height)
+
+        spend_bundle = generate_test_spend_bundle(list(blocks[-1].get_included_reward_coins())[0])
+        coin_spend_0 = recursive_replace(spend_bundle.coin_spends[0], "coin.puzzle_hash", bytes32([1] * 32))
+        new_bundle = recursive_replace(spend_bundle, "coin_spends", [coin_spend_0] + spend_bundle.coin_spends[1:])
+        assert spend_bundle is not None
+        res = await full_node_1.full_node.respond_transaction(new_bundle, new_bundle.name())
+        assert res == (MempoolInclusionStatus.FAILED, Err.INVALID_SPEND_BUNDLE)
