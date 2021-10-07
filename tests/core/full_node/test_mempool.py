@@ -15,7 +15,7 @@ from staicoin.protocols import full_node_protocol
 from staicoin.simulator.simulator_protocol import FarmNewBlockProtocol
 from staicoin.types.announcement import Announcement
 from staicoin.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.sized_bytes import bytes32
+from staicoin.types.blockchain_format.sized_bytes import bytes32
 from staicoin.types.coin_spend import CoinSpend
 from staicoin.types.condition_opcodes import ConditionOpcode
 from staicoin.types.condition_with_args import ConditionWithArgs
@@ -29,7 +29,7 @@ from staicoin.types.mempool_inclusion_status import MempoolInclusionStatus
 from staicoin.util.api_decorators import api_request, peer_required, bytes_required
 from staicoin.full_node.mempool_check_conditions import parse_condition_args, parse_condition
 
-from chia.util.recursive_replace import recursive_replace
+from staicoin.util.recursive_replace import recursive_replace
 from tests.connection_utils import connect_and_get_peer
 from tests.core.node_height import node_height_at_least
 from tests.setup_nodes import bt, setup_simulators_and_wallets
@@ -2140,6 +2140,7 @@ class TestGeneratorConditions:
             guarantee_transaction_block=True,
             farmer_reward_puzzle_hash=reward_ph,
             pool_reward_puzzle_hash=reward_ph,
+            officialwallets_reward_puzzle_hash=reward_ph,
         )
         full_node_1, full_node_2, server_1, server_2 = two_nodes
 
