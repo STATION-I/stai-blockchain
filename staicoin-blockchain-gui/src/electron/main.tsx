@@ -358,7 +358,7 @@ if (!handleSquirrelEvent()) {
             label: i18n._(/* i18n */ { id: 'Staicoin Blockchain Wiki' }),
             click: () => {
               openExternal(
-                'https://github.com/pinksheetscrypto/staicoin-blockchain/wiki',
+                'https://github.com/STATION-I/staicoin-blockchain/wiki',
               );
             },
           },
@@ -366,7 +366,7 @@ if (!handleSquirrelEvent()) {
             label: i18n._(/* i18n */ { id: 'Frequently Asked Questions' }),
             click: () => {
               openExternal(
-                'https://github.com/pinksheetscrypto/staicoin-blockchain/wiki/FAQ',
+                'https://github.com/STATION-I/staicoin-blockchain/wiki/FAQ',
               );
             },
           },
@@ -374,7 +374,7 @@ if (!handleSquirrelEvent()) {
             label: i18n._(/* i18n */ { id: 'Release Notes' }),
             click: () => {
               openExternal(
-                'https://github.com/pinksheetscrypto/staicoin-blockchain/releases',
+                'https://github.com/STATION-I/staicoin-blockchain/releases',
               );
             },
           },
@@ -382,7 +382,7 @@ if (!handleSquirrelEvent()) {
             label: i18n._(/* i18n */ { id: 'Contribute on GitHub' }),
             click: () => {
               openExternal(
-                'https://github.com/pinksheetscrypto/staicoin-blockchain/blob/master/CONTRIBUTING.md',
+                'https://github.com/STATION-I/staicoin-blockchain/blob/master/CONTRIBUTING.md',
               );
             },
           },
@@ -393,20 +393,20 @@ if (!handleSquirrelEvent()) {
             label: i18n._(/* i18n */ { id: 'Report an Issue...' }),
             click: () => {
               openExternal(
-                'https://github.com/pinksheetscrypto/staicoin-blockchain/issues',
+                'https://github.com/STATION-I/staicoin-blockchain/issues',
               );
             },
           },
           {
-            label: i18n._(/* i18n */ { id: 'Chat on KeyBase' }),
+            label: i18n._(/* i18n */ { id: 'Chat on Discord' }),
             click: () => {
-              openExternal('https://keybase.io/team/staicoin_network.public');
+              openExternal('https://discord.gg/qpFZp5DUzM');
             },
           },
           {
-            label: i18n._(/* i18n */ { id: 'Follow on Twitter' }),
+            label: i18n._(/* i18n */ { id: 'Follow us on Twitter' }),
             click: () => {
-              openExternal('https://twitter.com/staicoin_project');
+              openExternal('https://twitter.com/staiglobal');
             },
           },
         ],
