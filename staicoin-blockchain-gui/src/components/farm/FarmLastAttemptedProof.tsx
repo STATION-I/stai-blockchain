@@ -57,7 +57,7 @@ export default function FarmLastAttemptedProof() {
           challenge.{' '}
           <Link
             target="_blank"
-            href="https://github.com/pinksheetscrypto/staicoin-blockchain/wiki/FAQ#what-is-the-plot-filter-and-why-didnt-my-plot-pass-it"
+            href="https://github.com/STATION-I/staicoin-blockchain/wiki/FAQ#what-is-the-plot-filter-and-why-didnt-my-plot-pass-it"
           >
             Learn more
           </Link>
