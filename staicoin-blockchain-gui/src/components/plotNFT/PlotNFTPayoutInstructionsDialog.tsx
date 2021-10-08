@@ -108,7 +108,7 @@ export default function PlotNFTPayoutInstructionsDialog(props: Props) {
                 </Trans>{' '}
                 <Link
                   target="_blank"
-                  href="https://github.com/pinksheetscrypto/pool-reference/blob/main/SPECIFICATION.md#payloadpayout_instructions"
+                  href="https://github.com/STATION-I/pool-reference/blob/main/SPECIFICATION.md#payloadpayout_instructions"
                   noWrap
                 >
                   <Trans>Learn More</Trans>
