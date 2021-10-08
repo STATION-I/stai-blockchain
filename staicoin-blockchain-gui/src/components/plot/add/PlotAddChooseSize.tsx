@@ -66,7 +66,7 @@ export default function PlotAddChooseSize() {
           }
           <Link
             target="_blank"
-            href="https://github.com/pinksheetscrypto/staicoin-blockchain/wiki/k-sizes"
+            href="https://github.com/STATION-I/staicoin-blockchain/wiki/k-sizes"
           >
             Learn more
           </Link>
