@@ -38,7 +38,7 @@ export default function PlotOverviewHero() {
               }
               <Link
                 target="_blank"
-                href="https://github.com/pinksheetscrypto/staicoin-blockchain/wiki/Network-Architecture"
+                href="https://github.com/STATION-I/staicoin-blockchain/wiki/Network-Architecture"
               >
                 Learn more
               </Link>
