@@ -1,3 +1,4 @@
+<p id="station"></p>
 # STAI - FREE FOOD, WATER AND ELECTRICITY - WORLDWIDE
 
 Find more about our project : https://www.station-i.de/
