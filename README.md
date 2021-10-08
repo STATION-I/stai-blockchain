@@ -10,3 +10,4 @@ Nodes:
 95.179.191.67:1999<br>
 149.28.115.222:1999<br>
 45.77.230.175:1999<br>
+<img src="https://www.station-i.de/wp-content/uploads/2016/07/sw_zuweso_iguru_station-i_gruen.jpg"/>
