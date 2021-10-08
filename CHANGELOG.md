@@ -11,7 +11,7 @@ for setuptools_scm/PEP 440 reasons.
 ### Added
 
 - Portable pooled plots are now available using our new plot NFT. These allow you to plot new plots to an NFT that can either self farm or join and leave pools. During development there were changes to the plot NFT so portable pool plots (those made with `-c` option to `staicoin plots create`) using code from before June 25th are invalid on mainnet.
-OG plots made before this release can continue to be farmed side by side with the new portable pool plots but can not join pools using the official pooling protocol. You can learn more as a farmer by checking out the [pool user guide](https://github.com/pinksheetscrypto/staicoin-blockchain/wiki/Pooling-User-Guide). Pool operators and those wanting to understand how the official pooling protocol operates should check out our [pooling implementation reference repository](https://github.com/pinksheetscrypto/pool-reference). If you plan to use plot NFT, all your farmers and harvesters must be on 1.2.0 to function properly for portable pool plots.
+OG plots made before this release can continue to be farmed side by side with the new portable pool plots but can not join pools using the official pooling protocol. You can learn more as a farmer by checking out the [pool user guide](https://github.com/STATION-I/staicoin-blockchain/wiki/Pooling-User-Guide). Pool operators and those wanting to understand how the official pooling protocol operates should check out our [pooling implementation reference repository](https://github.com/STATION-I/pool-reference). If you plan to use plot NFT, all your farmers and harvesters must be on 1.2.0 to function properly for portable pool plots.
 - The exact commit after which Plot NFTs should be valid is the 89f7a4b3d6329493cd2b4bc5f346a819c99d3e7b commit (in which `pools.testnet9` branch was merged to main) or 5d62b3d1481c1e225d8354a012727ab263342c0a within the `pools.testnet9` branch.
 - `staicoin farm summary` and the GUI now use a new RPC endpoint to properly show plots for local and remote harvesters. This should address issues #6563, #5881, #3875, #1461.
 - `staicoin configure` now supports command line updates to peer count and target peer count.
@@ -289,7 +289,7 @@ Batch process weight proof epochs in groups of 900 to fit below May 2020 sqlite 
 ### Added
 
 - This is a minor bug fix release for version 1.0.2
-- You should review the [release notes for v1.0.2](https://github.com/pinksheetscrypto/staicoin-blockchain/releases/tag/1.0.2) but we especially want to point out that wallet sync is much faster than in 1.0.1 and earlier versions.
+- You should review the [release notes for v1.0.2](https://github.com/STATION-I/staicoin-blockchain/releases/tag/1.0.2) but we especially want to point out that wallet sync is much faster than in 1.0.1 and earlier versions.
 
 ### Fixed
 
@@ -300,10 +300,9 @@ Batch process weight proof epochs in groups of 900 to fit below May 2020 sqlite 
 
 ### Added
 
-- We have released version 1.0.0 of [chiapos](https://github.com/pinksheetscrypto/chiapos). This includes a 20% speed increase for bitfield plotting compared to the previous version on the same machine. In many cases this will mean that bitfield plotting is as fast or faster than non bitfield plotting.
+- We have released version 1.0.0 of [chiapos](https://github.com/STATION-I/chiapos). This includes a 20% speed increase for bitfield plotting compared to the previous version on the same machine. In many cases this will mean that bitfield plotting is as fast or faster than non bitfield plotting.
 - @xorinox improved our support for RedHat related distributions in `install.sh`.
 - @ayaseen improved our support for RedHat related distributions in `install-timelord.sh`.
-- We have added Dutch and Polish to supported translations. Thanks @psydafke, @WesleyVH, @pieterhauwaerts, @bartlomiej.tokarzewski, @abstruso, @feel.the.code, and @Axadiw for contributions to [translations on Crowdin](https://crowdin.com/project/staicoin-blockchain).
 - The GUI now supports "Exclude final directory" when plotting. This is found in the Advanced Options for step 2 on the plot creation page.
 
 ### Changed
@@ -334,7 +333,6 @@ Batch process weight proof epochs in groups of 900 to fit below May 2020 sqlite 
 - There is now a simple progress bar on the GUI Plot page and when you view the log from the three dots on the right.
 - Users must now explicitly set the `--show-mnemonic-seed` flag to see their private keys when running `staicoin keys show`.
 - We are now building Linux GUI installers. These should be considered beta quality for now.
-- Translations now available for German, Traditional Chinese, and Danish. Thanks to @Dravenex, @MaestroOnICe, @loudsyncro, @loppefaaret, @thirteenthd, @wong8888, @N418, and @swjz for all the translation help. You to can translate at our [Crowdin project](https://crowdin.com/project/staicoin-blockchain/).
 
 ### Changed
 
@@ -357,7 +355,6 @@ Batch process weight proof epochs in groups of 900 to fit below May 2020 sqlite 
 - Transactions are not enabled in the 1.0.0 version and will be soft forked in during the six week period via a 1.1.0 release.
 - There will also be a 1.0.1 release after the green flag process is complete to simplify install for new users by removing the green flag alert. In the interim there will be new testnet releases using the 1.1bx version scheme.
 - Starting with release 1.0.0 you usually no longer need to upgrade and 1.0.1 will be fully optional. However you will have to upgrade to 1.1 after it is out and before the six week period ends. We plan to give plenty of time between those two events up to and including pushing back the transaction start date by a short period of time.
-- Thank you to @L3Sota for adding a Japanese translation via our [Crowdin project](https://crowdin.com/project/staicoin-blockchain).
 - The generation of CoinIDs is now unique on mainnet to avoid testnet transaction replays.
 - Validation of transactions will now fail after the expiration of the six week period.
 
@@ -433,10 +430,6 @@ Batch process weight proof epochs in groups of 900 to fit below May 2020 sqlite 
 - Weight proofs had a logic typo.
 - There was a typo in `staicoin netspace`. Thanks @altendky.
 - There was a typo in `staicoin plots`. Thanks @adamfiddler.
-
-### Known Issues
-
-- Some users can't plot in the GUI in MacOS Big Sur - especially on M1. See issue [1189](https://github.com/pinksheetscrypto/staicoin-blockchain/issues/1189)
 
 ## 1.0rc6 aka Release Candidate 6 - 2021-03-11
 
