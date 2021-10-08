@@ -8,7 +8,7 @@ Join our growing community : https://discord.gg/AhSxZETC89
 Wallets:<br>
 <a href="https://github.com/STATION-I/staicoin-blockchain/releases/download/1.0.3/staicoin-1.0.3.dmg">Mac Wallet</a> (1.0.3)<br>
 <a href="https://github.com/STATION-I/staicoin-blockchain/releases/download/1.0.3/staicoinSetup-1.0.3.exe">Windows Wallet</a> (1.0.3)<br>
-<a href="https://github.com/STATION-I/staicoin-blockchain/releases/download/1.0.3/staicoin-blockchain_1.0.3_amd64.deb">Ubuntu Wallet</a> (1.0.2)<br>
+<a href="https://github.com/STATION-I/staicoin-blockchain/releases/download/1.0.3/staicoin-blockchain_1.0.3_amd64.deb">Ubuntu Wallet</a> (1.0.3)<br>
 <br><br>
 Nodes:
 
