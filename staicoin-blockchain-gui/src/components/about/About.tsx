@@ -114,7 +114,7 @@ export default function About(props: Props) {
         </StyledLink>
         <StyledSubTitle>{description}</StyledSubTitle>
         <Spacer />
-        <div className="copyright">Copyright (c) 2021 Staicoin Network</div>
+        <div className="copyright">Copyright (c) 2021 STATION-I</div>
         <Spacer />
         <VersionsTable>
           {versions?.electron && (
@@ -144,7 +144,7 @@ export default function About(props: Props) {
         </VersionsTable>
 
         <BugReport
-          href="https://github.com/Gold-Coin-Network/staicoin-blockchain/issues"
+          href="https://github.com/STATION-I/staicoin-blockchain/issues"
           target="_blank"
         >
           Report an issue
