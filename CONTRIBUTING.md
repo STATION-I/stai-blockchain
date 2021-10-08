@@ -1,13 +1,13 @@
 # Introduction
 
-Welcome to the staicoin-blockchain project!
+Welcome to the Staicoin-blockchain project!
 We are happy that you are taking a look at the code for staicoin, a proof of space and time cryptocurrency.
 
 A lot of fascinating new cryptography and blockchain concepts are used and implemented here.
 This repo includes the code for the staicoin full node, farmer, and timelord (in staicoin folder), which are all written in python.
-It also includes a verifiable delay function implementation that it imports from the [chiavdf repo](https://github.com/pinksheetscrypto/chiavdf) (in c/c++), and a proof of space implementation that it imports from the [chiapos repo](https://github.com/pinksheetscrypto/chiapos). BLS signatures are imported from the [bls-signatures repo](https://github.com/pinksheetscrypto/bls-signatures) as blspy. There is an additional dependency on the [chiabip158 repo](https://github.com/pinksheetscrypto/chiabip158). For major platforms, binary and source wheels are shipped to PyPI from each dependent repo. Then staicoin-blockchain can pip install those from PyPI or they can be prepackaged as is done for the Windows installer. On unsupported platforms, pip will fall back to the source distributions, to be compiled locally.
+It also includes a verifiable delay function implementation that it imports from the [chiavdf repo](https://github.com/STATION-I/chiavdf) (in c/c++), and a proof of space implementation that it imports from the [chiapos repo](https://github.com/STATION-I/chiapos). BLS signatures are imported from the [bls-signatures repo](https://github.com/STATION-I/bls-signatures) as blspy. There is an additional dependency on the [chiabip158 repo](https://github.com/STATION-I/chiabip158). For major platforms, binary and source wheels are shipped to PyPI from each dependent repo. Then staicoin-blockchain can pip install those from PyPI or they can be prepackaged as is done for the Windows installer. On unsupported platforms, pip will fall back to the source distributions, to be compiled locally.
 
-If you want to learn more about this project, read the [wiki](https://github.com/pinksheetscrypto/staicoin-blockchain/wiki), or check out the [green paper](https://www.staicoin-network.net/assets/staicoinGreenPaper.pdf).
+If you want to learn more about this project, read the [wiki](https://github.com/STATION-I/staicoin-blockchain/wiki), or check out the [green paper](https://www.station-i.de/stai).
 
 ## Contributions
 
@@ -19,7 +19,7 @@ You can visit our [Trello project board](https://trello.com/b/ZuNx7sET) to get a
 Generally, things to the left are in progress or done. Some things go through "Coming up soon", but some will come directly out of other columns.
 Usually, the things closer to the top of each column are the ones that will be worked on soonest.
 If you are interested in cryptography, math, or just like hacking in python, there are many interesting problems to work on.
-Contact any of the team members on [Keybase](https://keybase.io/team/staicoin_network.public), which we use as the main communication method. You can also comment on any Trello card.
+Contact any of the team members on [Discord](https://discord.gg/JeQbRwVEMK), which we use as the main communication method.
 
 We ask that external contributors create a fork of the `main` branch for any feature work they wish to take on.
 
@@ -63,7 +63,7 @@ If you want verbose logging for tests, edit the `tests/pytest.ini` file.
 
 ## Pre-Commit
 
-We provide a [pre-commit configuration](https://github.com/staicoin-Network/staicoin-blockchain/blob/main/.pre-commit-config.yaml) which triggers several useful
+We provide a [pre-commit configuration](https://github.com/STATION-I/staicoin-blockchain/blob/main/.pre-commit-config.yaml) which triggers several useful
 hooks (including linters/formatter) before each commit you make if you installed and set up [pre-commit](https://pre-commit.com/). This will help
 to reduce the time you spend on failed CI jobs.
 
@@ -92,7 +92,7 @@ workflow.
 3. Install BlackConnect plugin
 4. Set to run python black on save
 5. Set line length to 120
-6. Install these linters https://github.com/pinksheetscrypto/staicoin-blockchain/tree/main/.github/linters
+6. Install these linters https://github.com/STATION-I/staicoin-blockchain/tree/main/.github/linters
 
 ## Testnets and review environments
 
