@@ -1,7 +1,7 @@
 <p id="station"></p>
 # STAI - FREE FOOD, WATER AND ELECTRICITY - WORLDWIDE
 
-Find more about our project : https://www.station-i.de/
+Find more about our project : https://www.station-i.de/stai/en
 
 Join our growing community : https://discord.gg/AhSxZETC89
 <br><br>
