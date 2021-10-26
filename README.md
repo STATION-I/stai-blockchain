@@ -1,5 +1,5 @@
 <p id="station"></p>
-# STAI - FOOD, WATER AND ELECTRICITY - WORLDWIDE
+<h2>STAI - FOOD, WATER AND ELECTRICITY - WORLDWIDE</h2>
 
 Find more about our project : https://www.station-i.de/stai/en
 
