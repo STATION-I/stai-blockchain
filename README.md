@@ -12,9 +12,7 @@ Wallets:<br>
 <br><br>
 Nodes:
 
-95.179.191.67:1999<br>
-149.28.115.222:1999<br>
-45.77.230.175:1999<br>
+<a href="https://alltheblocks.net/stai/peers">https://alltheblocks.net/stai/peers</a> 9<br>
 <img src="https://www.station-i.de/wp-content/uploads/2016/07/sw_zuweso_iguru_station-i_gruen.jpg"/>
 <br>
 STAI is technically based on the proof-of-space-and-time consensus algorithm from <a href="https://github.com/Chia-Network/chia-blockchain/">Chia Network</a>. We and also used open-source Code from <a href="https://github.com/Flax-Network/flax-blockchain">Flax Chia Fork</a>, <a href="https://github.com/HiveProject2021/chives-blockchain">Chives Blockchain</a>, <a href="https://github.com/Gold-Coin-Network/goldcoin-blockchain">Goldcoin</a> and <a href="https://github.com/pinksheetscrypto/covid-blockchain">pinksheetscrypto's Chia Fork</a>.
