@@ -17,11 +17,11 @@ def calculate_pool_reward(height: uint32) -> uint64:
     if height == 0:
         return uint64(int((992 / 1000) * 55882000 * _mojo_per_staicoin))
     elif height < 1 * _blocks_per_year:
-        return uint64(int((4 / 5) * 5 * _mojo_per_staicoin))
+        return uint64(int(4 * _mojo_per_staicoin / 1))
     elif height < 2 * _blocks_per_year:
-        return uint64(int((2 / 2.5) * 2.5 * _mojo_per_staicoin))
+        return uint64(int(4 * _mojo_per_staicoin / 2))
     else:
-        return uint64(int((1 / 1.25) * 1.25 * _mojo_per_staicoin))
+        return uint64(int(4 * _mojo_per_staicoin / 4))
 
 
 def calculate_base_farmer_reward(height: uint32) -> uint64:
@@ -36,11 +36,11 @@ def calculate_base_farmer_reward(height: uint32) -> uint64:
     if height == 0:
         return uint64(int((8 / 1000) * 55882000 * _mojo_per_staicoin))
     elif height < 1 * _blocks_per_year:
-        return uint64(int((1 / 5) * 5 * _mojo_per_staicoin))
+        return uint64(1 * _mojo_per_staicoin / 1))
     elif height < 2 * _blocks_per_year:
-        return uint64(int((1 / 2.5) * 2.5 * _mojo_per_staicoin))
+        return uint64(1 * _mojo_per_staicoin / 2))
     else:
-        return uint64(int((1 / 1.25) * 1.25 * _mojo_per_staicoin))
+        return uint64(1 * _mojo_per_staicoin / 4))
 
 def calculate_base_officialwallets_reward(height: uint32) -> uint64:
     """
@@ -49,8 +49,8 @@ def calculate_base_officialwallets_reward(height: uint32) -> uint64:
     if height == 0:
         return uint64(int((1 / 6) * 0 * _mojo_per_staicoin))
     elif height < 1 * _blocks_per_year:
-        return uint64(int((1 / 6) * 6 * _mojo_per_staicoin))
+        return uint64(int(1 * _mojo_per_staicoin))
     elif height < 2 * _blocks_per_year:
-        return uint64(int((1 / 3) * 3 * _mojo_per_staicoin))
+        return uint64(int(1 * _mojo_per_staicoin))
     else:
-        return uint64(int((1 / 2) * 2 * _mojo_per_staicoin))
+        return uint64(int(1 * _mojo_per_staicoin))
