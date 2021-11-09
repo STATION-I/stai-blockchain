@@ -3,7 +3,8 @@
 
 Find more about our project : https://www.station-i.de/stai/en
 
-Join our growing community : https://discord.gg/AhSxZETC89
+Join our growing community : https://discord.com/invite/stai-blockchain
+
 <br><br>
 Wallets:<br>
 <a href="https://github.com/STATION-I/staicoin-blockchain/releases/download/1.0.3/staicoin-1.0.3.dmg">Mac Wallet</a> (1.0.3)<br>
