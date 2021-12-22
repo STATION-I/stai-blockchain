@@ -11,18 +11,18 @@ Follow us on Facebook: https://www.facebook.com/StaiGlobal
 
 
 <br><br>
-Wallets:<br>
+<h4>Wallets:</h4>
 <a href="https://github.com/STATION-I/staicoin-blockchain/releases/download/1.0.3/staicoin-1.0.3.dmg">Mac Wallet</a> (1.0.3)<br>
 <a href="https://github.com/STATION-I/staicoin-blockchain/releases/download/1.0.3/staicoinSetup-1.0.3.exe">Windows Wallet</a> (1.0.3)<br>
 <a href="https://github.com/STATION-I/staicoin-blockchain/releases/download/1.0.3/staicoin-blockchain_1.0.3_amd64.deb">Ubuntu Wallet</a> (1.0.3)<br>
 <br><br>
-<h3>Synchronisation:</h3>
+<h4>Synchronisation:</h4>
 
 <a href="https://alltheblocks.net/stai/peers">View Peers</a> (if synchronisation of full node synchronisation doesnt start)<br>
 <a href="https://stai.global/database/staiblockchain.rar">Download Database</a> (for faster synchronisation)<br><br>
 <img src="https://www.station-i.de/wp-content/uploads/2016/07/sw_zuweso_iguru_station-i_gruen.jpg"/>
 <br><br>
-<h3>STAI related projects</h3>
+<h4>STAI related projects</h4>
 <ul>
   <li><a href="https://classifieds.stai.global/">STAI Classifieds</a></li>
   <li><a href="https://www.coininger.com/">Coininger Hardware Shop</a></li>
