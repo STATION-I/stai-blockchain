@@ -7,7 +7,8 @@ Join our growing community : https://discord.com/invite/stai-blockchain
 
 Follow us on Twitter : https://twitter.com/staiglobal
 
-Get our electricity : https://lumenaza.community/staienergy/
+Follow us on Facebook: https://www.facebook.com/StaiGlobal
+
 
 <br><br>
 Wallets:<br>
@@ -15,9 +16,17 @@ Wallets:<br>
 <a href="https://github.com/STATION-I/staicoin-blockchain/releases/download/1.0.3/staicoinSetup-1.0.3.exe">Windows Wallet</a> (1.0.3)<br>
 <a href="https://github.com/STATION-I/staicoin-blockchain/releases/download/1.0.3/staicoin-blockchain_1.0.3_amd64.deb">Ubuntu Wallet</a> (1.0.3)<br>
 <br><br>
-Nodes:
+<h3>Synchronisation:</h3>
 
-<a href="https://alltheblocks.net/stai/peers">https://alltheblocks.net/stai/peers</a><br><br>
+<a href="https://alltheblocks.net/stai/peers">View Peers</a> (if synchronisation of full node synchronisation doesnt start)<br>
+<a href="https://stai.global/database/staiblockchain.rar">Download Database</a> (for faster synchronisation)<br><br>
 <img src="https://www.station-i.de/wp-content/uploads/2016/07/sw_zuweso_iguru_station-i_gruen.jpg"/>
-<br>
+<br><br>
+<h3>STAI related projects</h3>
+<ul>
+  <li><a href="https://classifieds.stai.global/">STAI Classifieds</a></li>
+  <li><a href="https://www.coininger.com/">Coininger Hardware Shop</a></li>
+  <li><a href="https://webfreelance.work/">Freelance jobs platform</a></li>
+  <li><a href="https://lumenaza.community/staienergy/">STAI Energy</a></li>
+</ul>
 STAI is technically based on the proof-of-space-and-time consensus algorithm from <a href="https://github.com/Chia-Network/chia-blockchain/">Chia Network</a>. We used also open-source Code from <a href="https://github.com/Flax-Network/flax-blockchain">Flax Chia Fork</a>, <a href="https://github.com/HiveProject2021/chives-blockchain">Chives Blockchain</a>, <a href="https://github.com/Gold-Coin-Network/goldcoin-blockchain">Goldcoin</a> and <a href="https://github.com/pinksheetscrypto/covid-blockchain">pinksheetscrypto's Chia Fork</a>.
