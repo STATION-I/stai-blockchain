@@ -6,9 +6,9 @@ from pathlib import Path
 import aiosqlite
 import pytest
 
-from staicoin.server.address_manager import AddressManager, ExtendedPeerInfo
-from staicoin.server.address_manager_store import AddressManagerStore
-from staicoin.types.peer_info import PeerInfo, TimestampedPeerInfo
+from stai.server.address_manager import AddressManager, ExtendedPeerInfo
+from stai.server.address_manager_store import AddressManagerStore
+from stai.types.peer_info import PeerInfo, TimestampedPeerInfo
 
 
 @pytest.fixture(scope="module")

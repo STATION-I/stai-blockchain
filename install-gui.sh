@@ -4,17 +4,17 @@ export NODE_OPTIONS="--max-old-space-size=3000"
 
 
 if [ -z "$VIRTUAL_ENV" ]; then
-  echo "This requires the staicoin python virtual environment."
+  echo "This requires the stai python virtual environment."
   echo "Execute '. ./activate' before running."
 	exit 1
 fi
 
 if [ "$(id -u)" = 0 ]; then
-  echo "The staicoin Blockchain GUI can not be installed or run by the root user."
+  echo "The Stai Blockchain GUI can not be installed or run by the root user."
 	exit 1
 fi
 
-# Allows overriding the branch or commit to build in staicoin-blockchain-gui
+# Allows overriding the branch or commit to build in stai-blockchain-gui
 SUBMODULE_BRANCH=$1
 
 UBUNTU=false
@@ -24,7 +24,17 @@ if [ "$(uname)" = "Linux" ]; then
 	if type apt-get; then
 		# Debian/Ubuntu
 		UBUNTU=true
-		sudo apt-get install -y npm nodejs libxss1
+
+		# Check if we are running a Raspberry PI 4
+		if [ "$(uname -m)" = "aarch64" ] \
+		&& [ "$(uname -n)" = "raspberrypi" ]; then
+			# Check if NodeJS & NPM is installed
+			type npm >/dev/null 2>&1 || {
+					echo >&2 "Please install NODEJS&NPM manually"
+			}
+		else
+			sudo apt-get install -y npm nodejs libxss1
+		fi
 	elif type yum &&  [ ! -f "/etc/redhat-release" ] && [ ! -f "/etc/centos-release" ] && [ ! -f /etc/rocky-release ] && [ ! -f /etc/fedora-release ]; then
 		# AMZN 2
 		echo "Installing on Amazon Linux 2."
@@ -80,7 +90,7 @@ if [ ! "$CI" ]; then
 	echo "Running git submodule update."
 	echo ""
 	git submodule update
-	cd staicoin-blockchain-gui
+	cd stai-blockchain-gui
 
 	if [ "$SUBMODULE_BRANCH" ];
 	then
@@ -101,6 +111,6 @@ else
 fi
 
 echo ""
-echo "staicoin blockchain install-gui.sh completed."
+echo "Stai blockchain install-gui.sh completed."
 echo ""
-echo "Type 'cd staicoin-blockchain-gui' and then 'npm run electron &' to start the GUI."
+echo "Type 'cd stai-blockchain-gui' and then 'npm run electron &' to start the GUI."

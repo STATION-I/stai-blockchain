@@ -3,18 +3,18 @@ from typing import List
 
 import pytest
 
-from staicoin.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
-from staicoin.full_node.mempool_manager import MempoolManager
-from staicoin.simulator.simulator_protocol import FarmNewBlockProtocol
-from staicoin.types.blockchain_format.coin import Coin
-from staicoin.types.blockchain_format.sized_bytes import bytes32
-from staicoin.types.peer_info import PeerInfo
-from staicoin.util.ints import uint16, uint32, uint64
-from staicoin.wallet.cc_wallet.cc_utils import cc_puzzle_hash_for_inner_puzzle_hash
-from staicoin.wallet.cc_wallet.cc_wallet import CCWallet
-from staicoin.wallet.puzzles.cc_loader import CC_MOD
-from staicoin.wallet.transaction_record import TransactionRecord
-from staicoin.wallet.wallet_coin_record import WalletCoinRecord
+from stai.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from stai.full_node.mempool_manager import MempoolManager
+from stai.simulator.simulator_protocol import FarmNewBlockProtocol
+from stai.types.blockchain_format.coin import Coin
+from stai.types.blockchain_format.sized_bytes import bytes32
+from stai.types.peer_info import PeerInfo
+from stai.util.ints import uint16, uint32, uint64
+from stai.wallet.cc_wallet.cc_utils import cc_puzzle_hash_for_inner_puzzle_hash
+from stai.wallet.cc_wallet.cc_wallet import CCWallet
+from stai.wallet.puzzles.cc_loader import CC_MOD
+from stai.wallet.transaction_record import TransactionRecord
+from stai.wallet.wallet_coin_record import WalletCoinRecord
 from tests.setup_nodes import setup_simulators_and_wallets
 from tests.time_out_assert import time_out_assert
 
@@ -222,6 +222,7 @@ class TestCCWallet:
         await time_out_assert(15, wallet.get_confirmed_balance, funds)
 
         cc_wallet: CCWallet = await CCWallet.create_new_cc(wallet_node.wallet_state_manager, wallet, uint64(100))
+        await asyncio.sleep(1)
 
         ph = await wallet2.get_new_puzzlehash()
         for i in range(1, num_blocks):
@@ -234,10 +235,12 @@ class TestCCWallet:
         colour = cc_wallet.get_colour()
 
         cc_wallet_2: CCWallet = await CCWallet.create_wallet_for_cc(wallet_node_2.wallet_state_manager, wallet2, colour)
+        await asyncio.sleep(1)
 
         assert cc_wallet.cc_info.my_genesis_checker == cc_wallet_2.cc_info.my_genesis_checker
 
         spend_bundle = await cc_wallet_2.generate_zero_val_coin()
+        await asyncio.sleep(1)
         await time_out_assert(15, tx_in_pool, True, full_node_api.full_node.mempool_manager, spend_bundle.name())
         for i in range(1, num_blocks):
             await full_node_api.farm_new_transaction_block(FarmNewBlockProtocol(ph))

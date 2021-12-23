@@ -2,11 +2,12 @@ from typing import Tuple
 
 import aiosqlite
 
-from staicoin.consensus.blockchain import Blockchain
-from staicoin.consensus.constants import ConsensusConstants
-from staicoin.full_node.block_store import BlockStore
-from staicoin.full_node.coin_store import CoinStore
-from staicoin.util.db_wrapper import DBWrapper
+from stai.consensus.blockchain import Blockchain
+from stai.consensus.constants import ConsensusConstants
+from stai.full_node.block_store import BlockStore
+from stai.full_node.coin_store import CoinStore
+from stai.full_node.hint_store import HintStore
+from stai.util.db_wrapper import DBWrapper
 
 
 async def create_ram_blockchain(consensus_constants: ConsensusConstants) -> Tuple[aiosqlite.Connection, Blockchain]:
@@ -14,5 +15,6 @@ async def create_ram_blockchain(consensus_constants: ConsensusConstants) -> Tupl
     db_wrapper = DBWrapper(connection)
     block_store = await BlockStore.create(db_wrapper)
     coin_store = await CoinStore.create(db_wrapper)
-    blockchain = await Blockchain.create(coin_store, block_store, consensus_constants)
+    hint_store = await HintStore.create(db_wrapper)
+    blockchain = await Blockchain.create(coin_store, block_store, consensus_constants, hint_store)
     return connection, blockchain

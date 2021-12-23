@@ -1,7 +1,7 @@
-from staicoin.types.blockchain_format.coin import Coin
-from staicoin.types.blockchain_format.sized_bytes import bytes32
-from staicoin.util.ints import uint64
-from staicoin.util.hash import std_hash
+from stai.types.blockchain_format.coin import Coin
+from stai.types.blockchain_format.sized_bytes import bytes32
+from stai.util.ints import uint64
+from stai.util.hash import std_hash
 import io
 
 

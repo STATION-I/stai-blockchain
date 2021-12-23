@@ -5,16 +5,16 @@ from typing import List, Tuple
 from blspy import G2Element
 from clvm_tools import binutils
 
-from staicoin.types.blockchain_format.program import Program, INFINITE_COST
-from staicoin.types.announcement import Announcement
-from staicoin.types.blockchain_format.coin import Coin
-from staicoin.types.blockchain_format.sized_bytes import bytes32
-from staicoin.types.coin_spend import CoinSpend
-from staicoin.types.spend_bundle import SpendBundle
-from staicoin.util.condition_tools import ConditionOpcode
+from stai.types.blockchain_format.program import Program, INFINITE_COST
+from stai.types.announcement import Announcement
+from stai.types.blockchain_format.coin import Coin
+from stai.types.blockchain_format.sized_bytes import bytes32
+from stai.types.coin_spend import CoinSpend
+from stai.types.spend_bundle import SpendBundle
+from stai.util.condition_tools import ConditionOpcode
 
-from staicoin.util.ints import uint64
-from staicoin.wallet.puzzles.load_clvm import load_clvm
+from stai.util.ints import uint64
+from stai.wallet.puzzles.load_clvm import load_clvm
 
 from tests.core.full_node.test_conditions import bt, check_spend_bundle_validity, initial_blocks
 
@@ -32,12 +32,9 @@ POOL_REWARD_PREFIX_MAINNET = bytes32.fromhex("ccd5bb71183532bff220ba46c268991a00
 
 
 def check_coin_spend(coin_spend: CoinSpend):
-    # breakpoint()
     try:
         cost, result = coin_spend.puzzle_reveal.run_with_cost(INFINITE_COST, coin_spend.solution)
     except Exception as ex:
-        print(ex)
-        # breakpoint()
         print(ex)
 
 
@@ -128,7 +125,6 @@ def test_only_odd_coins_0():
     assert launcher_coin in coin_set_removed
 
     assert farmed_coin in coin_set_removed
-    # breakpoint()
 
     singleton_expected_puzzle_hash = singleton_puzzle_hash(launcher_id, launcher_puzzle_hash, initial_singleton_puzzle)
     expected_singleton_coin = Coin(launcher_coin.name(), singleton_expected_puzzle_hash, launcher_amount)

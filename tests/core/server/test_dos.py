@@ -5,17 +5,17 @@ import logging
 import pytest
 from aiohttp import ClientSession, ClientTimeout, ServerDisconnectedError, WSCloseCode, WSMessage, WSMsgType
 
-from staicoin.full_node.full_node_api import FullNodeAPI
-from staicoin.protocols import full_node_protocol
-from staicoin.protocols.protocol_message_types import ProtocolMessageTypes
-from staicoin.protocols.shared_protocol import Handshake
-from staicoin.server.outbound_message import make_msg, Message
-from staicoin.server.rate_limits import RateLimiter
-from staicoin.server.server import ssl_context_for_client
-from staicoin.server.ws_connection import WSstaicoinConnection
-from staicoin.types.peer_info import PeerInfo
-from staicoin.util.ints import uint16, uint64
-from staicoin.util.errors import Err
+from stai.full_node.full_node_api import FullNodeAPI
+from stai.protocols import full_node_protocol
+from stai.protocols.protocol_message_types import ProtocolMessageTypes
+from stai.protocols.shared_protocol import Handshake
+from stai.server.outbound_message import make_msg, Message
+from stai.server.rate_limits import RateLimiter
+from stai.server.server import ssl_context_for_client
+from stai.server.ws_connection import WSStaiConnection
+from stai.types.peer_info import PeerInfo
+from stai.util.ints import uint16, uint64
+from stai.util.errors import Err
 from tests.setup_nodes import self_hostname, setup_simulators_and_wallets
 from tests.time_out_assert import time_out_assert
 
@@ -62,7 +62,7 @@ class TestDos:
         url = f"wss://{self_hostname}:{server_1._port}/ws"
 
         ssl_context = ssl_context_for_client(
-            server_2.staicoin_ca_crt_path, server_2.staicoin_ca_key_path, server_2.p2p_crt_path, server_2.p2p_key_path
+            server_2.stai_ca_crt_path, server_2.stai_ca_key_path, server_2.p2p_crt_path, server_2.p2p_key_path
         )
         ws = await session.ws_connect(
             url, autoclose=True, autoping=True, heartbeat=60, ssl=ssl_context, max_msg_size=100 * 1024 * 1024
@@ -111,7 +111,7 @@ class TestDos:
         url = f"wss://{self_hostname}:{server_1._port}/ws"
 
         ssl_context = ssl_context_for_client(
-            server_2.staicoin_ca_crt_path, server_2.staicoin_ca_key_path, server_2.p2p_crt_path, server_2.p2p_key_path
+            server_2.stai_ca_crt_path, server_2.stai_ca_key_path, server_2.p2p_crt_path, server_2.p2p_key_path
         )
         ws = await session.ws_connect(
             url, autoclose=True, autoping=True, heartbeat=60, ssl=ssl_context, max_msg_size=100 * 1024 * 1024
@@ -157,7 +157,7 @@ class TestDos:
         url = f"wss://{self_hostname}:{server_1._port}/ws"
 
         ssl_context = ssl_context_for_client(
-            server_2.staicoin_ca_crt_path, server_2.staicoin_ca_key_path, server_2.p2p_crt_path, server_2.p2p_key_path
+            server_2.stai_ca_crt_path, server_2.stai_ca_key_path, server_2.p2p_crt_path, server_2.p2p_key_path
         )
         ws = await session.ws_connect(
             url, autoclose=True, autoping=True, heartbeat=60, ssl=ssl_context, max_msg_size=100 * 1024 * 1024
@@ -188,8 +188,8 @@ class TestDos:
 
         assert len(server_1.all_connections) == 1
 
-        ws_con: WSstaicoinConnection = list(server_1.all_connections.values())[0]
-        ws_con_2: WSstaicoinConnection = list(server_2.all_connections.values())[0]
+        ws_con: WSStaiConnection = list(server_1.all_connections.values())[0]
+        ws_con_2: WSStaiConnection = list(server_2.all_connections.values())[0]
 
         ws_con.peer_host = "1.2.3.4"
         ws_con_2.peer_host = "1.2.3.4"
@@ -241,8 +241,8 @@ class TestDos:
 
         assert len(server_1.all_connections) == 1
 
-        ws_con: WSstaicoinConnection = list(server_1.all_connections.values())[0]
-        ws_con_2: WSstaicoinConnection = list(server_2.all_connections.values())[0]
+        ws_con: WSStaiConnection = list(server_1.all_connections.values())[0]
+        ws_con_2: WSStaiConnection = list(server_2.all_connections.values())[0]
 
         ws_con.peer_host = "1.2.3.4"
         ws_con_2.peer_host = "1.2.3.4"
@@ -290,8 +290,8 @@ class TestDos:
 
         assert len(server_1.all_connections) == 1
 
-        ws_con: WSstaicoinConnection = list(server_1.all_connections.values())[0]
-        ws_con_2: WSstaicoinConnection = list(server_2.all_connections.values())[0]
+        ws_con: WSStaiConnection = list(server_1.all_connections.values())[0]
+        ws_con_2: WSStaiConnection = list(server_2.all_connections.values())[0]
 
         ws_con.peer_host = "1.2.3.4"
         ws_con_2.peer_host = "1.2.3.4"

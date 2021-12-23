@@ -4,23 +4,22 @@ import logging
 import pytest
 from blspy import AugSchemeMPL
 
-from staicoin.consensus.pot_iterations import is_overflow_block
-from staicoin.full_node.signage_point import SignagePoint
-from staicoin.protocols import full_node_protocol
-from staicoin.rpc.full_node_rpc_api import FullNodeRpcApi
-from staicoin.rpc.full_node_rpc_client import FullNodeRpcClient
-from staicoin.rpc.rpc_server import NodeType, start_rpc_server
-from staicoin.simulator.simulator_protocol import FarmNewBlockProtocol
-from staicoin.types.spend_bundle import SpendBundle
-from staicoin.types.unfinished_block import UnfinishedBlock
+from stai.consensus.pot_iterations import is_overflow_block
+from stai.full_node.signage_point import SignagePoint
+from stai.protocols import full_node_protocol
+from stai.rpc.full_node_rpc_api import FullNodeRpcApi
+from stai.rpc.full_node_rpc_client import FullNodeRpcClient
+from stai.rpc.rpc_server import NodeType, start_rpc_server
+from stai.simulator.simulator_protocol import FarmNewBlockProtocol
+from stai.types.spend_bundle import SpendBundle
+from stai.types.unfinished_block import UnfinishedBlock
 from tests.block_tools import get_signage_point
-from staicoin.util.hash import std_hash
-from staicoin.util.ints import uint16, uint8
+from stai.util.hash import std_hash
+from stai.util.ints import uint16, uint8
 from tests.wallet_tools import WalletTool
 from tests.connection_utils import connect_and_get_peer
 from tests.setup_nodes import bt, self_hostname, setup_simulators_and_wallets, test_constants
 from tests.time_out_assert import time_out_assert
-from tests.core.fixtures import empty_blockchain
 
 
 class TestRpc:
@@ -116,6 +115,12 @@ class TestRpc:
             pid = list(blocks[-1].get_included_reward_coins())[0].parent_coin_info
             pid_2 = list(blocks[-1].get_included_reward_coins())[1].parent_coin_info
             coins = await client.get_coin_records_by_parent_ids([pid, pid_2])
+            print(coins)
+            assert len(coins) == 2
+
+            name = list(blocks[-1].get_included_reward_coins())[0].name()
+            name_2 = list(blocks[-1].get_included_reward_coins())[1].name()
+            coins = await client.get_coin_records_by_names([name, name_2])
             print(coins)
             assert len(coins) == 2
 

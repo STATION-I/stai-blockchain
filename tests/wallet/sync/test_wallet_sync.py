@@ -4,14 +4,13 @@ import asyncio
 import pytest
 from colorlog import logging
 
-from staicoin.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
-from staicoin.protocols import full_node_protocol
-from staicoin.simulator.simulator_protocol import FarmNewBlockProtocol
-from staicoin.types.peer_info import PeerInfo
-from staicoin.util.ints import uint16, uint32
-from staicoin.wallet.wallet_state_manager import WalletStateManager
+from stai.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from stai.protocols import full_node_protocol
+from stai.simulator.simulator_protocol import FarmNewBlockProtocol
+from stai.types.peer_info import PeerInfo
+from stai.util.ints import uint16, uint32
+from stai.wallet.wallet_state_manager import WalletStateManager
 from tests.connection_utils import disconnect_all_and_reconnect
-from tests.core.fixtures import default_400_blocks, default_1000_blocks
 from tests.setup_nodes import bt, self_hostname, setup_node_and_wallet, setup_simulators_and_wallets, test_constants
 from tests.time_out_assert import time_out_assert
 

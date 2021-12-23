@@ -2,9 +2,9 @@ import asyncio
 
 import pytest
 
-from staicoin.protocols.protocol_message_types import ProtocolMessageTypes
-from staicoin.server.outbound_message import make_msg
-from staicoin.server.rate_limits import RateLimiter, NON_TX_FREQ
+from stai.protocols.protocol_message_types import ProtocolMessageTypes
+from stai.server.outbound_message import make_msg
+from stai.server.rate_limits import RateLimiter, NON_TX_FREQ
 from tests.setup_nodes import test_constants
 
 

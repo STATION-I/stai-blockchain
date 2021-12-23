@@ -2,8 +2,8 @@ import unittest
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 
-from staicoin.util.ints import uint8
-from staicoin.util.type_checking import is_type_List, is_type_SpecificOptional, strictdataclass
+from stai.util.ints import uint8
+from stai.util.type_checking import is_type_List, is_type_SpecificOptional, strictdataclass
 
 
 class TestIsTypeList(unittest.TestCase):

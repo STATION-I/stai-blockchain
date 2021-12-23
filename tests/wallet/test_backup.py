@@ -4,12 +4,12 @@
 #
 # import pytest
 #
-# from staicoin.consensus.block_rewards import calculate_pool_reward, calculate_base_farmer_reward
-# from staicoin.simulator.simulator_protocol import FarmNewBlockProtocol
-# from staicoin.types.peer_info import PeerInfo
-# from staicoin.util.ints import uint16, uint32, uint64
+# from stai.consensus.block_rewards import calculate_pool_reward, calculate_base_farmer_reward
+# from stai.simulator.simulator_protocol import FarmNewBlockProtocol
+# from stai.types.peer_info import PeerInfo
+# from stai.util.ints import uint16, uint32, uint64
 # from tests.setup_nodes import setup_simulators_and_wallets
-# from staicoin.wallet.cc_wallet.cc_wallet import CCWallet
+# from stai.wallet.cc_wallet.cc_wallet import CCWallet
 # from tests.time_out_assert import time_out_assert
 #
 #

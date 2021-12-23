@@ -6,11 +6,11 @@ import aiosqlite
 import pytest
 from blspy import AugSchemeMPL
 
-from staicoin.util.db_wrapper import DBWrapper
-from staicoin.util.ints import uint32
-from staicoin.wallet.derivation_record import DerivationRecord
-from staicoin.wallet.util.wallet_types import WalletType
-from staicoin.wallet.wallet_puzzle_store import WalletPuzzleStore
+from stai.util.db_wrapper import DBWrapper
+from stai.util.ints import uint32
+from stai.wallet.derivation_record import DerivationRecord
+from stai.wallet.util.wallet_types import WalletType
+from stai.wallet.wallet_puzzle_store import WalletPuzzleStore
 
 
 @pytest.fixture(scope="module")

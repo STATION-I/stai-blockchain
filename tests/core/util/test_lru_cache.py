@@ -1,6 +1,6 @@
 import unittest
 
-from staicoin.util.lru_cache import LRUCache
+from stai.util.lru_cache import LRUCache
 
 
 class TestLRUCache(unittest.TestCase):

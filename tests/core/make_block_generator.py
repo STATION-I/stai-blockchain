@@ -2,15 +2,15 @@ from typing import Dict
 
 import blspy
 
-from staicoin.full_node.bundle_tools import simple_solution_generator
-from staicoin.types.blockchain_format.coin import Coin
-from staicoin.types.blockchain_format.program import Program
-from staicoin.types.coin_spend import CoinSpend
-from staicoin.types.condition_opcodes import ConditionOpcode
-from staicoin.types.generator_types import BlockGenerator
-from staicoin.types.spend_bundle import SpendBundle
-from staicoin.util.ints import uint64
-from staicoin.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import puzzle_for_pk, solution_for_conditions
+from stai.full_node.bundle_tools import simple_solution_generator
+from stai.types.blockchain_format.coin import Coin
+from stai.types.blockchain_format.program import Program
+from stai.types.coin_spend import CoinSpend
+from stai.types.condition_opcodes import ConditionOpcode
+from stai.types.generator_types import BlockGenerator
+from stai.types.spend_bundle import SpendBundle
+from stai.util.ints import uint64
+from stai.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import puzzle_for_pk, solution_for_conditions
 
 GROUP_ORDER = 0x73EDA753299D7D483339D80809A1D80553BDA402FFFE5BFEFFFFFFFF00000001
 

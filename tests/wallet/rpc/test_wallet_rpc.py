@@ -1,23 +1,23 @@
 import asyncio
-from staicoin.util.config import load_config, save_config
+from stai.util.config import load_config, save_config
 import logging
 from pathlib import Path
 
 import pytest
 
-from staicoin.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
-from staicoin.rpc.full_node_rpc_api import FullNodeRpcApi
-from staicoin.rpc.full_node_rpc_client import FullNodeRpcClient
-from staicoin.rpc.rpc_server import start_rpc_server
-from staicoin.rpc.wallet_rpc_api import WalletRpcApi
-from staicoin.rpc.wallet_rpc_client import WalletRpcClient
-from staicoin.simulator.simulator_protocol import FarmNewBlockProtocol
-from staicoin.types.peer_info import PeerInfo
-from staicoin.util.bech32m import encode_puzzle_hash
-from staicoin.consensus.coinbase import create_puzzlehash_for_pk
-from staicoin.wallet.derive_keys import master_sk_to_wallet_sk
-from staicoin.util.ints import uint16, uint32
-from staicoin.wallet.transaction_record import TransactionRecord
+from stai.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from stai.rpc.full_node_rpc_api import FullNodeRpcApi
+from stai.rpc.full_node_rpc_client import FullNodeRpcClient
+from stai.rpc.rpc_server import start_rpc_server
+from stai.rpc.wallet_rpc_api import WalletRpcApi
+from stai.rpc.wallet_rpc_client import WalletRpcClient
+from stai.simulator.simulator_protocol import FarmNewBlockProtocol
+from stai.types.peer_info import PeerInfo
+from stai.util.bech32m import encode_puzzle_hash
+from stai.consensus.coinbase import create_puzzlehash_for_pk
+from stai.wallet.derive_keys import master_sk_to_wallet_sk
+from stai.util.ints import uint16, uint32
+from stai.wallet.transaction_record import TransactionRecord
 from tests.setup_nodes import bt, setup_simulators_and_wallets, self_hostname
 from tests.time_out_assert import time_out_assert
 
@@ -247,12 +247,12 @@ class TestWalletRpc:
 
             # Add in reward addresses into farmer and pool for testing delete key checks
             # set farmer to first private key
-            sk = wallet_node.get_key_for_fingerprint(pks[0])
+            sk = await wallet_node.get_key_for_fingerprint(pks[0])
             test_ph = create_puzzlehash_for_pk(master_sk_to_wallet_sk(sk, uint32(0)).get_g1())
             test_config = load_config(wallet_node.root_path, "config.yaml")
             test_config["farmer"]["stai_target_address"] = encode_puzzle_hash(test_ph, "tstai")
             # set pool to second private key
-            sk = wallet_node.get_key_for_fingerprint(pks[1])
+            sk = await wallet_node.get_key_for_fingerprint(pks[1])
             test_ph = create_puzzlehash_for_pk(master_sk_to_wallet_sk(sk, uint32(0)).get_g1())
             test_config["pool"]["stai_target_address"] = encode_puzzle_hash(test_ph, "tstai")
             save_config(wallet_node.root_path, "config.yaml", test_config)

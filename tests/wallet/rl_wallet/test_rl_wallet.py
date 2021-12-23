@@ -2,10 +2,10 @@ import asyncio
 
 import pytest
 
-from staicoin.simulator.simulator_protocol import FarmNewBlockProtocol
-from staicoin.types.peer_info import PeerInfo
-from staicoin.util.ints import uint16, uint64
-from staicoin.wallet.rl_wallet.rl_wallet import RLWallet
+from stai.simulator.simulator_protocol import FarmNewBlockProtocol
+from stai.types.peer_info import PeerInfo
+from stai.util.ints import uint16, uint64
+from stai.wallet.rl_wallet.rl_wallet import RLWallet
 from tests.setup_nodes import self_hostname, setup_simulators_and_wallets
 from tests.time_out_assert import time_out_assert
 
@@ -23,6 +23,7 @@ class TestCCWallet:
             yield _
 
     @pytest.mark.asyncio
+    @pytest.mark.skip
     async def test_create_rl_coin(self, two_wallet_nodes):
         num_blocks = 4
         full_nodes, wallets = two_wallet_nodes

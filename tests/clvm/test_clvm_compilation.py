@@ -3,48 +3,48 @@ from unittest import TestCase
 
 from clvm_tools.clvmc import compile_clvm
 
-from staicoin.types.blockchain_format.program import Program, SerializedProgram
+from stai.types.blockchain_format.program import Program, SerializedProgram
 
 wallet_program_files = set(
     [
-        "staicoin/wallet/puzzles/calculate_synthetic_public_key.clvm",
-        "staicoin/wallet/puzzles/cc.clvm",
-        "staicoin/wallet/puzzles/chialisp_deserialisation.clvm",
-        "staicoin/wallet/puzzles/rom_bootstrap_generator.clvm",
-        "staicoin/wallet/puzzles/generator_for_single_coin.clvm",
-        "staicoin/wallet/puzzles/genesis-by-coin-id-with-0.clvm",
-        "staicoin/wallet/puzzles/genesis-by-puzzle-hash-with-0.clvm",
-        "staicoin/wallet/puzzles/lock.inner.puzzle.clvm",
-        "staicoin/wallet/puzzles/p2_conditions.clvm",
-        "staicoin/wallet/puzzles/p2_delegated_conditions.clvm",
-        "staicoin/wallet/puzzles/p2_delegated_puzzle.clvm",
-        "staicoin/wallet/puzzles/p2_delegated_puzzle_or_hidden_puzzle.clvm",
-        "staicoin/wallet/puzzles/p2_m_of_n_delegate_direct.clvm",
-        "staicoin/wallet/puzzles/p2_puzzle_hash.clvm",
-        "staicoin/wallet/puzzles/rl_aggregation.clvm",
-        "staicoin/wallet/puzzles/rl.clvm",
-        "staicoin/wallet/puzzles/sha256tree_module.clvm",
-        "staicoin/wallet/puzzles/singleton_top_layer.clvm",
-        "staicoin/wallet/puzzles/did_innerpuz.clvm",
-        "staicoin/wallet/puzzles/decompress_puzzle.clvm",
-        "staicoin/wallet/puzzles/decompress_coin_spend_entry_with_prefix.clvm",
-        "staicoin/wallet/puzzles/decompress_coin_spend_entry.clvm",
-        "staicoin/wallet/puzzles/block_program_zero.clvm",
-        "staicoin/wallet/puzzles/test_generator_deserialize.clvm",
-        "staicoin/wallet/puzzles/test_multiple_generator_input_arguments.clvm",
-        "staicoin/wallet/puzzles/p2_singleton.clvm",
-        "staicoin/wallet/puzzles/pool_waitingroom_innerpuz.clvm",
-        "staicoin/wallet/puzzles/pool_member_innerpuz.clvm",
-        "staicoin/wallet/puzzles/singleton_launcher.clvm",
-        "staicoin/wallet/puzzles/p2_singleton_or_delayed_puzhash.clvm",
+        "stai/wallet/puzzles/calculate_synthetic_public_key.clvm",
+        "stai/wallet/puzzles/cc.clvm",
+        "stai/wallet/puzzles/stailisp_deserialisation.clvm",
+        "stai/wallet/puzzles/rom_bootstrap_generator.clvm",
+        "stai/wallet/puzzles/generator_for_single_coin.clvm",
+        "stai/wallet/puzzles/genesis-by-coin-id-with-0.clvm",
+        "stai/wallet/puzzles/genesis-by-puzzle-hash-with-0.clvm",
+        "stai/wallet/puzzles/lock.inner.puzzle.clvm",
+        "stai/wallet/puzzles/p2_conditions.clvm",
+        "stai/wallet/puzzles/p2_delegated_conditions.clvm",
+        "stai/wallet/puzzles/p2_delegated_puzzle.clvm",
+        "stai/wallet/puzzles/p2_delegated_puzzle_or_hidden_puzzle.clvm",
+        "stai/wallet/puzzles/p2_m_of_n_delegate_direct.clvm",
+        "stai/wallet/puzzles/p2_puzzle_hash.clvm",
+        "stai/wallet/puzzles/rl_aggregation.clvm",
+        "stai/wallet/puzzles/rl.clvm",
+        "stai/wallet/puzzles/sha256tree_module.clvm",
+        "stai/wallet/puzzles/singleton_top_layer.clvm",
+        "stai/wallet/puzzles/did_innerpuz.clvm",
+        "stai/wallet/puzzles/decompress_puzzle.clvm",
+        "stai/wallet/puzzles/decompress_coin_spend_entry_with_prefix.clvm",
+        "stai/wallet/puzzles/decompress_coin_spend_entry.clvm",
+        "stai/wallet/puzzles/block_program_zero.clvm",
+        "stai/wallet/puzzles/test_generator_deserialize.clvm",
+        "stai/wallet/puzzles/test_multiple_generator_input_arguments.clvm",
+        "stai/wallet/puzzles/p2_singleton.clvm",
+        "stai/wallet/puzzles/pool_waitingroom_innerpuz.clvm",
+        "stai/wallet/puzzles/pool_member_innerpuz.clvm",
+        "stai/wallet/puzzles/singleton_launcher.clvm",
+        "stai/wallet/puzzles/p2_singleton_or_delayed_puzhash.clvm",
     ]
 )
 
 clvm_include_files = set(
-    ["staicoin/wallet/puzzles/create-lock-puzzlehash.clvm", "staicoin/wallet/puzzles/condition_codes.clvm"]
+    ["stai/wallet/puzzles/create-lock-puzzlehash.clvm", "stai/wallet/puzzles/condition_codes.clvm"]
 )
 
-CLVM_PROGRAM_ROOT = "staicoin/wallet/puzzles"
+CLVM_PROGRAM_ROOT = "stai/wallet/puzzles"
 
 
 def list_files(dir, glob):
@@ -71,7 +71,7 @@ class TestClvmCompilation(TestCase):
 
     def test_all_programs_listed(self):
         """
-        Checks to see if a new .clvm file was added to staicoin/wallet/puzzles, but not added to `wallet_program_files`
+        Checks to see if a new .clvm file was added to stai/wallet/puzzles, but not added to `wallet_program_files`
         """
         existing_files = list_files(CLVM_PROGRAM_ROOT, "*.clvm")
         existing_file_paths = set([Path(x).relative_to(CLVM_PROGRAM_ROOT) for x in existing_files])

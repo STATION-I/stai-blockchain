@@ -1,6 +1,6 @@
 import pytest
-from staicoin.util.misc import format_bytes
-from staicoin.util.misc import format_minutes
+from stai.util.misc import format_bytes
+from stai.util.misc import format_minutes
 
 
 class TestMisc:

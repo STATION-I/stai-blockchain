@@ -5,15 +5,15 @@ from typing import List
 import pytest
 from blspy import PrivateKey
 
-from staicoin.pools.pool_wallet import PoolWallet
-from staicoin.pools.pool_wallet_info import PoolState, FARMING_TO_POOL
-from staicoin.simulator.simulator_protocol import FarmNewBlockProtocol
-from staicoin.types.coin_spend import CoinSpend
-from staicoin.types.full_block import FullBlock
-from staicoin.types.peer_info import PeerInfo
-from staicoin.util.ints import uint16, uint32
-from staicoin.wallet.derive_keys import master_sk_to_singleton_owner_sk
-from staicoin.wallet.wallet_state_manager import WalletStateManager
+from stai.pools.pool_wallet import PoolWallet
+from stai.pools.pool_wallet_info import PoolState, FARMING_TO_POOL
+from stai.simulator.simulator_protocol import FarmNewBlockProtocol
+from stai.types.coin_spend import CoinSpend
+from stai.types.full_block import FullBlock
+from stai.types.peer_info import PeerInfo
+from stai.util.ints import uint16, uint32
+from stai.wallet.derive_keys import master_sk_to_singleton_owner_sk
+from stai.wallet.wallet_state_manager import WalletStateManager
 from tests.setup_nodes import self_hostname, setup_simulators_and_wallets
 
 

@@ -2,8 +2,8 @@ import asyncio
 
 import pytest
 
-from staicoin.full_node.sync_store import SyncStore
-from staicoin.util.hash import std_hash
+from stai.full_node.sync_store import SyncStore
+from stai.util.hash import std_hash
 
 
 @pytest.fixture(scope="module")

@@ -1,7 +1,7 @@
 from secrets import token_bytes
 
-from staicoin.consensus.default_constants import DEFAULT_CONSTANTS
-from staicoin.types.blockchain_format.proof_of_space import ProofOfSpace  # pylint: disable=E0401
+from stai.consensus.default_constants import DEFAULT_CONSTANTS
+from stai.types.blockchain_format.proof_of_space import ProofOfSpace  # pylint: disable=E0401
 
 
 class TestProofOfSpace:

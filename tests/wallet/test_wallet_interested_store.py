@@ -4,11 +4,11 @@ from secrets import token_bytes
 import aiosqlite
 import pytest
 
-from staicoin.types.blockchain_format.coin import Coin
-from staicoin.util.db_wrapper import DBWrapper
-from staicoin.util.ints import uint64
+from stai.types.blockchain_format.coin import Coin
+from stai.util.db_wrapper import DBWrapper
+from stai.util.ints import uint64
 
-from staicoin.wallet.wallet_interested_store import WalletInterestedStore
+from stai.wallet.wallet_interested_store import WalletInterestedStore
 
 
 @pytest.fixture(scope="module")

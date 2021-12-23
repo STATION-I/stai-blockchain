@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import List, Any
 from unittest import TestCase
 
-from staicoin.full_node.bundle_tools import (
+from stai.full_node.bundle_tools import (
     bundle_suitable_for_compression,
     compressed_coin_spend_entry_list,
     compressed_spend_bundle_solution,
@@ -11,13 +11,14 @@ from staicoin.full_node.bundle_tools import (
     simple_solution_generator,
     spend_bundle_to_serialized_coin_spend_entry_list,
 )
-from staicoin.full_node.generator import run_generator, create_generator_args
-from staicoin.types.blockchain_format.program import Program, SerializedProgram, INFINITE_COST
-from staicoin.types.generator_types import BlockGenerator, CompressorArg, GeneratorArg
-from staicoin.types.spend_bundle import SpendBundle
-from staicoin.util.byte_types import hexstr_to_bytes
-from staicoin.util.ints import uint32
-from staicoin.wallet.puzzles.load_clvm import load_clvm
+from stai.full_node.generator import run_generator, create_generator_args
+from stai.full_node.mempool_check_conditions import get_puzzle_and_solution_for_coin
+from stai.types.blockchain_format.program import Program, SerializedProgram, INFINITE_COST
+from stai.types.generator_types import BlockGenerator, CompressorArg, GeneratorArg
+from stai.types.spend_bundle import SpendBundle
+from stai.util.byte_types import hexstr_to_bytes
+from stai.util.ints import uint32
+from stai.wallet.puzzles.load_clvm import load_clvm
 
 from tests.core.make_block_generator import make_spend_bundle
 
@@ -27,17 +28,17 @@ from clvm.serialize import sexp_from_stream
 
 from clvm_tools import binutils
 
-TEST_GEN_DESERIALIZE = load_clvm("test_generator_deserialize.clvm", package_or_requirement="staicoin.wallet.puzzles")
-DESERIALIZE_MOD = load_clvm("chialisp_deserialisation.clvm", package_or_requirement="staicoin.wallet.puzzles")
+TEST_GEN_DESERIALIZE = load_clvm("test_generator_deserialize.clvm", package_or_requirement="stai.wallet.puzzles")
+DESERIALIZE_MOD = load_clvm("stailisp_deserialisation.clvm", package_or_requirement="stai.wallet.puzzles")
 
-DECOMPRESS_PUZZLE = load_clvm("decompress_puzzle.clvm", package_or_requirement="staicoin.wallet.puzzles")
-DECOMPRESS_CSE = load_clvm("decompress_coin_spend_entry.clvm", package_or_requirement="staicoin.wallet.puzzles")
+DECOMPRESS_PUZZLE = load_clvm("decompress_puzzle.clvm", package_or_requirement="stai.wallet.puzzles")
+DECOMPRESS_CSE = load_clvm("decompress_coin_spend_entry.clvm", package_or_requirement="stai.wallet.puzzles")
 
 DECOMPRESS_CSE_WITH_PREFIX = load_clvm(
-    "decompress_coin_spend_entry_with_prefix.clvm", package_or_requirement="staicoin.wallet.puzzles"
+    "decompress_coin_spend_entry_with_prefix.clvm", package_or_requirement="stai.wallet.puzzles"
 )
-DECOMPRESS_BLOCK = load_clvm("block_program_zero.clvm", package_or_requirement="staicoin.wallet.puzzles")
-TEST_MULTIPLE = load_clvm("test_multiple_generator_input_arguments.clvm", package_or_requirement="staicoin.wallet.puzzles")
+DECOMPRESS_BLOCK = load_clvm("block_program_zero.clvm", package_or_requirement="stai.wallet.puzzles")
+TEST_MULTIPLE = load_clvm("test_multiple_generator_input_arguments.clvm", package_or_requirement="stai.wallet.puzzles")
 
 Nil = Program.from_bytes(b"\x80")
 
@@ -135,6 +136,23 @@ class TestCompression(TestCase):
         assert result_c is not None
         assert result_s is not None
         assert result_c == result_s
+
+    def test_get_removals_for_single_coin(self):
+        sb: SpendBundle = make_spend_bundle(1)
+        start, end = match_standard_transaction_at_any_index(original_generator)
+        ca = CompressorArg(uint32(0), SerializedProgram.from_bytes(original_generator), start, end)
+        c = compressed_spend_bundle_solution(ca, sb)
+        removal = sb.coin_spends[0].coin.name()
+        error, puzzle, solution = get_puzzle_and_solution_for_coin(c, removal, INFINITE_COST)
+        assert error is None
+        assert bytes(puzzle) == bytes(sb.coin_spends[0].puzzle_reveal)
+        assert bytes(solution) == bytes(sb.coin_spends[0].solution)
+        # Test non compressed generator as well
+        s = simple_solution_generator(sb)
+        error, puzzle, solution = get_puzzle_and_solution_for_coin(s, removal, INFINITE_COST)
+        assert error is None
+        assert bytes(puzzle) == bytes(sb.coin_spends[0].puzzle_reveal)
+        assert bytes(solution) == bytes(sb.coin_spends[0].solution)
 
     def test_spend_byndle_coin_spend(self):
         for i in range(0, 10):

@@ -1,10 +1,10 @@
 from typing import Dict
 from unittest import TestCase
 
-from staicoin.types.blockchain_format.program import Program, SerializedProgram
-from staicoin.types.generator_types import GeneratorBlockCacheInterface
-from staicoin.full_node.generator import create_block_generator, create_generator_args
-from staicoin.util.ints import uint32
+from stai.types.blockchain_format.program import Program, SerializedProgram
+from stai.types.generator_types import GeneratorBlockCacheInterface
+from stai.full_node.generator import create_block_generator, create_generator_args
+from stai.util.ints import uint32
 
 gen0 = SerializedProgram.from_bytes(
     bytes.fromhex(

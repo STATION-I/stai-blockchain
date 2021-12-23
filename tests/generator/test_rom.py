@@ -1,23 +1,23 @@
 from clvm_tools import binutils
 from clvm_tools.clvmc import compile_clvm_text
 
-from staicoin.full_node.generator import run_generator
-from staicoin.full_node.mempool_check_conditions import get_name_puzzle_conditions
-from staicoin.types.blockchain_format.program import Program, SerializedProgram
-from staicoin.types.blockchain_format.sized_bytes import bytes32
-from staicoin.types.condition_with_args import ConditionWithArgs
-from staicoin.types.name_puzzle_condition import NPC
-from staicoin.types.generator_types import BlockGenerator, GeneratorArg
-from staicoin.util.clvm import int_to_bytes
-from staicoin.util.condition_tools import ConditionOpcode
-from staicoin.util.ints import uint32
-from staicoin.wallet.puzzles.load_clvm import load_clvm
+from stai.full_node.generator import run_generator
+from stai.full_node.mempool_check_conditions import get_name_puzzle_conditions
+from stai.types.blockchain_format.program import Program, SerializedProgram
+from stai.types.blockchain_format.sized_bytes import bytes32
+from stai.types.condition_with_args import ConditionWithArgs
+from stai.types.name_puzzle_condition import NPC
+from stai.types.generator_types import BlockGenerator, GeneratorArg
+from stai.util.clvm import int_to_bytes
+from stai.util.condition_tools import ConditionOpcode
+from stai.util.ints import uint32
+from stai.wallet.puzzles.load_clvm import load_clvm
 
 MAX_COST = int(1e15)
 COST_PER_BYTE = int(12000)
 
 
-DESERIALIZE_MOD = load_clvm("chialisp_deserialisation.clvm", package_or_requirement="staicoin.wallet.puzzles")
+DESERIALIZE_MOD = load_clvm("stailisp_deserialisation.clvm", package_or_requirement="stai.wallet.puzzles")
 
 
 GENERATOR_CODE = """
@@ -103,7 +103,7 @@ class TestROM:
         npc_result = get_name_puzzle_conditions(gen, max_cost=MAX_COST, cost_per_byte=COST_PER_BYTE, safe_mode=False)
         assert npc_result.error is None
         assert npc_result.clvm_cost == EXPECTED_COST
-        cond_1 = ConditionWithArgs(ConditionOpcode.CREATE_COIN, [bytes([0] * 31 + [1]), int_to_bytes(500)])
+        cond_1 = ConditionWithArgs(ConditionOpcode.CREATE_COIN, [bytes([0] * 31 + [1]), int_to_bytes(500), b""])
         CONDITIONS = [
             (ConditionOpcode.CREATE_COIN, [cond_1]),
         ]

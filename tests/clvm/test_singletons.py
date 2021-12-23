@@ -4,17 +4,17 @@ from typing import List, Tuple, Optional
 
 from blspy import AugSchemeMPL, G1Element, G2Element, PrivateKey
 
-from staicoin.types.blockchain_format.program import Program
-from staicoin.types.blockchain_format.sized_bytes import bytes32
-from staicoin.types.blockchain_format.coin import Coin
-from staicoin.types.coin_spend import CoinSpend
-from staicoin.types.spend_bundle import SpendBundle
-from staicoin.util.errors import Err
-from staicoin.util.condition_tools import ConditionOpcode
-from staicoin.util.ints import uint64
-from staicoin.consensus.default_constants import DEFAULT_CONSTANTS
-from staicoin.wallet.lineage_proof import LineageProof
-from staicoin.wallet.puzzles import (
+from stai.types.blockchain_format.program import Program
+from stai.types.blockchain_format.sized_bytes import bytes32
+from stai.types.blockchain_format.coin import Coin
+from stai.types.coin_spend import CoinSpend
+from stai.types.spend_bundle import SpendBundle
+from stai.util.errors import Err
+from stai.util.condition_tools import ConditionOpcode
+from stai.util.ints import uint64
+from stai.consensus.default_constants import DEFAULT_CONSTANTS
+from stai.wallet.lineage_proof import LineageProof
+from stai.wallet.puzzles import (
     p2_conditions,
     p2_delegated_puzzle_or_hidden_puzzle,
     singleton_top_layer,
@@ -25,14 +25,14 @@ from tests.clvm.test_puzzles import (
     secret_exponent_for_index,
 )
 
-from staicoin.clvm.spend_sim import SpendSim, SimClient
+from stai.clvm.spend_sim import SpendSim, SimClient
 
 """
 This test suite aims to test:
-    - staicoin.wallet.puzzles.singleton_top_layer.py
-    - staicoin.wallet.puzzles.singleton_top_layer.clvm
-    - staicoin.wallet.puzzles.p2_singleton.clvm
-    - staicoin.wallet.puzzles.p2_singleton_or_delayed_puzhash.clvm
+    - stai.wallet.puzzles.singleton_top_layer.py
+    - stai.wallet.puzzles.singleton_top_layer.clvm
+    - stai.wallet.puzzles.p2_singleton.clvm
+    - stai.wallet.puzzles.p2_singleton_or_delayed_puzhash.clvm
 """
 
 

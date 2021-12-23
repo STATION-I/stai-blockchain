@@ -3,7 +3,7 @@ import logging
 import time
 from typing import Callable
 
-from staicoin.protocols.protocol_message_types import ProtocolMessageTypes
+from stai.protocols.protocol_message_types import ProtocolMessageTypes
 
 log = logging.getLogger(__name__)
 
@@ -22,7 +22,7 @@ async def time_out_assert_custom_interval(timeout: int, interval, function, valu
 
 
 async def time_out_assert(timeout: int, function, value=True, *args, **kwargs):
-    await time_out_assert_custom_interval(timeout, 0.05, function, value, *args, *kwargs)
+    await time_out_assert_custom_interval(timeout, 0.05, function, value, *args, **kwargs)
 
 
 async def time_out_assert_not_none(timeout: int, function, *args, **kwargs):

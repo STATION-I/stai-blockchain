@@ -9,21 +9,19 @@ from typing import Dict
 import pytest
 import cProfile
 
-from staicoin.consensus.block_record import BlockRecord
-from staicoin.full_node.full_node_api import FullNodeAPI
-from staicoin.protocols import full_node_protocol as fnp
-from staicoin.types.condition_opcodes import ConditionOpcode
-from staicoin.types.condition_with_args import ConditionWithArgs
-from staicoin.types.unfinished_block import UnfinishedBlock
-from staicoin.util.clvm import int_to_bytes
-from staicoin.util.ints import uint64
+from stai.consensus.block_record import BlockRecord
+from stai.full_node.full_node_api import FullNodeAPI
+from stai.protocols import full_node_protocol as fnp
+from stai.types.condition_opcodes import ConditionOpcode
+from stai.types.condition_with_args import ConditionWithArgs
+from stai.types.unfinished_block import UnfinishedBlock
+from stai.util.clvm import int_to_bytes
+from stai.util.ints import uint64
 from tests.wallet_tools import WalletTool
-from tests.core.fixtures import empty_blockchain  # noqa: F401
 
 from tests.connection_utils import add_dummy_connection, connect_and_get_peer
 from tests.core.full_node.test_coin_store import get_future_reward_coins
 from tests.core.node_height import node_height_at_least
-from tests.core.fixtures import empty_blockchain  # noqa: F401
 from tests.setup_nodes import bt, setup_simulators_and_wallets, test_constants
 from tests.time_out_assert import time_out_assert, time_out_assert_custom_interval, time_out_messages
 

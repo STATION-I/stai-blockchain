@@ -1,12 +1,13 @@
 from setuptools import setup
 
 dependencies = [
-    "blspy==1.0.5",  # Signature library
-    "chiavdf==1.0.2",  # timelord and vdf verification
+    "multidict==5.1.0",  # Avoid 5.2.0 due to Avast
+    "blspy==1.0.6",  # Signature library
+    "chiavdf==1.0.3",  # timelord and vdf verification
     "chiabip158==1.0",  # bip158-style wallet filters
-    "chiapos==1.0.4",  # proof of space
+    "chiapos==1.0.6",  # proof of space
     "clvm==0.9.7",
-    "clvm_rs==0.1.10",
+    "clvm_rs==0.1.15",
     "clvm_tools==0.4.3",
     "aiohttp==3.7.4",  # HTTP server for full node rpc
     "aiosqlite==0.17.0",  # asyncio wrapper for sqlite, to store blocks
@@ -21,12 +22,12 @@ dependencies = [
     #  "keyrings.cryptfile==1.3.8",  # Secure storage for keys on Linux (Will be replaced)
     #  See https://github.com/frispete/keyrings.cryptfile/issues/15
     "PyYAML==5.4.1",  # Used for config file format
-    "setproctitle==1.2.2",  # Gives the chia processes readable names
-    "sortedcontainers==2.3.0",  # For maintaining sorted mempools
+    "setproctitle==1.2.2",  # Gives the stai processes readable names
+    "sortedcontainers==2.4.0",  # For maintaining sorted mempools
     "websockets==8.1.0",  # For use in wallet RPC and electron UI
     "click==7.1.2",  # For the CLI
-    "dnspython==2.1.0",  # Query DNS seeds
-    "watchdog==2.1.3",  # Filesystem event watching - watches keyring.yaml
+    "dnspythonchia==2.2.0",  # Query DNS seeds
+    "watchdog==2.1.6",  # Filesystem event watching - watches keyring.yaml
 ]
 
 upnp_dependencies = [
@@ -41,17 +42,16 @@ dev_dependencies = [
     "black",
     "aiohttp_cors",  # For blackd
     "ipython",  # For asyncio debugging
+    "types-setuptools",
 ]
 
 kwargs = dict(
-    name="staicoin-blockchain",
-    author="Mariano Sorgente",
-    author_email="admin@staicoin-network.net",
-    description="staicoin blockchain full node, farmer, timelord, and wallet.",
-    url="https://staicoin-network.net/",
+    name="stai-blockchain",
+    description="Stai blockchain full node, farmer, timelord, and wallet.",
+    url="https://stainetwork.org/",
     license="Apache License",
     python_requires=">=3.7, <4",
-    keywords="staicoin blockchain node",
+    keywords="stai blockchain node",
     install_requires=dependencies,
     setup_requires=["setuptools_scm"],
     extras_require=dict(
@@ -61,54 +61,55 @@ kwargs = dict(
     ),
     packages=[
         "build_scripts",
-        "staicoin",
-        "staicoin.cmds",
-        "staicoin.clvm",
-        "staicoin.consensus",
-        "staicoin.daemon",
-        "staicoin.full_node",
-        "staicoin.timelord",
-        "staicoin.farmer",
-        "staicoin.harvester",
-        "staicoin.introducer",
-        "staicoin.plotting",
-        "staicoin.pools",
-        "staicoin.protocols",
-        "staicoin.rpc",
-        "staicoin.server",
-        "staicoin.simulator",
-        "staicoin.types.blockchain_format",
-        "staicoin.types",
-        "staicoin.util",
-        "staicoin.wallet",
-        "staicoin.wallet.puzzles",
-        "staicoin.wallet.rl_wallet",
-        "staicoin.wallet.cc_wallet",
-        "staicoin.wallet.did_wallet",
-        "staicoin.wallet.settings",
-        "staicoin.wallet.trading",
-        "staicoin.wallet.util",
-        "staicoin.ssl",
+        "stai",
+        "stai.cmds",
+        "stai.clvm",
+        "stai.consensus",
+        "stai.daemon",
+        "stai.full_node",
+        "stai.timelord",
+        "stai.farmer",
+        "stai.harvester",
+        "stai.introducer",
+        "stai.plotters",
+        "stai.plotting",
+        "stai.pools",
+        "stai.protocols",
+        "stai.rpc",
+        "stai.server",
+        "stai.simulator",
+        "stai.types.blockchain_format",
+        "stai.types",
+        "stai.util",
+        "stai.wallet",
+        "stai.wallet.puzzles",
+        "stai.wallet.rl_wallet",
+        "stai.wallet.cc_wallet",
+        "stai.wallet.did_wallet",
+        "stai.wallet.settings",
+        "stai.wallet.trading",
+        "stai.wallet.util",
+        "stai.ssl",
         "mozilla-ca",
     ],
     entry_points={
         "console_scripts": [
-            "staicoin = staicoin.cmds.staicoin:main",
-            "staicoin_wallet = staicoin.server.start_wallet:main",
-            "staicoin_full_node = staicoin.server.start_full_node:main",
-            "staicoin_harvester = staicoin.server.start_harvester:main",
-            "staicoin_farmer = staicoin.server.start_farmer:main",
-            "staicoin_introducer = staicoin.server.start_introducer:main",
-            "staicoin_timelord = staicoin.server.start_timelord:main",
-            "staicoin_timelord_launcher = staicoin.timelord.timelord_launcher:main",
-            "staicoin_full_node_simulator = staicoin.simulator.start_simulator:main",
+            "stai = stai.cmds.stai:main",
+            "stai_wallet = stai.server.start_wallet:main",
+            "stai_full_node = stai.server.start_full_node:main",
+            "stai_harvester = stai.server.start_harvester:main",
+            "stai_farmer = stai.server.start_farmer:main",
+            "stai_introducer = stai.server.start_introducer:main",
+            "stai_timelord = stai.server.start_timelord:main",
+            "stai_timelord_launcher = stai.timelord.timelord_launcher:main",
+            "stai_full_node_simulator = stai.simulator.start_simulator:main",
         ]
     },
     package_data={
-        "staicoin": ["pyinstaller.spec"],
-        "": ["*.clvm", "*.clvm.hex", "*.clib", "*.clinc", "*.clsp"],
-        "staicoin.util": ["initial-*.yaml", "english.txt"],
-        "staicoin.ssl": ["staicoin_ca.crt", "staicoin_ca.key", "dst_root_ca.pem"],
+        "stai": ["pyinstaller.spec"],
+        "": ["*.clvm", "*.clvm.hex", "*.clib", "*.clinc", "*.clsp", "py.typed"],
+        "stai.util": ["initial-*.yaml", "english.txt"],
+        "stai.ssl": ["stai_ca.crt", "stai_ca.key", "dst_root_ca.pem"],
         "mozilla-ca": ["cacert.pem"],
     },
     use_scm_version={"fallback_version": "unknown-no-.git-directory"},
@@ -119,4 +120,4 @@ kwargs = dict(
 
 
 if __name__ == "__main__":
-    setup(**kwargs)
+    setup(**kwargs)  # type: ignore

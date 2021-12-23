@@ -1,11 +1,11 @@
 from typing import List, Tuple
 
-from staicoin.full_node.mempool_check_conditions import get_name_puzzle_conditions
-from staicoin.types.blockchain_format.coin import Coin
-from staicoin.types.blockchain_format.sized_bytes import bytes32
-from staicoin.types.full_block import FullBlock
-from staicoin.types.generator_types import BlockGenerator
-from staicoin.util.generator_tools import additions_for_npc
+from stai.full_node.mempool_check_conditions import get_name_puzzle_conditions
+from stai.types.blockchain_format.coin import Coin
+from stai.types.blockchain_format.sized_bytes import bytes32
+from stai.types.full_block import FullBlock
+from stai.types.generator_types import BlockGenerator
+from stai.util.generator_tools import additions_for_npc
 
 
 def run_and_get_removals_and_additions(
@@ -20,7 +20,10 @@ def run_and_get_removals_and_additions(
 
     if block.transactions_generator is not None:
         npc_result = get_name_puzzle_conditions(
-            BlockGenerator(block.transactions_generator, []), max_cost, cost_per_byte=cost_per_byte, safe_mode=safe_mode
+            BlockGenerator(block.transactions_generator, []),
+            max_cost,
+            cost_per_byte=cost_per_byte,
+            safe_mode=safe_mode,
         )
         # build removals list
         for npc in npc_result.npc_list:

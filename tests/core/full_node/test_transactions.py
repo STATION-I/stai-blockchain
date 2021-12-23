@@ -4,13 +4,13 @@ from typing import Optional
 
 import pytest
 
-from staicoin.consensus.block_record import BlockRecord
-from staicoin.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
-from staicoin.full_node.full_node_api import FullNodeAPI
-from staicoin.protocols import full_node_protocol
-from staicoin.simulator.simulator_protocol import FarmNewBlockProtocol
-from staicoin.types.peer_info import PeerInfo
-from staicoin.util.ints import uint16, uint32
+from stai.consensus.block_record import BlockRecord
+from stai.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from stai.full_node.full_node_api import FullNodeAPI
+from stai.protocols import full_node_protocol
+from stai.simulator.simulator_protocol import FarmNewBlockProtocol
+from stai.types.peer_info import PeerInfo
+from stai.util.ints import uint16, uint32
 from tests.setup_nodes import self_hostname, setup_simulators_and_wallets
 from tests.time_out_assert import time_out_assert
 
