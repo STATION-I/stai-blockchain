@@ -93,8 +93,8 @@ def configure(
         if testnet == "true" or testnet == "t":
             print("Setting Testnet")
             testnet_port = "56888"
-            testnet_introducer = "beta1_introducer.stai-network.net"
-            testnet_dns_introducer = "dns-introducer.stai-network.net"
+            testnet_introducer = "beta1_introducer.staicoin.com"
+            testnet_dns_introducer = "dns-introducer.staicoin.com"
             testnet = "testnet7"
             config["full_node"]["port"] = int(testnet_port)
             config["full_node"]["introducer_peer"]["port"] = int(testnet_port)
@@ -120,8 +120,8 @@ def configure(
         elif testnet == "false" or testnet == "f":
             print("Setting Mainnet")
             mainnet_port = "1999"
-            mainnet_introducer = "introducer.stai-network.net"
-            mainnet_dns_introducer = "dns-introducer.stai-network.net"
+            mainnet_introducer = "introducer.staicoin.com"
+            mainnet_dns_introducer = "dns-introducer.staicoin.com"
             net = "mainnet"
             config["full_node"]["port"] = int(mainnet_port)
             config["full_node"]["introducer_peer"]["port"] = int(mainnet_port)
