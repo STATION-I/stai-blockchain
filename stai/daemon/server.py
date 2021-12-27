@@ -57,7 +57,7 @@ except ImportError:
 
 log = logging.getLogger(__name__)
 
-service_plotter = "chia_plotter"
+service_plotter = "stai_plotter"
 
 
 async def fetch(url: str):
@@ -168,7 +168,7 @@ class WebSocketServer:
             self.self_hostname,
             self.daemon_port,
             max_size=self.daemon_max_message_size,
-            ping_interval=500,
+            ping_interval=50,
             ping_timeout=300,
             ssl=self.ssl_context,
         )

@@ -72,11 +72,11 @@ hiddenimports.extend(keyring_imports)
 
 binaries = [
     (
-        f"{ROOT}/madmax/chia_plot",
+        f"{ROOT}/madmax/stai_plot",
         "madmax"
     ),
     (
-        f"{ROOT}/madmax/chia_plot_k34",
+        f"{ROOT}/madmax/stai_plot_k34",
         "madmax"
     )
 ]
@@ -114,11 +114,11 @@ if THIS_IS_WINDOWS:
             ".",
         ),
         (
-            f"{ROOT}\\madmax\\chia_plot.exe",
+            f"{ROOT}\\madmax\\stai_plot.exe",
             "madmax"
         ),
         (
-            f"{ROOT}\\madmax\\chia_plot_k34.exe",
+            f"{ROOT}\\madmax\\stai_plot_k34.exe",
             "madmax"
         ),
         (
