@@ -1432,7 +1432,7 @@ msgid "Not found Plots"
 msgstr "Ei löydettyjä Plot-tiedostoja"
 
 #: src/components/farm/FarmManageFarmingRewards.tsx:188
-msgid "Note that this does not change your pooling payout addresses. This only affects old format plots, and the 0.25STAI reward for pooling plots."
+msgid "Note that this does not change your pooling payout addresses. This only affects old format plots, and the 1 STAI reward for pooling plots."
 msgstr "Huomaa, että tämä ei muuta poolauksen maksuosoitteitasi. Tämä vaikuttaa vain vanhan formaatin plotteihin, ja 0,25 STAI palkintoon poolausploteissa."
 
 #: src/components/plotNFT/PlotExternalNFTCard.tsx:118
