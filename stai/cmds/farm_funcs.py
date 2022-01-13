@@ -214,7 +214,7 @@ async def summary(
     if amounts is not None:
         print(f"Total stai farmed: {amounts['farmed_amount'] / units['stai']}")
         print(f"User transaction fees: {amounts['fee_amount'] / units['stai']}")
-        print(f"Block rewards: {(amounts['farmer_reward_amount'] + amounts['officialwallets_reward_amount'] + amounts['pool_reward_amount']) / units['stai']}")
+        print(f"Block rewards: {(amounts['farmer_reward_amount'] + amounts['pool_reward_amount']) / units['stai']}")
         print(f"Last height farmed: {amounts['last_height_farmed']}")
 
     class PlotStats:
