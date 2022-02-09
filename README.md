@@ -14,9 +14,9 @@ Get our electricity : https://lumenaza.community/staienergy/
 
 <br><br>
 Wallets:<br>
-<a href="https://github.com/STATION-I/stai-blockchain/releases/download/1.1.2/Stai-1.1.2.dmg">Mac Wallet</a> (1.1.2)<br>
-<a href="https://github.com/STATION-I/stai-blockchain/releases/download/1.1.2/StaiSetup-1.1.2.exe">Windows Wallet</a> (1.1.2)<br>
-<a href="https://github.com/STATION-I/stai-blockchain/releases/download/1.1.2/stai-blockchain_1.1.2_amd64.deb">Ubuntu Wallet</a> (1.1.2)<br>
+<a href="https://github.com/STATION-I/stai-blockchain/releases/download/1.1.3/Stai-1.1.3.dmg">Mac Wallet</a> (1.1.3)<br>
+<a href="https://github.com/STATION-I/stai-blockchain/releases/download/1.1.3/StaiSetup-1.1.3.exe">Windows Wallet</a> (1.1.3)<br>
+<a href="https://github.com/STATION-I/stai-blockchain/releases/download/1.1.3/stai-blockchain_1.1.3_amd64.deb">Ubuntu Wallet</a> (1.1.3)<br>
 <br><br>
 Nodes:
 
