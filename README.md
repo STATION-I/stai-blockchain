@@ -16,7 +16,8 @@ Follow us on Instagram: https://www.instagram.com/staiglobal/
 Get our electricity : https://lumenaza.community/staienergy/
 
 
-<h2>PAY WITH STAI</h2>
+
+<h3>PAY WITH STAI</h3>
 
 Buy some hardware: https://lumenaza.community/staienergy/
 
