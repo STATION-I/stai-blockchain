@@ -14,10 +14,9 @@ Check our new Facebook page : https://www.facebook.com/STAIGlobal
 Follow us on Instagram: https://www.instagram.com/staiglobal/
 
 Get our electricity : https://lumenaza.community/staienergy/
-<br><br>
+<br><br><br><br><br><br>
 
-
-<h3>PAY WITH STAI</h3>
+<h4>PAY WITH STAI</h4>
 
 Buy some hardware: https://lumenaza.community/staienergy/
 
