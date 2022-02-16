@@ -1,7 +1,9 @@
 <p id="station"></p>
 <h2>STAI - FOOD, WATER AND ELECTRICITY - WORLDWIDE</h2>
 
-Find more about our project : https://www.station-i.de/stai/en
+Find more about Station-i : https://www.station-i.de/stai/en
+
+Find more about STAI: https://stai.global/
 
 Join our growing community : https://discord.com/invite/stai-blockchain
 
@@ -9,7 +11,22 @@ Follow us on Twitter : https://twitter.com/staiglobal
 
 Check our new Facebook page : https://www.facebook.com/STAIGlobal
 
+Follow us on Instagram: https://www.instagram.com/staiglobal/
+
 Get our electricity : https://lumenaza.community/staienergy/
+
+
+<h2>PAY WITH STAI</h2>
+
+Buy some hardware: https://lumenaza.community/staienergy/
+
+Visit our shop: https://shop.stai.global/
+
+Check out some classified ads: https://classifieds.stai.global/
+
+Hire a freelancer: https://webfreelance.work/
+
+STAI Card presale: https://devs.stai.global/product/stai-global-goldcard/
 
 
 <br><br>
