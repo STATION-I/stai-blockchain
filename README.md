@@ -18,7 +18,7 @@ Get our electricity : https://lumenaza.community/staienergy/
 
 <h4>PAY WITH STAI</h4>
 
-Buy some hardware: https://lumenaza.community/staienergy/
+Get our energy: https://lumenaza.community/staienergy/
 
 Visit our shop: https://shop.stai.global/
 
@@ -26,7 +26,7 @@ Check out some classified ads: https://classifieds.stai.global/
 
 Hire a freelancer: https://webfreelance.work/
 
-STAI Card presale: https://devs.stai.global/product/stai-global-goldcard/
+STAI Card presale: https://shop.stai.global/product/stai-global-goldcard/
 
 
 <br><br>
