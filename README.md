@@ -28,6 +28,8 @@ Hire a freelancer: https://webfreelance.work/
 
 STAI Card presale: https://shop.stai.global/product/stai-global-goldcard/
 
+STAI Cashback: https://cashback.stai.global/
+
 
 <br><br>
 Mainnet Wallets:<br>
