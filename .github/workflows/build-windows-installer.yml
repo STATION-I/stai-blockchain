@@ -14,7 +14,7 @@ on:
 jobs:
   build:
     name: Windows Installer on Windows 10 and Python 3.9
-    runs-on: [windows-latest]
+    runs-on: [windows-2019]
     timeout-minutes: 40
 
     steps:
@@ -42,6 +42,11 @@ jobs:
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
+ 
+    - name: Setup Node 16.x
+      uses: actions/setup-node@v2.4.1
+      with:
+        node-version: '16.x'
 
     - name: Get pip cache dir
       id: pip-cache
@@ -60,7 +65,7 @@ jobs:
     - uses: actions/setup-python@v2
       name: Install Python 3.9
       with:
-        python-version: "3.9"
+        python-version: "3.9.11"
 
     # Create our own venv outside of the git directory JUST for getting the ACTUAL version so that install can't break it
     - name: Get version number

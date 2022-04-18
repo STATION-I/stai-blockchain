@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 from typing import Any, List
 
+from clvm.casts import int_to_bytes
+
 from stai.types.blockchain_format.sized_bytes import bytes32
-from stai.util.clvm import int_to_bytes
 from stai.util.hash import std_hash
 from stai.util.ints import uint64
 from stai.util.streamable import Streamable, streamable

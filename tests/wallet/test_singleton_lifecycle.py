@@ -10,8 +10,8 @@ from stai.types.announcement import Announcement
 from stai.types.blockchain_format.coin import Coin
 from stai.types.blockchain_format.sized_bytes import bytes32
 from stai.types.coin_spend import CoinSpend
+from stai.types.condition_opcodes import ConditionOpcode
 from stai.types.spend_bundle import SpendBundle
-from stai.util.condition_tools import ConditionOpcode
 
 from stai.util.ints import uint64
 from stai.wallet.puzzles.load_clvm import load_clvm

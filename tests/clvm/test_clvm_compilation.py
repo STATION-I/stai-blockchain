@@ -8,12 +8,10 @@ from stai.types.blockchain_format.program import Program, SerializedProgram
 wallet_program_files = set(
     [
         "stai/wallet/puzzles/calculate_synthetic_public_key.clvm",
-        "stai/wallet/puzzles/cc.clvm",
+        "stai/wallet/puzzles/cat.clvm",
         "stai/wallet/puzzles/stailisp_deserialisation.clvm",
         "stai/wallet/puzzles/rom_bootstrap_generator.clvm",
         "stai/wallet/puzzles/generator_for_single_coin.clvm",
-        "stai/wallet/puzzles/genesis-by-coin-id-with-0.clvm",
-        "stai/wallet/puzzles/genesis-by-puzzle-hash-with-0.clvm",
         "stai/wallet/puzzles/lock.inner.puzzle.clvm",
         "stai/wallet/puzzles/p2_conditions.clvm",
         "stai/wallet/puzzles/p2_delegated_conditions.clvm",
@@ -37,6 +35,14 @@ wallet_program_files = set(
         "stai/wallet/puzzles/pool_member_innerpuz.clvm",
         "stai/wallet/puzzles/singleton_launcher.clvm",
         "stai/wallet/puzzles/p2_singleton_or_delayed_puzhash.clvm",
+        "stai/wallet/puzzles/genesis_by_puzzle_hash.clvm",
+        "stai/wallet/puzzles/everything_with_signature.clvm",
+        "stai/wallet/puzzles/delegated_tail.clvm",
+        "stai/wallet/puzzles/settlement_payments.clvm",
+        "stai/wallet/puzzles/genesis_by_coin_id.clvm",
+        "stai/wallet/puzzles/genesis-by-puzzle-hash-with-0.clvm",
+        "stai/wallet/puzzles/delegated_genesis_checker.clvm",
+        "stai/wallet/puzzles/genesis-by-coin-id-with-0.clvm",
     ]
 )
 

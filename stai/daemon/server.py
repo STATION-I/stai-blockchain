@@ -3,12 +3,12 @@ import json
 import logging
 import os
 import signal
+import ssl
 import subprocess
 import sys
 import time
 import traceback
 import uuid
-
 from concurrent.futures import ThreadPoolExecutor
 from enum import Enum
 from pathlib import Path
@@ -39,6 +39,7 @@ from stai.util.path import mkdir
 from stai.util.service_groups import validate_service
 from stai.util.setproctitle import setproctitle
 from stai.util.ws_message import WsRpcMessage, create_payload, format_response
+from stai import __version__
 
 io_pool_exc = ThreadPoolExecutor()
 
@@ -99,6 +100,8 @@ if getattr(sys, "frozen", False):
         "stai_timelord": "start_timelord",
         "stai_timelord_launcher": "timelord_launcher",
         "stai_full_node_simulator": "start_simulator",
+        "stai_seeder": "start_seeder",
+        "stai_crawler": "start_crawler",
     }
 
     def executable_for_service(service_name: str) -> str:
@@ -110,7 +113,6 @@ if getattr(sys, "frozen", False):
         else:
             path = f"{application_path}/{name_map[service_name]}"
             return path
-
 
 else:
     application_path = os.path.dirname(__file__)
@@ -154,6 +156,25 @@ class WebSocketServer:
     async def start(self):
         self.log.info("Starting Daemon Server")
 
+        # Note: the minimum_version has been already set to TLSv1_2
+        # in ssl_context_for_server()
+        # Daemon is internal connections, so override to TLSv1_3 only
+        if ssl.HAS_TLSv1_3:
+            try:
+                self.ssl_context.minimum_version = ssl.TLSVersion.TLSv1_3
+            except ValueError:
+                # in case the attempt above confused the config, set it again (likely not needed but doesn't hurt)
+                self.ssl_context.minimum_version = ssl.TLSVersion.TLSv1_2
+
+        if self.ssl_context.minimum_version is not ssl.TLSVersion.TLSv1_3:
+            self.log.warning(
+                (
+                    "Deprecation Warning: Your version of SSL (%s) does not support TLS1.3. "
+                    "A future version of Stai will require TLS1.3."
+                ),
+                ssl.OPENSSL_VERSION,
+            )
+
         def master_close_cb():
             asyncio.create_task(self.stop())
 
@@ -168,7 +189,7 @@ class WebSocketServer:
             self.self_hostname,
             self.daemon_port,
             max_size=self.daemon_max_message_size,
-            ping_interval=50,
+            ping_interval=500,
             ping_timeout=300,
             ssl=self.ssl_context,
         )
@@ -330,6 +351,8 @@ class WebSocketServer:
             response = await self.register_service(websocket, cast(Dict[str, Any], data))
         elif command == "get_status":
             response = self.get_status()
+        elif command == "get_version":
+            response = self.get_version()
         elif command == "get_plotters":
             response = await self.get_plotters()
         else:
@@ -366,6 +389,8 @@ class WebSocketServer:
             "passphrase_hint": passphrase_hint,
             "passphrase_requirements": requirements,
         }
+        # Help diagnose GUI launch issues
+        self.log.debug(f"Keyring status: {response}")
         return response
 
     async def unlock_keyring(self, request: Dict[str, Any]) -> Dict[str, Any]:
@@ -379,6 +404,18 @@ class WebSocketServer:
             if Keychain.master_passphrase_is_valid(key, force_reload=True):
                 Keychain.set_cached_master_passphrase(key)
                 success = True
+
+                # Attempt to silently migrate legacy keys if necessary. Non-fatal if this fails.
+                try:
+                    if not Keychain.migration_checked_for_current_version():
+                        self.log.info("Will attempt to migrate legacy keys...")
+                        Keychain.migrate_legacy_keys_silently()
+                        self.log.info("Migration of legacy keys complete.")
+                    else:
+                        self.log.debug("Skipping legacy key migration (previously attempted).")
+                except Exception:
+                    self.log.exception("Failed to migrate keys silently. Run `stai keys migrate` manually.")
+
                 # Inform the GUI of keyring status changes
                 self.keyring_status_changed(await self.keyring_status(), "wallet_ui")
             else:
@@ -567,6 +604,10 @@ class WebSocketServer:
 
     def get_status(self) -> Dict[str, Any]:
         response = {"success": True, "genesis_initialized": True}
+        return response
+
+    def get_version(self) -> Dict[str, Any]:
+        response = {"success": True, "version": __version__}
         return response
 
     async def get_plotters(self) -> Dict[str, Any]:
@@ -833,6 +874,7 @@ class WebSocketServer:
         for item in self.plots_queue:
             if item["queue"] == queue and item["state"] is PlotState.SUBMITTED and item["parallel"] is False:
                 next_plot_id = item["id"]
+                break
 
         if next_plot_id is not None:
             loop.create_task(self._start_plotting(next_plot_id, loop, queue))
@@ -1034,6 +1076,7 @@ class WebSocketServer:
         error = None
         success = False
         testing = False
+        already_running = False
         if "testing" in request:
             testing = request["testing"]
 
@@ -1047,9 +1090,17 @@ class WebSocketServer:
                 self.services.pop(service_command)
                 error = None
             else:
-                error = f"Service {service_command} already running"
+                self.log.info(f"Service {service_command} already running")
+                already_running = True
+        elif len(self.connections.get(service_command, [])) > 0:
+            # If the service was started manually (not launched by the daemon), we should
+            # have a connection to it.
+            self.log.info(f"Service {service_command} already registered")
+            already_running = True
 
-        if error is None:
+        if already_running:
+            success = True
+        elif error is None:
             try:
                 exe_command = service_command
                 if testing is True:
@@ -1084,6 +1135,12 @@ class WebSocketServer:
         else:
             process = self.services.get(service_name)
             is_running = process is not None and process.poll() is None
+            if not is_running:
+                # Check if we have a connection to the requested service. This might be the
+                # case if the service was started manually (i.e. not started by the daemon).
+                service_connections = self.connections.get(service_name)
+                if service_connections is not None:
+                    is_running = len(service_connections) > 0
             response = {
                 "success": True,
                 "service_name": service_name,
@@ -1260,7 +1317,7 @@ async def kill_process(
     if sys.platform == "win32" or sys.platform == "cygwin":
         log.info("sending CTRL_BREAK_EVENT signal to %s", service_name)
         # pylint: disable=E1101
-        kill(process.pid, signal.SIGBREAK)  # type: ignore
+        kill(process.pid, signal.SIGBREAK)
 
     else:
         log.info("sending term signal to %s", service_name)

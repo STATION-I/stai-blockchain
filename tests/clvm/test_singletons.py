@@ -8,9 +8,9 @@ from stai.types.blockchain_format.program import Program
 from stai.types.blockchain_format.sized_bytes import bytes32
 from stai.types.blockchain_format.coin import Coin
 from stai.types.coin_spend import CoinSpend
+from stai.types.condition_opcodes import ConditionOpcode
 from stai.types.spend_bundle import SpendBundle
 from stai.util.errors import Err
-from stai.util.condition_tools import ConditionOpcode
 from stai.util.ints import uint64
 from stai.consensus.default_constants import DEFAULT_CONSTANTS
 from stai.wallet.lineage_proof import LineageProof

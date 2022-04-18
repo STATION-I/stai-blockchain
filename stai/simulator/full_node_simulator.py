@@ -1,6 +1,7 @@
 from typing import List, Optional
 
 from stai.consensus.block_record import BlockRecord
+from stai.consensus.multiprocess_validation import PreValidationResult
 from stai.full_node.full_node_api import FullNodeAPI
 from stai.protocols.full_node_protocol import RespondBlock
 from stai.simulator.simulator_protocol import FarmNewBlockProtocol, ReorgProtocol
@@ -49,7 +50,13 @@ class FullNodeSimulator(FullNodeAPI):
             current_blocks = await self.get_all_full_blocks()
             if len(current_blocks) == 0:
                 genesis = self.bt.get_consecutive_blocks(uint8(1))[0]
-                await self.full_node.blockchain.receive_block(genesis)
+                pre_validation_results: List[
+                    PreValidationResult
+                ] = await self.full_node.blockchain.pre_validate_blocks_multiprocessing(
+                    [genesis], {}, validate_signatures=True
+                )
+                assert pre_validation_results is not None
+                await self.full_node.blockchain.receive_block(genesis, pre_validation_results[0])
 
             peak = self.full_node.blockchain.get_peak()
             assert peak is not None
@@ -61,7 +68,6 @@ class FullNodeSimulator(FullNodeAPI):
                 spend_bundle = None
             else:
                 spend_bundle = mempool_bundle[0]
-
 
             self.log.info(self.full_node.constants.GENESIS_PRE_FARM_OFFICIALWALLETS_PUZZLE_HASH)
             current_blocks = await self.get_all_full_blocks()
@@ -88,7 +94,13 @@ class FullNodeSimulator(FullNodeAPI):
             current_blocks = await self.get_all_full_blocks()
             if len(current_blocks) == 0:
                 genesis = self.bt.get_consecutive_blocks(uint8(1))[0]
-                await self.full_node.blockchain.receive_block(genesis)
+                pre_validation_results: List[
+                    PreValidationResult
+                ] = await self.full_node.blockchain.pre_validate_blocks_multiprocessing(
+                    [genesis], {}, validate_signatures=True
+                )
+                assert pre_validation_results is not None
+                await self.full_node.blockchain.receive_block(genesis, pre_validation_results[0])
 
             peak = self.full_node.blockchain.get_peak()
             assert peak is not None

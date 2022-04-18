@@ -1,0 +1,14 @@
+    - name: Checkout test blocks and plots
+      uses: actions/checkout@v2
+      with:
+        repository: 'STATION-I/test-cache'
+        path: '.stai'
+        ref: '0.28.0'
+        fetch-depth: 1
+
+    - name: Link home directory
+      run: |
+        cd $HOME
+        ln -s $GITHUB_WORKSPACE/.stai
+        echo "$HOME/.stai"
+        ls -al $HOME/.stai

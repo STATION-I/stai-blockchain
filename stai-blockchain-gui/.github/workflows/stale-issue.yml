@@ -8,7 +8,7 @@ jobs:
   stale:
     runs-on: ubuntu-latest
     steps:
-      - uses: stai-network/stale@main
+      - uses: STATION-I/stale@main
         with:
           operations-per-run: 10000
           ascending: true

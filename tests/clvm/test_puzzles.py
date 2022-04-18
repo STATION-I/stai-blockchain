@@ -6,8 +6,8 @@ from blspy import AugSchemeMPL, BasicSchemeMPL, G1Element, G2Element
 from stai.types.blockchain_format.program import Program
 from stai.types.blockchain_format.sized_bytes import bytes32
 from stai.types.coin_spend import CoinSpend
+from stai.types.condition_opcodes import ConditionOpcode
 from stai.types.spend_bundle import SpendBundle
-from stai.util.condition_tools import ConditionOpcode
 from stai.util.hash import std_hash
 from stai.wallet.puzzles import (
     p2_conditions,

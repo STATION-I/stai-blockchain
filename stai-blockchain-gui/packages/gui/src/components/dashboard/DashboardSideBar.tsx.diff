@@ -1,0 +1,22 @@
+--- ./stai-blockchain-gui/packages/gui/src/components/dashboard/DashboardSideBar.tsx	2022-03-08 03:20:46.617644000 -0800
++++ output2/./stai-blockchain-gui/packages/gui/src/components/dashboard/DashboardSideBar.tsx	2022-03-08 06:15:49.191164000 -0800
+@@ -7,7 +7,6 @@
+   Farm as FarmIcon,
+   Home as HomeIcon,
+   Plot as PlotIcon,
+-  Pool as PoolIcon,
+ } from '@stai/icons';
+ import { Flex, SideBarItem } from '@stai/core';
+ 
+@@ -45,11 +44,6 @@
+           icon={<FarmIcon fontSize="large" />}
+           title={<Trans>Farm</Trans>}
+         />
+-        <SideBarItem
+-          to="/dashboard/pool"
+-          icon={<PoolIcon fontSize="large" />}
+-          title={<Trans>Pool</Trans>}
+-        />
+       </StyledList>
+     </StyledRoot>
+   );

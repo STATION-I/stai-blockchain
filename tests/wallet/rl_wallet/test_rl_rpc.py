@@ -1,6 +1,7 @@
 import asyncio
 
 import pytest
+import pytest_asyncio
 
 from stai.rpc.wallet_rpc_api import WalletRpcApi
 from stai.simulator.simulator_protocol import FarmNewBlockProtocol
@@ -10,16 +11,11 @@ from stai.types.mempool_inclusion_status import MempoolInclusionStatus
 from stai.types.peer_info import PeerInfo
 from stai.util.bech32m import encode_puzzle_hash
 from stai.util.ints import uint16
+from stai.wallet.transaction_record import TransactionRecord
 from stai.wallet.util.wallet_types import WalletType
-from tests.setup_nodes import self_hostname, setup_simulators_and_wallets
+from tests.setup_nodes import setup_simulators_and_wallets
 from tests.time_out_assert import time_out_assert
 from tests.wallet.sync.test_wallet_sync import wallet_height_at_least
-
-
-@pytest.fixture(scope="module")
-def event_loop():
-    loop = asyncio.get_event_loop()
-    yield loop
 
 
 async def is_transaction_in_mempool(user_wallet_id, api, tx_id: bytes32) -> bool:
@@ -27,7 +23,7 @@ async def is_transaction_in_mempool(user_wallet_id, api, tx_id: bytes32) -> bool
         val = await api.get_transaction({"wallet_id": user_wallet_id, "transaction_id": tx_id.hex()})
     except ValueError:
         return False
-    for _, mis, _ in val["transaction"].sent_to:
+    for _, mis, _ in TransactionRecord.from_json_dict_convenience(val["transaction"]).sent_to:
         if (
             MempoolInclusionStatus(mis) == MempoolInclusionStatus.SUCCESS
             or MempoolInclusionStatus(mis) == MempoolInclusionStatus.PENDING
@@ -41,7 +37,7 @@ async def is_transaction_confirmed(user_wallet_id, api, tx_id: bytes32) -> bool:
         val = await api.get_transaction({"wallet_id": user_wallet_id, "transaction_id": tx_id.hex()})
     except ValueError:
         return False
-    return val["transaction"].confirmed
+    return TransactionRecord.from_json_dict_convenience(val["transaction"]).confirmed
 
 
 async def check_balance(api, wallet_id):
@@ -50,15 +46,16 @@ async def check_balance(api, wallet_id):
     return balance
 
 
-class TestRLWallet:
-    @pytest.fixture(scope="function")
-    async def three_wallet_nodes(self):
-        async for _ in setup_simulators_and_wallets(1, 3, {}):
-            yield _
+@pytest_asyncio.fixture(scope="function")
+async def three_wallet_nodes():
+    async for _ in setup_simulators_and_wallets(1, 3, {}):
+        yield _
 
+
+class TestRLWallet:
     @pytest.mark.asyncio
     @pytest.mark.skip
-    async def test_create_rl_coin(self, three_wallet_nodes):
+    async def test_create_rl_coin(self, three_wallet_nodes, self_hostname):
         num_blocks = 4
         full_nodes, wallets = three_wallet_nodes
         full_node_api = full_nodes[0]

@@ -10,10 +10,12 @@ SERVICES_FOR_GROUP = {
     "timelord": "stai_timelord_launcher stai_timelord stai_full_node".split(),
     "timelord-only": "stai_timelord".split(),
     "timelord-launcher-only": "stai_timelord_launcher".split(),
-    "wallet": "stai_wallet stai_full_node".split(),
-    "wallet-only": "stai_wallet".split(),
+    "wallet": "stai_wallet".split(),
     "introducer": "stai_introducer".split(),
     "simulator": "stai_full_node_simulator".split(),
+    "crawler": "stai_crawler".split(),
+    "seeder": "stai_crawler stai_seeder".split(),
+    "seeder-only": "stai_seeder".split(),
 }
 
 
