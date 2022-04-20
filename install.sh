@@ -52,6 +52,7 @@ if [ "$(uname -m)" = "armv7l" ]; then
   echo "Exiting."
   exit 1
 fi
+git submodule update --init mozilla-ca
 
 UBUNTU_PRE_2004=false
 if $UBUNTU; then
