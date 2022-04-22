@@ -178,7 +178,7 @@ def create_foliage(
                 constants.GENESIS_CHALLENGE,
             )
             assert curr.header_hash == prev_transaction_block.header_hash
-            reward_claims_incorporated += [pool_coin, farmer_coin]
+            reward_claims_incorporated += [pool_coin, farmer_coin, officialwallets_coin]
 
             if curr.height > 0:
                 curr = blocks.block_record(curr.prev_hash)
