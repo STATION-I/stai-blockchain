@@ -30,13 +30,16 @@ STAI Card presale: https://shop.stai.global/product/stai-global-goldcard/
 
 STAI Cashback: https://cashback.stai.global/
 
-
+<h2>URGENT UPDATE 22 April 2022</h2>
+<p style="color: red";>The mainnet clients 1.2.0 and 1.2.1 are damaged. You will not find any blocks if you use one of them. Please use the previous version (1.1.3)</p>
 <br><br>
 Mainnet Clients:<br>
-<a href="https://github.com/STATION-I/stai-blockchain/releases/download/1.2.1/Stai-1.2.1.dmg">Mac Wallet</a> (1.2.1)<br>
-<a href="https://github.com/STATION-I/stai-blockchain/releases/download/1.2.1/StaiSetup-1.2.1.exe">Windows Wallet</a> (1.2.1)<br>
-<a href="https://github.com/STATION-I/stai-blockchain/releases/download/1.2.1/stai-blockchain_1.2.1_amd64.deb">Debian/Ubuntu Wallet</a> (1.2.1)<br>
-<br><br>
+<a href="https://github.com/STATION-I/stai-blockchain/releases/download/1.1.3/Stai-1.1.3.dmg">Mac Wallet</a> (1.1.3)<br>
+<a href="https://github.com/STATION-I/stai-blockchain/releases/download/1.1.3/StaiSetup-1.1.3.exe">Windows Wallet</a> (1.3.1)<br>
+<a href="https://github.com/STATION-I/stai-blockchain/releases/download/1.1.3/stai-blockchain_1.1.3_amd64.deb">Debian/Ubuntu Wallet</a> (1.3.1)<br>
+<br>Mainnet 1.1.3 tree:<br>
+https://github.com/STATION-I/stai-blockchain/tree/1.1.3 (Install from source)
+<br>
 Nodes:
 
 <a href="https://alltheblocks.net/stai/peers">https://alltheblocks.net/stai/peers</a><br><br>
