@@ -39,6 +39,13 @@ Mainnet Clients:<br>
 <a href="https://github.com/STATION-I/stai-blockchain/releases/download/1.1.3/stai-blockchain_1.1.3_amd64.deb">Debian/Ubuntu Wallet</a> (1.3.1)<br>
 <br>Mainnet 1.1.3 tree:<br>
 https://github.com/STATION-I/stai-blockchain/tree/1.1.3 (Install from source)
+stai stop all -d
+deactivate
+git checkout a8ca05c
+sh install.sh
+. ./activate
+stai init
+stai start farmer
 <br>
 Nodes:
 
