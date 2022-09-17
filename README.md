@@ -32,9 +32,9 @@ STAI Cashback: https://cashback.stai.global/
 
 
 Mainnet Clients:<br>
-<a href="https://github.com/STATION-I/stai-blockchain/releases/download/1.2.2/Stai-1.2.2.dmg">Mac Wallet</a> (1.2.2)<br>
-<a href="https://github.com/STATION-I/stai-blockchain/releases/download/1.2.2/StaiSetup-1.2.2.exe">Windows Wallet</a> (1.2.2)<br>
-<a href="https://github.com/STATION-I/stai-blockchain/releases/download/1.2.2/stai-blockchain_1.2.2_amd64.deb">Debian/Ubuntu Wallet</a> (1.2.2)<br>
+<a href="https://github.com/STATION-I/stai-blockchain/releases/download/1.2.3/Stai-1.2.3.dmg">Mac Wallet</a> (1.2.3)<br>
+<a href="https://github.com/STATION-I/stai-blockchain/releases/download/1.2.3/StaiSetup-1.2.3.exe">Windows Wallet</a> (1.2.3)<br>
+<a href="https://github.com/STATION-I/stai-blockchain/releases/download/1.2.3/stai-blockchain_1.2.3_amd64.deb">Debian/Ubuntu Wallet</a> (1.2.3)<br>
 
 <br><br>
 Nodes:
