@@ -335,8 +335,8 @@ full_node:
       host: *self_hostname
       port: 1997
   introducer_peer:
-      host: introducer.staicoin.com  # Stai AWS introducer IPv4/IPv6
-      port: 1999
+      host: introducer.staicoin.com
+      port: 1543
   wallet_peer:
     host: *self_hostname
     port: 1899
@@ -431,8 +431,8 @@ wallet:
   recent_peer_threshold: 6000
 
   introducer_peer:
-    host: introducer.staicoin.com # Stai AWS introducer IPv4/IPv6
-    port: 1999
+    host: introducer.staicoin.com
+    port: 1543
 
   ssl:
     private_crt:  "config/ssl/wallet/private_wallet.crt"
