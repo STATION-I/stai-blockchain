@@ -5,7 +5,7 @@ Find more about Station-i : https://www.station-i.de/stai/en
 
 Find more about STAI: https://stai.global/
 
-Read our Whitepaper: <a href="https://docs.google.com/document/d/12rGkr_p6m7cLrLFPVvz4QqYm9aLwj68K/">Whitepaper</a>
+Read our <a href="https://docs.google.com/document/d/12rGkr_p6m7cLrLFPVvz4QqYm9aLwj68K/">Whitepaper</a>
 
 Join our growing community : https://discord.com/invite/stai-blockchain
 
