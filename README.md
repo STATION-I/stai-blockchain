@@ -5,11 +5,13 @@ Find more about Station-i : https://www.station-i.de/stai/en
 
 Find more about STAI: https://stai.global/
 
+Read our <a href="https://docs.google.com/document/d/12rGkr_p6m7cLrLFPVvz4QqYm9aLwj68K/">Whitepaper</a>
+
 Join our growing community : https://discord.com/invite/stai-blockchain
 
 Follow us on Twitter : https://twitter.com/staiglobal
 
-Check our new Facebook page : https://www.facebook.com/STAIGlobal
+Check our Facebook page : https://www.facebook.com/STAIGlobal
 
 Follow us on Instagram: https://www.instagram.com/staiglobal/
 
