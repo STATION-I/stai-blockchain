@@ -5,7 +5,7 @@ from stai.plotters.madmax import install_madmax
 
 def install_plotter(plotter, root_path):
     if plotter == "chiapos":
-        print("Staipos already installed. No action taken.")
+        print("Chiapos already installed. No action taken.")
         return
     elif plotter == "madmax":
         if not os.path.exists(root_path / "madmax-plotter/build/stai_plot"):

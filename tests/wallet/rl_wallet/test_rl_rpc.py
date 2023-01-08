@@ -1,7 +1,6 @@
 import asyncio
 
 import pytest
-import pytest_asyncio
 
 from stai.rpc.wallet_rpc_api import WalletRpcApi
 from stai.simulator.simulator_protocol import FarmNewBlockProtocol
@@ -13,7 +12,6 @@ from stai.util.bech32m import encode_puzzle_hash
 from stai.util.ints import uint16
 from stai.wallet.transaction_record import TransactionRecord
 from stai.wallet.util.wallet_types import WalletType
-from tests.setup_nodes import setup_simulators_and_wallets
 from tests.time_out_assert import time_out_assert
 from tests.wallet.sync.test_wallet_sync import wallet_height_at_least
 
@@ -44,12 +42,6 @@ async def check_balance(api, wallet_id):
     balance_response = await api.get_wallet_balance({"wallet_id": wallet_id})
     balance = balance_response["wallet_balance"]["confirmed_wallet_balance"]
     return balance
-
-
-@pytest_asyncio.fixture(scope="function")
-async def three_wallet_nodes():
-    async for _ in setup_simulators_and_wallets(1, 3, {}):
-        yield _
 
 
 class TestRLWallet:

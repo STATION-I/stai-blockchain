@@ -20,10 +20,14 @@ from tests.time_out_assert import time_out_assert
 log = logging.getLogger(__name__)
 
 
-async def disconnect_all_and_reconnect(server: StaiServer, reconnect_to: StaiServer, self_hostname: str) -> bool:
+async def disconnect_all(server: StaiServer) -> None:
     cons = list(server.all_connections.values())[:]
     for con in cons:
         await con.close()
+
+
+async def disconnect_all_and_reconnect(server: StaiServer, reconnect_to: StaiServer, self_hostname: str) -> bool:
+    await disconnect_all(server)
     return await server.start_client(PeerInfo(self_hostname, uint16(reconnect_to._port)), None)
 
 
@@ -60,8 +64,7 @@ async def add_dummy_connection(
         100,
         30,
     )
-    handshake = await wsc.perform_handshake(server._network_id, protocol_version, dummy_port, NodeType.FULL_NODE)
-    assert handshake is True
+    await wsc.perform_handshake(server._network_id, protocol_version, dummy_port, NodeType.FULL_NODE)
     return incoming_queue, peer_id
 
 

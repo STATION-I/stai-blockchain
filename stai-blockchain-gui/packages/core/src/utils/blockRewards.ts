@@ -1,46 +1,43 @@
-import Big from 'big.js';
+import BigNumber from 'bignumber.js';
 
-const MOJO_PER_STAI = Big('1000000000000');
+const MOJO_PER_STAI = new BigNumber('1000000000');
 const BLOCKS_PER_YEAR = 1681920;
-const POOL_REWARD = '0.875'; // 7 / 8
-const FARMER_REWARD = '0.125'; // 1 /8
+const POOL_REWARD = '1'; // 7 / 8
+const FARMER_REWARD = '1'; // 1 /8
 
-export function calculatePoolReward(height: number): Big {
+export function calculatePoolReward(height: number): BigNumber {
   if (height === 0) {
-    return MOJO_PER_STAI.times('21000000').times(POOL_REWARD);
+    return MOJO_PER_STAI.times('55434944').times(POOL_REWARD);
   }
-  if (height < 3 * BLOCKS_PER_YEAR) {
+  if (height < 1 * BLOCKS_PER_YEAR) {
+    return MOJO_PER_STAI.times('4').times(POOL_REWARD);
+  }
+  if (height < 2 * BLOCKS_PER_YEAR) {
     return MOJO_PER_STAI.times('2').times(POOL_REWARD);
   }
-  if (height < 6 * BLOCKS_PER_YEAR) {
-    return MOJO_PER_STAI.times('1').times(POOL_REWARD);
-  }
-  if (height < 9 * BLOCKS_PER_YEAR) {
-    return MOJO_PER_STAI.times('0.5').times(POOL_REWARD);
-  }
-  if (height < 12 * BLOCKS_PER_YEAR) {
-    return MOJO_PER_STAI.times('0.25').times(POOL_REWARD);
-  }
 
-  return MOJO_PER_STAI.times('0.125').times(POOL_REWARD);
+  return MOJO_PER_STAI.times('1').times(POOL_REWARD);
 }
 
-export function calculateBaseFarmerReward(height: number): Big {
+export function calculateBaseFarmerReward(height: number): BigNumber {
   if (height === 0) {
-    return MOJO_PER_STAI.times('21000000').times(FARMER_REWARD);
+    return MOJO_PER_STAI.times('447056').times(FARMER_REWARD);
   }
-  if (height < 3 * BLOCKS_PER_YEAR) {
-    return MOJO_PER_STAI.times('2').times(FARMER_REWARD);
-  }
-  if (height < 6 * BLOCKS_PER_YEAR) {
+  if (height < 1 * BLOCKS_PER_YEAR) {
     return MOJO_PER_STAI.times('1').times(FARMER_REWARD);
   }
-  if (height < 9 * BLOCKS_PER_YEAR) {
-    return MOJO_PER_STAI.times('0.5').times(FARMER_REWARD);
-  }
-  if (height < 12 * BLOCKS_PER_YEAR) {
-    return MOJO_PER_STAI.times('0.25').times(FARMER_REWARD);
+  if (height < 2 * BLOCKS_PER_YEAR) {
+    return MOJO_PER_STAI.times('1').times(FARMER_REWARD);
   }
 
-  return MOJO_PER_STAI.times('0.125').times(FARMER_REWARD);
+  return MOJO_PER_STAI.times('1').times(FARMER_REWARD);
 }
+
+export function calculateOfficialWalletsReward(height: number): BigNumber {
+  if (height === 0) {
+    return MOJO_PER_STAI.times('0');
+  }
+
+  return MOJO_PER_STAI.times('1');
+}
+

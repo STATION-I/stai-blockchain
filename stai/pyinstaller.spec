@@ -2,6 +2,7 @@
 import importlib
 import pathlib
 import platform
+import sysconfig
 
 from pkg_resources import get_distribution
 
@@ -98,7 +99,7 @@ if THIS_IS_WINDOWS:
 
 if THIS_IS_WINDOWS:
     stai_mod = importlib.import_module("stai")
-    dll_paths = ROOT / "*.dll"
+    dll_paths = pathlib.Path(sysconfig.get_path("platlib")) / "*.dll"
 
     binaries = [
         (
@@ -188,6 +189,9 @@ add_binary("daemon", f"{ROOT}/stai/daemon/server.py", COLLECT_ARGS)
 
 for server in SERVERS:
     add_binary(f"start_{server}", f"{ROOT}/stai/server/start_{server}.py", COLLECT_ARGS)
+
+add_binary("start_crawler", f"{ROOT}/stai/seeder/start_crawler.py", COLLECT_ARGS)
+add_binary("start_seeder", f"{ROOT}/stai/seeder/dns_server.py", COLLECT_ARGS)
 
 COLLECT_KWARGS = dict(
     strip=False,

@@ -15,19 +15,24 @@ def db_validate_func(
     *,
     validate_blocks: bool,
 ) -> None:
+    config: Dict[str, Any] = load_config(root_path, "config.yaml")
+    full_node_config: Dict[str, Any] = config["full_node"]
+    selected_network: str = config["selected_network"]
+
+    network_constants: Dict[str, Any] = config["network_overrides"]["constants"][selected_network]
+    genesis_challenge: str = network_constants["GENESIS_CHALLENGE"]
+
     if in_db_path is None:
-        config: Dict[str, Any] = load_config(root_path, "config.yaml")["full_node"]
-        selected_network: str = config["selected_network"]
-        db_pattern: str = config["database_path"]
+        db_pattern: str = full_node_config["database_path"]
         db_path_replaced: str = db_pattern.replace("CHALLENGE", selected_network)
         in_db_path = path_from_root(root_path, db_path_replaced)
 
-    validate_v2(in_db_path, validate_blocks=validate_blocks)
+    validate_v2(in_db_path, genesis_challenge, validate_blocks=validate_blocks)
 
     print(f"\n\nDATABASE IS VALID: {in_db_path}\n")
 
 
-def validate_v2(in_path: Path, *, validate_blocks: bool) -> None:
+def validate_v2(in_path: Path, genesis_challenge_hex: str, *, validate_blocks: bool) -> None:
     import sqlite3
     from contextlib import closing
 
@@ -175,12 +180,14 @@ def validate_v2(in_path: Path, *, validate_blocks: bool) -> None:
         if current_height != 0:
             raise RuntimeError(f"Database is missing blocks below height {current_height}")
 
+        genesis_challenge = bytes.fromhex(genesis_challenge_hex)
+
         # make sure the prev_hash pointer of block height 0 is the genesis
         # challenge
-        if next_hash != DEFAULT_CONSTANTS.AGG_SIG_ME_ADDITIONAL_DATA:
+        if next_hash != genesis_challenge:
             raise RuntimeError(
-                f"Blockchain has invalid genesis challenge {next_hash}, expected "
-                f"{DEFAULT_CONSTANTS.AGG_SIG_ME_ADDITIONAL_DATA.hex()}"
+                f"Blockchain has invalid genesis challenge {next_hash.hex()}, expected "
+                f"{genesis_challenge_hex}"
             )
 
         if num_orphans > 0:

@@ -3,8 +3,8 @@ import optionsForPlotter from '../utils/optionsForPlotter';
 import defaultsForPlotter from '../utils/defaultsForPlotter';
 
 export default {
-  displayName: 'Stai Proof of Space',
-  options: optionsForPlotter(PlotterName.STAIPOS),
-  defaults: defaultsForPlotter(PlotterName.STAIPOS),
+  displayName: 'Chia Proof of Space',
+  options: optionsForPlotter(PlotterName.CHIAPOS),
+  defaults: defaultsForPlotter(PlotterName.CHIAPOS),
   installInfo: { installed: true },
 };

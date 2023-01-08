@@ -1,11 +1,11 @@
 # @stai/api-react
 
-![Alt text](https://www.stainetwork.org/img/stai_logo.svg)
+![Alt text](https://www.STATION-I.de/img/stai_logo.svg)
 
 This library provides react hooks on the top of @stai/api and uses [RTK Query](https://redux-toolkit.js.org/rtk-query/overview) under do hood.
 It is designed to simplify common cases for loading data in a web application, eliminating the need to hand-write data fetching & caching logic yourself. Providing much more benefits:
 
-- Automatically refresh queries when data changed (using events from Stai Blockchain).
+- Automatically refresh queries when data changed (using events from STAI Blockchain).
 - Tracking loading state in order to show UI spinners.
 - Avoiding duplicate requests for the same data.
 - Optimistic updates to make the UI feel faster.

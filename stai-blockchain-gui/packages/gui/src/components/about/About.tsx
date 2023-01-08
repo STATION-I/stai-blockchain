@@ -71,7 +71,7 @@ const Spacer = styled.div`
   margin-bottom: 1rem;
 `;
 
-const url = 'https://stainetwork.org';
+const url = 'https://stai.global/';
 
 type Props = {
   version: string;
@@ -117,7 +117,7 @@ export default function About(props: Props) {
         </StyledLink>
         <StyledSubTitle>{description}</StyledSubTitle>
         <Spacer />
-        <div className="copyright">Copyright (c) {currentYear} Stai Network</div>
+        <div className="copyright">Copyright (c) {currentYear} Chia Network, STAI GmbH</div>
         <Spacer />
         <VersionsTable>
           {versions?.electron && (

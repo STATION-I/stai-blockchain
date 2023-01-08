@@ -21,16 +21,19 @@ const WalletName = {
     message: 'Custody Wallet',
   }),
   [WalletType.CAT]: defineMessage({
-    message: 'Stai Asset Token',
+    message: 'STAI Asset Token',
   }),
   [WalletType.RECOVERABLE]: defineMessage({
     message: 'Recoverable Wallet',
   }),
-  [WalletType.DISTRIBUTED_ID]: defineMessage({
+  [WalletType.DECENTRALIZED_ID]: defineMessage({
     message: 'DID Wallet',
   }),
   [WalletType.POOLING_WALLET]: defineMessage({
     message: 'Pooling Wallet',
+  }),
+  [WalletType.NFT]: defineMessage({
+    message: 'NFT Wallet',
   }),
 }
 

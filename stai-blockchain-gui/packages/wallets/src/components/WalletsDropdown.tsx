@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { ListItemIcon, ListItemText, Typography } from '@material-ui/core';
+import { ListItemIcon, ListItemText, Typography } from '@mui/material';
 import { Dropdown, Flex, Loading, useTrans } from '@stai/core';
 import { useGetWalletsQuery } from '@stai/api-react';
 import { WalletType, type Wallet } from '@stai/api';
@@ -11,18 +11,16 @@ import WalletBadge from './WalletBadge';
 function getPrimaryTitle(wallet: Wallet): string {
   switch (wallet.type) {
     case WalletType.STANDARD_WALLET:
-      return 'Stai';
+      return 'STAI';
     default:
       return wallet.name;
   }
 }
 
 type Props = {
-  walletId: number;
 };
 
 export default function WalletsDropdown(props: Props) {
-  const { walletId } = props;
   const navigate = useNavigate();
   const trans = useTrans();
   const { data: wallets, isLoading } = useGetWalletsQuery();
@@ -63,7 +61,7 @@ export default function WalletsDropdown(props: Props) {
           ),
         };
       });
-  }, [wallets, walletId, isLoading]);
+  }, [wallets, isLoading]);
 
   function handleSelectWallet(walletId: number) {
     navigate(`/dashboard/wallets/${walletId}`);
@@ -78,7 +76,7 @@ export default function WalletsDropdown(props: Props) {
   return (
     <Dropdown 
       options={options}
-      selected={walletId}
+      selected={1}
       onSelect={handleSelectWallet}
     >
       {(option) => !!option?.wallet && (

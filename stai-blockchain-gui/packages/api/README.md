@@ -1,10 +1,10 @@
 # @stai/api
 
-![Alt text](https://www.stainetwork.org/img/stai_logo.svg)
+![Alt text](https://www.STATION-I.de/img/stai_logo.svg)
 
-This library provides support for TypeScript/JavaScript [Stai](https://www.stainetwork.org) apps to access the [Stai Blockchain RPC](https://github.com/STATION-I/stai-blockchain/wiki/RPC-Interfaces), by making it easier to perform the following actions:
+This library provides support for TypeScript/JavaScript [STAI](https://www.stai.global/) apps to access the STAI Blockchain RPC (based on the [Chia Blockchain RPC](https://github.com/Chia-Network/chia-blockchain/wiki/RPC-Interfaces)), by making it easier to perform the following actions:
 
-- Making requests to the Stai Blockchain RPC.
+- Making requests to the STAI Blockchain RPC.
 - Catch responses and errors with standard try/catch and async/await syntax.
 - Catch error when the request has a timeout. Each request has a default timeout of 10 minutes.
 - Auto-connect to daemon when you send the first request.

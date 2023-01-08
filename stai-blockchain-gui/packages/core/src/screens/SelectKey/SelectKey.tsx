@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { Trans } from '@lingui/macro';
 import styled from 'styled-components';
 import {
+  Alert,
   Card,
   Typography,
   Container,
   List,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useNavigate } from 'react-router';
-import { Alert } from '@material-ui/lab';
 import {
   useGetKeyringStatusQuery,
   useGetPublicKeysQuery,
@@ -57,7 +57,7 @@ export default function SelectKey() {
         fingerprint,
       }).unwrap();
 
-      navigate('/dashboard');
+      navigate('/dashboard/wallets');
     } catch (error) {
       showError(error)
     } finally {
@@ -110,7 +110,7 @@ export default function SelectKey() {
   return (
     <StyledContainer maxWidth="xs">
       <Flex flexDirection="column" alignItems="center" gap={3}>
-        <Logo width={130} />
+        <Logo width={396} />
         {isLoadingPublicKeys ? (
           <Loading center>
             <Trans>Loading list of the keys</Trans>
@@ -141,7 +141,7 @@ export default function SelectKey() {
             </Typography>
             <Typography variant="subtitle1" align="center">
               <Trans>
-                Welcome to Stai. Please log in with an existing key, or create
+                Welcome to STAI. Please log in with an existing key, or create
                 a new key.
               </Trans>
             </Typography>

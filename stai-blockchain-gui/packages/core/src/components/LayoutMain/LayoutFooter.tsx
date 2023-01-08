@@ -1,7 +1,7 @@
 import React from 'react';
 import { Trans } from '@lingui/macro';
 import Flex from '../Flex';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import styled from 'styled-components';
 import { Shell } from 'electron';
 import { default as walletPackageJson } from '../../../package.json';
@@ -20,7 +20,7 @@ color: rgb(128, 160, 194);
 async function openFAQURL(): Promise<void> {
   try {
     const shell: Shell = (window as any).shell;
-    await shell.openExternal('https://github.com/STATION-I/stai-blockchain/wiki/FAQ');
+    await shell.openExternal('https://github.com/Chia-Network/chia-blockchain/wiki/FAQ');
   }
   catch (e) {
     console.error(e);
@@ -30,7 +30,7 @@ async function openFAQURL(): Promise<void> {
 async function openSendFeedbackURL(): Promise<void> {
   try {
     const shell: Shell = (window as any).shell;
-    await shell.openExternal('https://feedback.stainetwork.org/lightwallet');
+    await shell.openExternal('https://feedback.STATION-I.de/lightwallet');
   }
   catch (e) {
     console.error(e);
@@ -50,7 +50,7 @@ export default function LayoutFooter() {
           <Trans>FAQ</Trans>
         </FAQ>
         <SendFeedback onClick={openSendFeedbackURL}>
-          <Trans>Find More About Our Project</Trans>
+          <Trans>Send Feedback</Trans>
         </SendFeedback>
       </Flex>
     </Flex>

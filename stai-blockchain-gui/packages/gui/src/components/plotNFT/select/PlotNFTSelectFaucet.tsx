@@ -1,7 +1,7 @@
 import React from 'react';
 import { Trans } from '@lingui/macro';
 import { Button, Flex, CardStep, useCurrencyCode } from '@stai/core';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 import useOpenExternal from '../../../hooks/useOpenExternal';
 
 type Props = {
@@ -15,7 +15,7 @@ export default function PlotNFTSelectFaucet(props: Props) {
   const openExternal = useOpenExternal();
 
   function handleClick() {
-    openExternal('https://faucet.stainetwork.org/');
+    openExternal('https://faucet.STATION-I.de/');
   }
 
   return (

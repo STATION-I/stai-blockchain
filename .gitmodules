@@ -1,6 +1,0 @@
-[submodule "mozilla-ca"]
-	path = mozilla-ca
-	url = https://github.com/Chia-Network/mozilla-ca.git
-[submodule "stai-blockchain-gui"]
-	path = stai-blockchain-gui
-	url = https://github.com/STATION-I/stai-blockchain-gui.git

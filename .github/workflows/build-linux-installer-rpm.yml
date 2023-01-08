@@ -1,4 +1,4 @@
-name: Linux .rpm installer on Python 3.9
+name: Build Installer - x64 RPM Package
 
 on:
   #push:
@@ -11,9 +11,14 @@ on:
   #    - '**'   
   workflow_dispatch:
 
+concurrency:
+  # SHA is added to the end if on `main` to let all main workflows run
+  group: ${{ github.ref }}-${{ github.workflow }}-${{ github.event_name }}-${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/long_lived/')) && github.sha || '' }}
+  cancel-in-progress: true
+
 jobs:
   build:
-    name: Linux .rpm installer on Python 3.9
+    name: x64 RPM Package
     runs-on: ubuntu-latest
     container:
       image: chianetwork/centos7-builder:latest
@@ -25,14 +30,8 @@ jobs:
         python-version: [3.9]
 
     steps:
-    - name: Cancel previous runs on the same branch
-      if: ${{ github.ref != 'refs/heads/main' }}
-      uses: styfle/cancel-workflow-action@0.9.1
-      with:
-        access_token: ${{ github.token }}
-
     - name: Checkout Code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
         submodules: recursive
@@ -51,17 +50,17 @@ jobs:
         deactivate
 
       # Get the most recent release from chia-plotter-madmax
-    - uses: actions/github-script@v4
+    - uses: actions/github-script@v6
       id: 'latest-madmax'
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         result-encoding: string
         script: |
-          const releases = await github.repos.listReleases({
+          const release = await github.rest.repos.getLatestRelease({
             owner: 'Chia-Network',
             repo: 'chia-plotter-madmax',
           });
-          return releases.data[0].tag_name;
+          return release.data.tag_name;
 
     - name: Get latest madmax plotter
       run: |
@@ -72,17 +71,17 @@ jobs:
         chmod +x "$GITHUB_WORKSPACE/madmax/stai_plot_k34"
 
       # Get the most recent release from bladebit
-    - uses: actions/github-script@v4
+    - uses: actions/github-script@v6
       id: 'latest-bladebit'
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         result-encoding: string
         script: |
-          const releases = await github.repos.listReleases({
+          const release = await github.rest.repos.getLatestRelease({
             owner: 'Chia-Network',
             repo: 'bladebit',
           });
-          return releases.data[0].tag_name;
+          return release.data.tag_name;
 
     - name: Get latest bladebit plotter
       run: |
@@ -94,23 +93,23 @@ jobs:
     - name: Run install script
       env:
         INSTALL_PYTHON_VERSION: ${{ matrix.python-version }}
-        BUILD_VDF_CLIENT: "N"
       run: |
-        sh install.sh
+        sh install.sh -d
 
     - name: Build .rpm package
+      env:
+        STAI_INSTALLER_VERSION: ${{ steps.version_number.outputs.STAI_INSTALLER_VERSION }}
       run: |
-        . ./activate
         ldd --version
-        cd ./stai-blockchain-gui
-        git status
-        cd ../build_scripts
-        sh build_linux_rpm.sh amd64
+        git -C ./stai-blockchain-gui status
+        . ./activate
+        cd ./build_scripts
+        bash build_linux_rpm.sh amd64
 
     - name: Upload Linux artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
-        name: Linux-Installers
+        name: stai-installers-rpm-x64
         path: ${{ github.workspace }}/build_scripts/final_installer/
 
     - name: Create Checksums
@@ -118,6 +117,7 @@ jobs:
       env:
         STAI_INSTALLER_VERSION: ${{ steps.version_number.outputs.STAI_INSTALLER_VERSION }}
       run: |
-         ls $GITHUB_WORKSPACE/build_scripts/final_installer/
-         sha256sum $GITHUB_WORKSPACE/build_scripts/final_installer/stai-blockchain-${STAI_INSTALLER_VERSION}-1.x86_64.rpm > $GITHUB_WORKSPACE/build_scripts/final_installer/stai-blockchain-${STAI_INSTALLER_VERSION}-1.x86_64.rpm.sha256
-         ls $GITHUB_WORKSPACE/build_scripts/final_installer/
+        ls $GITHUB_WORKSPACE/build_scripts/final_installer/
+        sha256sum $GITHUB_WORKSPACE/build_scripts/final_installer/stai-blockchain-${STAI_INSTALLER_VERSION}-1.x86_64.rpm > $GITHUB_WORKSPACE/build_scripts/final_installer/stai-blockchain-${STAI_INSTALLER_VERSION}-1.x86_64.rpm.sha256
+        sha256sum $GITHUB_WORKSPACE/build_scripts/final_installer/stai-blockchain-cli-${STAI_INSTALLER_VERSION}-1.x86_64.rpm > $GITHUB_WORKSPACE/build_scripts/final_installer/stai-blockchain-cli-${STAI_INSTALLER_VERSION}-1.x86_64.rpm.sha256
+        ls $GITHUB_WORKSPACE/build_scripts/final_installer/

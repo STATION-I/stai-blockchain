@@ -1,5 +1,7 @@
 #!/bin/bash
-set -e
+
+set -o errexit
+
 export NODE_OPTIONS="--max-old-space-size=3000"
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "$0")"; pwd)
@@ -17,7 +19,7 @@ if [ -z "$VIRTUAL_ENV" ]; then
 fi
 
 if [ "$(id -u)" = 0 ]; then
-  echo "The Stai Blockchain GUI can not be installed or run by the root user."
+  echo "stai-blockchain-gui can not be installed or run by the root user."
   exit 1
 fi
 
@@ -192,7 +194,7 @@ if [ ! "$CI" ]; then
   fi
 
   # Work around for inconsistent `npm` exec path issue
-  # https://github.com/STATION-I/stai-blockchain/pull/10460#issuecomment-1054492495
+  # https://github.com/Chia-Network/chia-blockchain/pull/10460#issuecomment-1054492495
   patch_inconsistent_npm_issue "../node_modules"
 
   npm install
@@ -206,6 +208,6 @@ else
 fi
 
 echo ""
-echo "Stai blockchain install-gui.sh completed."
+echo "stai-blockchain install-gui.sh completed."
 echo ""
 echo "Type 'bash start-gui.sh &' to start the GUI."

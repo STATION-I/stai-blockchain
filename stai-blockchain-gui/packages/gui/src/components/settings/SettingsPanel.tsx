@@ -1,7 +1,8 @@
 import React from 'react';
 import { Trans } from '@lingui/macro';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/styles';
 import {
+  Button,
   AlertDialog,
   Suspender,
   useOpenDialog,
@@ -11,23 +12,24 @@ import {
   Flex,
   StateTypography,
   State,
+  TooltipIcon,
 } from '@stai/core';
 import { useGetKeyringStatusQuery } from '@stai/api-react';
 import {
   Grid,
   Typography,
   Box,
-  Button,
   Tooltip,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
   Help as HelpIcon,
   Lock as LockIcon,
   NoEncryption as NoEncryptionIcon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import ChangePassphrasePrompt from './ChangePassphrasePrompt';
 import RemovePassphrasePrompt from './RemovePassphrasePrompt';
 import SetPassphrasePrompt from './SetPassphrasePrompt';
+import SettingsDerivationIndex from './SettingsDerivationIndex';
 
 const useStyles = makeStyles((theme) => ({
   passToggleBox: {
@@ -211,6 +213,23 @@ export default function SettingsPanel() {
 
   return (
     <SettingsApp>
+    <Flex flexDirection="column" gap={1}>
+      <SettingsLabel>
+        <Flex gap={1} alignItems="center">
+          <Trans>Derivation Index</Trans>
+          <TooltipIcon>
+            <Trans>
+              The derivation index sets the range of wallet addresses that the wallet scans the blockchain for.
+              This number is generally higher if you have a lot of transactions or canceled offers for STAI, CATs, or NFTs.
+              If you believe your balance is incorrect because it’s missing coins,
+              then increasing the derivation index could help the wallet include the missing coins in the balance total.
+            </Trans>
+          </TooltipIcon>
+        </Flex>
+      </SettingsLabel>
+
+      <SettingsDerivationIndex />
+    </Flex>
       {passphraseSupportEnabled && (
         <Flex flexDirection="column" gap={1}>
           <SettingsLabel>

@@ -10,7 +10,7 @@ import {
   InputLabel,
   MenuItem,
   FormHelperText,
-} from '@material-ui/core';
+} from '@mui/material';
 import { plotSizeOptions } from '../../../constants/plotSizes';
 import Plotter from '../../../types/Plotter';
 
@@ -79,7 +79,7 @@ export default function PlotAddChooseSize(props: Props) {
           }
           <Link
             target="_blank"
-            href="https://github.com/STATION-I/stai-blockchain/wiki/k-sizes"
+            href="https://github.com/Chia-Network/chia-blockchain/wiki/k-sizes"
           >
             Learn more
           </Link>

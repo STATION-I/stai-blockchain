@@ -15,15 +15,15 @@ function getInstallerConfig () {
 
   return Promise.resolve({
     name: "stai-blockchain",
-    appDirectory: path.join(rootPath, 'Stai-win32-x64'),
-    authors: 'Stai Network',
+    appDirectory: path.join(rootPath, 'STAI-win32-x64'),
+    authors: 'STAI GmbH',
     version: process.env.STAI_INSTALLER_VERSION,
     noMsi: true,
     iconUrl: 'https://raw.githubusercontent.com/STATION-I/stai-blockchain/master/electron-react/src/assets/img/stai.ico',
     outputDirectory: path.join(outPath, 'windows-installer'),
     certificateFile: 'win_code_sign_cert.p12',
     certificatePassword: process.env.WIN_CODE_SIGN_PASS,
-    exe: 'Stai.exe',
+    exe: 'STAI.exe',
     setupExe: 'StaiSetup-' + process.env.STAI_INSTALLER_VERSION + '.exe',
     setupIcon: path.join(rootPath, 'src', 'assets', 'img', 'stai.ico')
   })

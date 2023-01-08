@@ -1,8 +1,8 @@
 {
   "name": "@stai/api-react",
-  "author": "Stai Network <hello@stainetwork.org> (https://stainetwork.org/)",
-  "description": "Stai API react store library",
-  "productName": "Stai Blockchain",
+  "author": "STAI GmbH (https://stai.global/)",
+  "description": "STAI API-React Library",
+  "productName": "STAI Blockchain",
   "private": true,
   "version": "1.0.0",
   "engines": {
@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@babel/runtime": "7.16.7",
+    "bignumber.js": "9.0.2",
     "core-js": "3.20.3",
     "debug": "4.3.3",
     "lodash": "4.17.21",
@@ -30,10 +31,11 @@
   },
   "devDependencies": {
     "@babel/core": "7.16.7",
-    "@stai/api": "1.0.0",
+    "@babel/helper-get-function-arity": "^7.16.7",
     "@babel/plugin-transform-runtime": "7.16.8",
     "@babel/preset-env": "7.16.8",
     "@babel/preset-typescript": "7.16.7",
+    "@stai/api": "1.0.0",
     "@reduxjs/toolkit": "1.7.1",
     "@rollup/plugin-babel": "5.3.0",
     "@rollup/plugin-commonjs": "21.0.1",

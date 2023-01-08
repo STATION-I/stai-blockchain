@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-run_block: Convert an encoded FullBlock from the Stai blockchain into a list of transactions
+run_block: Convert an encoded FullBlock from the STAI blockchain into a list of transactions
 
 As input, takes a file containing a [FullBlock](../stai/types/full_block.py) in json format
 
@@ -11,7 +11,7 @@ curl --insecure --cert $config_root/config/ssl/full_node/private_full_node.crt \
      -d '{ "header_hash": "'$hash'" }' -H "Content-Type: application/json" \
      -X POST https://localhost:$port/get_block
 
-$ca_root is the directory containing your current Stai config files
+$ca_root is the directory containing your current stai-blockchain config files
 $hash is the header_hash of the [BlockRecord](../stai/consensus/block_record.py)
 $port is the Full Node RPC API port
 ```
@@ -38,26 +38,32 @@ and in this way they control whether a spend is valid or not.
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Tuple, Dict
+from typing import Dict, List, Tuple
 
 import click
-
-from clvm_rs import COND_CANON_INTS, NO_NEG_DIV
+from chia_rs import COND_CANON_INTS, NO_NEG_DIV
+from clvm.casts import int_from_bytes
 
 from stai.consensus.constants import ConsensusConstants
 from stai.consensus.default_constants import DEFAULT_CONSTANTS
 from stai.full_node.generator import create_generator_args
-from stai.types.blockchain_format.program import SerializedProgram
 from stai.types.blockchain_format.coin import Coin
+from stai.types.blockchain_format.program import SerializedProgram
+from stai.types.blockchain_format.sized_bytes import bytes32
 from stai.types.condition_opcodes import ConditionOpcode
 from stai.types.condition_with_args import ConditionWithArgs
 from stai.types.generator_types import BlockGenerator
-from stai.types.name_puzzle_condition import NPC
 from stai.util.config import load_config
 from stai.util.default_root import DEFAULT_ROOT_PATH
 from stai.util.ints import uint32, uint64
 from stai.wallet.cat_wallet.cat_utils import match_cat_puzzle
-from clvm.casts import int_from_bytes
+
+
+@dataclass
+class NPC:
+    coin_name: bytes32
+    puzzle_hash: bytes32
+    conditions: List[Tuple[ConditionOpcode, List[ConditionWithArgs]]]
 
 
 @dataclass

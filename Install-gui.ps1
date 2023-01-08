@@ -2,7 +2,7 @@ $ErrorActionPreference = "Stop"
 
 if ($null -eq (Get-ChildItem env:VIRTUAL_ENV -ErrorAction SilentlyContinue))
 {
-    Write-Output "This script requires that the Stai Python virtual environment is activated."
+    Write-Output "This script requires that the STAI Python virtual environment is activated."
     Write-Output "Execute '.\venv\Scripts\Activate.ps1' before running."
     Exit 1
 }
@@ -28,7 +28,7 @@ try {
     py ..\installhelper.py
 
     Write-Output ""
-    Write-Output "Stai blockchain Install-gui.ps1 completed."
+    Write-Output "stai-blockchain Install-gui.ps1 completed."
     Write-Output ""
     Write-Output "Type 'cd stai-blockchain-gui' and then 'npm run electron' to start the GUI."
 } finally {

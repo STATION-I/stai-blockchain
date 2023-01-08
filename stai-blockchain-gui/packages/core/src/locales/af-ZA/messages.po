@@ -36,8 +36,8 @@ msgstr "'n Stroper (Harvester) is 'n robot wat werk op dieselfde masjien wat lan
 
 #: src/electron/main.tsx:365
 #: src/electron/main.tsx:443
-msgid "About Stai Blockchain"
-msgstr "Inligting oor Stai Blockchain"
+msgid "About STAI Blockchain"
+msgstr "Inligting oor STAI Blockchain"
 
 #: src/components/trading/ViewOffer.jsx:85
 msgid "Accept"
@@ -264,7 +264,7 @@ msgid "Challenge Hash"
 msgstr ""
 
 #: src/electron/main.tsx:345
-msgid "Join our community"
+msgid "Chat on KeyBase"
 msgstr ""
 
 #: src/electron/main.tsx:362
@@ -272,8 +272,8 @@ msgid "Stai"
 msgstr "Stai"
 
 #: src/electron/main.tsx:312
-msgid "Find more about our project"
-msgstr "Find more about our project"
+msgid "STAI Blockchain Wiki"
+msgstr "STAI Blockchain Wiki"
 
 #: src/components/wallet/Wallets.tsx:32
 msgid "Stai Wallet"
@@ -377,7 +377,7 @@ msgid "Connections"
 msgstr ""
 
 #: src/electron/main.tsx:330
-msgid "Report an issue to our team"
+msgid "Contribute on GitHub"
 msgstr ""
 
 #: src/components/core/components/CopyToClipboard/CopyToClipboard.tsx:22
@@ -591,7 +591,7 @@ msgid "Edit"
 msgstr ""
 
 #: src/components/wallet/WalletImport.tsx:67
-msgid "Enter the 24 word mnemonic that you have saved in order to restore your Stai wallet."
+msgid "Enter the 24 word mnemonic that you have saved in order to restore your STAI wallet."
 msgstr ""
 
 #: src/components/farm/FarmerStatus.tsx:30
@@ -732,7 +732,7 @@ msgid "Follow on Twitter"
 msgstr ""
 
 #: src/electron/main.tsx:318
-msgid "Quick Start Guide"
+msgid "Frequently Asked Questions"
 msgstr ""
 
 #: src/components/dashboard/DashboardSideBar.tsx:23
@@ -1375,7 +1375,7 @@ msgid "Rename"
 msgstr ""
 
 #: src/electron/main.tsx:339
-msgid "Join our Facebook group"
+msgid "Report an Issue..."
 msgstr ""
 
 #: src/components/backup/BackupRestore.tsx:107
@@ -1759,7 +1759,7 @@ msgid "Total Balance"
 msgstr ""
 
 #: src/components/farm/card/FarmCardTotalStaiFarmed.tsx:15
-#~ msgid "Total Stai Farmed"
+#~ msgid "Total STAI Farmed"
 #~ msgstr ""
 
 #: src/components/fullNode/FullNode.jsx:191
@@ -2045,7 +2045,7 @@ msgid "{currencyCode} Block Rewards"
 msgstr ""
 
 #: src/components/farm/card/FarmCardTotalStaiFarmed.tsx:17
-msgid "{currencyCode} Total Stai Farmed"
+msgid "{currencyCode} Total STAI Farmed"
 msgstr ""
 
 #: src/components/farm/card/FarmCardUserFees.tsx:17

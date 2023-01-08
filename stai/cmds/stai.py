@@ -9,6 +9,7 @@ from stai.cmds.keys import keys_cmd
 from stai.cmds.netspace import netspace_cmd
 from stai.cmds.passphrase import passphrase_cmd
 from stai.cmds.plots import plots_cmd
+from stai.cmds.rpc import rpc_cmd
 from stai.cmds.show import show_cmd
 from stai.cmds.start import start_cmd
 from stai.cmds.stop import stop_cmd
@@ -121,7 +122,7 @@ def run_daemon_cmd(ctx: click.Context, wait_for_unlock: bool) -> None:
 
     wait_for_unlock = wait_for_unlock and Keychain.is_keyring_locked()
 
-    asyncio.get_event_loop().run_until_complete(async_run_daemon(ctx.obj["root_path"], wait_for_unlock=wait_for_unlock))
+    asyncio.run(async_run_daemon(ctx.obj["root_path"], wait_for_unlock=wait_for_unlock))
 
 
 cli.add_command(keys_cmd)
@@ -129,6 +130,7 @@ cli.add_command(plots_cmd)
 cli.add_command(wallet_cmd)
 cli.add_command(configure_cmd)
 cli.add_command(init_cmd)
+cli.add_command(rpc_cmd)
 cli.add_command(show_cmd)
 cli.add_command(start_cmd)
 cli.add_command(stop_cmd)

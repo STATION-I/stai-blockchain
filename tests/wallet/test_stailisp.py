@@ -1,6 +1,6 @@
 import pytest
 
-from stai.wallet.stailisp import (
+from stai.wallet.chialisp import (
     apply,
     args,
     cons,
@@ -17,7 +17,7 @@ from stai.wallet.stailisp import (
 )
 
 
-class TestStailisp:
+class TestChialisp:
     def test_sexp(self):
         assert sexp() == "()"
         assert sexp(1) == "(1)"

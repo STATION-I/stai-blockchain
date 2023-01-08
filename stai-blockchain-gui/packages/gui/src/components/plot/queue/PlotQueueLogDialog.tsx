@@ -1,15 +1,14 @@
 import React, { useEffect, useState, ReactNode } from 'react';
 import { Trans } from '@lingui/macro';
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogTitle,
   DialogContent,
   LinearProgress,
   Typography,
-} from '@material-ui/core';
-import { Flex, Log } from '@stai/core';
+} from '@mui/material';
+import { Button, Flex, Log } from '@stai/core';
 import { useGetPlotQueueQuery, useThrottleQuery } from '@stai/api-react';
 import styled from 'styled-components';
 

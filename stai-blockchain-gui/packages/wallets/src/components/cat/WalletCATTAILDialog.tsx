@@ -2,15 +2,13 @@ import React from 'react';
 import { Trans } from '@lingui/macro';
 import {
   Box,
-  Button,
-  Grid,
   Dialog,
   DialogTitle,
   DialogContent,
   InputAdornment,
   TextField,
-} from '@material-ui/core';
-import { CopyToClipboard, DialogActions, Loading } from '@stai/core';
+} from '@mui/material';
+import { Button, CopyToClipboard, DialogActions, Loading, Link, Flex } from '@stai/core';
 import useWallet from '../../hooks/useWallet';
 
 type Props = {
@@ -37,8 +35,9 @@ export default function WalletCATTAILDialog(props: Props) {
       onClose={handleClose}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
-      maxWidth="lg"
+      maxWidth="md"
       open={open}
+      fullWidth
     >
       <DialogTitle id="alert-dialog-title">
         <Trans>Asset Id</Trans>
@@ -50,27 +49,25 @@ export default function WalletCATTAILDialog(props: Props) {
         )}
 
         {!!wallet && (
-          <Grid item xs={12}>
-            <Box display="flex">
-              <Box flexGrow={1}>
-                <TextField
-                  label={<Trans>Asset Id</Trans>}
-                  value={wallet.meta?.assetId}
-                  variant="filled"
-                  InputProps={{
-                    readOnly: true,
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <CopyToClipboard value={wallet.meta?.assetId} />
-                      </InputAdornment>
-                    ),
-                  }}
-                  fullWidth
-                  multiline
-                />
-              </Box>
+          <Flex flexDirection="column" gap={1}>
+            <Box flexGrow={1}>
+              <TextField
+                label={<Trans>Asset Id</Trans>}
+                value={wallet.meta?.assetId}
+                variant="filled"
+                InputProps={{
+                  readOnly: true,
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <CopyToClipboard value={wallet.meta?.assetId} />
+                    </InputAdornment>
+                  ),
+                }}
+                fullWidth
+                multiline
+              />
             </Box>
-          </Grid>
+          </Flex>
         )}
       </DialogContent>
       <DialogActions>

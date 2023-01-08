@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Trans } from '@lingui/macro';
 import { AlertDialog, Fee, Back, ButtonLoading, Card, Flex, Form, TextField } from '@stai/core';
-import { Box, Grid } from '@material-ui/core';
+import { Box, Grid } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
@@ -73,7 +73,7 @@ export default function WalletCATCreateExisting() {
         <Back variant="h5">
           {asteroid 
             ? <Trans>Create custom CAT Wallet</Trans>
-            : <Trans>Create Stai Asset Token Wallet from Existing TAIL</Trans>}
+            : <Trans>Create STAI Asset Token Wallet from Existing TAIL</Trans>}
           
         </Back>
         <Card>

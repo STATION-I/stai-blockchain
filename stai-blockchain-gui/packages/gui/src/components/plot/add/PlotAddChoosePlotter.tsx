@@ -10,7 +10,7 @@ import {
   InputLabel,
   MenuItem,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import styled from 'styled-components';
 import { defaultPlotter, PlotterName } from '@stai/api';
 import type { Plotter, PlotterMap } from '@stai/api';
@@ -32,7 +32,7 @@ export default function PlotAddChoosePlotter(props: Props) {
   function displayablePlotters(plotters: PlotterMap<PlotterName, Plotter>): PlotterName[] {
     const displayablePlotters = Object.keys(plotters) as PlotterName[];
     // Sort chiapos to the top of the list
-    displayablePlotters.sort((a, b) => a == PlotterName.STAIPOS ? -1 : a.localeCompare(b));
+    displayablePlotters.sort((a, b) => a == PlotterName.CHIAPOS ? -1 : a.localeCompare(b));
     return displayablePlotters;
   }
 
@@ -91,8 +91,8 @@ export default function PlotAddChoosePlotter(props: Props) {
       <Typography variant="subtitle1">
         <Trans>
             Depending on your system configuration, you may find that an alternative plotter
-            produces plots faster than the default Stai Proof of Space plotter. If unsure,
-            use the default Stai Proof of Space plotter.
+            produces plots faster than the default Chia Proof of Space plotter. If unsure,
+            use the madMAx plotter over Chia Proof of Space if available.
         </Trans>
       </Typography>
 

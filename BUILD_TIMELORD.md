@@ -1,7 +1,7 @@
 # Building timelords
 
 The Linux and MacOS chiavdf binary wheels currently exclude an executable
-required to run a [Timelord](https://github.com/STATION-I/stai-blockchain/wiki/Timelords).
+required to run a [Timelord](https://github.com/Chia-Network/chia-blockchain/wiki/Timelords).
 If you want to run a Timelord on Linux or MacOS, you must install the wheel
 from source (which may require some additional development packages) while in
 the virtual environment.

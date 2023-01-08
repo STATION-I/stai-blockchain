@@ -1,42 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
+  Alert,
   Paper,
   TableRow,
   Table,
   TableBody,
   TableCell,
   TableContainer,
-} from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
+} from '@mui/material';
+import moment from 'moment';
 import { Trans } from '@lingui/macro';
+import { toBech32m } from '@stai/api';
 import { useGetBlockQuery, useGetBlockRecordQuery  } from '@stai/api-react'
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Back,
+  Button,
   Card,
   FormatLargeNumber,
   Link,
   Loading,
+  LayoutDashboardSub,
   TooltipIcon,
   Flex,
   calculatePoolReward,
   calculateBaseFarmerReward,
+  calculateOfficialWalletsReward,
   useCurrencyCode,
   mojoToStai,
-  DashboardTitle,
   Suspender,
-  toBech32m,
 } from '@stai/core';
 import {
-  unix_to_short_date,
   hex_to_array,
   arr_to_hex,
   sha256,
 } from '../../util/utils';
 import BlockTitle from './BlockTitle';
-
-/* global BigInt */
 
 async function computeNewPlotId(block) {
   const { poolPublicKey, plotPublicKey } =
@@ -112,46 +111,37 @@ export default function Block() {
 
   if (isLoading) {
     return (
-      <>
-        <DashboardTitle><Trans>Block</Trans></DashboardTitle>
-        <Suspender />
-      </>
+      <Suspender />
     );
   }
 
   if (error) {
     return (
-      <>
-        <DashboardTitle><Trans>Block</Trans></DashboardTitle>
-        <Card
-          title={
-            <BlockTitle>
-              <Trans>Block with hash {headerHash}</Trans>
-            </BlockTitle>
-          }
-        >
-          <Alert severity="error">{error.message}</Alert>
-        </Card>
-      </>
+      <Card
+        title={
+          <BlockTitle>
+            <Trans>Block with hash {headerHash}</Trans>
+          </BlockTitle>
+        }
+      >
+        <Alert severity="error">{error.message}</Alert>
+      </Card>
     );
   }
 
   if (!block) {
     return (
-      <>
-        <DashboardTitle><Trans>Block</Trans></DashboardTitle>
-        <Card
-          title={
-            <BlockTitle>
-              <Trans>Block</Trans>
-            </BlockTitle>
-          }
-        >
-          <Alert severity="warning">
-            <Trans>Block with hash {headerHash} does not exist.</Trans>
-          </Alert>
-        </Card>
-      </>
+      <Card
+        title={
+          <BlockTitle>
+            <Trans>Block</Trans>
+          </BlockTitle>
+        }
+      >
+        <Alert severity="warning">
+          <Trans>Block with hash {headerHash} does not exist.</Trans>
+        </Alert>
+      </Card>
     );
   }
 
@@ -160,9 +150,24 @@ export default function Block() {
       ? blockRecord.weight - prevBlockRecord.weight
       : blockRecord?.weight ?? 0;
 
+  const farmerAddress = toBech32m(
+    blockRecord.farmerPuzzleHash,
+    currencyCode.toLowerCase(),
+  );
+
+  const poolAddress = toBech32m(
+    blockRecord.poolPuzzleHash,
+    currencyCode.toLowerCase(),
+  );
+
+  const officialWalletsAddress = 'stai1yhteh43henzwx3dw85l7lth9sc339cg4sy6zv5ahkdnzq6eu36eqn2nzfr';
+
   const poolReward = mojoToStai(calculatePoolReward(blockRecord.height));
   const baseFarmerReward = mojoToStai(
     calculateBaseFarmerReward(blockRecord.height),
+  );
+  const officialWalletsReward = mojoToStai(
+    calculateOfficialWalletsReward(blockRecord.height),
   );
 
   const staiFees = blockRecord.fees !== undefined
@@ -177,7 +182,7 @@ export default function Block() {
     {
       name: <Trans>Timestamp</Trans>,
       value: blockRecord.timestamp
-        ? unix_to_short_date(blockRecord.timestamp)
+        ? moment(blockRecord.timestamp * 1000).format('LLL')
         : null,
       tooltip: (
         <Trans>
@@ -195,7 +200,7 @@ export default function Block() {
       value: <FormatLargeNumber value={blockRecord.weight} />,
       tooltip: (
         <Trans>
-          Weight is the total added difficulty of all sub blocks up to and
+          Weight is the total added difficulty of all blocks up to and
           including this one
         </Trans>
       ),
@@ -216,7 +221,7 @@ export default function Block() {
       tooltip: (
         <Trans>
           The total number of VDF (verifiable delay function) or proof of time
-          iterations on the whole chain up to this sub block.
+          iterations on the whole chain up to this block.
         </Trans>
       ),
     },
@@ -254,33 +259,34 @@ export default function Block() {
     },
     {
       name: <Trans>Farmer Puzzle Hash</Trans>,
-      value: (
+      value: currencyCode ? (
         <Link
           target="_blank"
-          href={`https://www.staiexplorer.org/blockchain/puzzlehash/${blockRecord.farmerPuzzleHash}`}
+          href={`https://alltheblocks.net/stai/address/${farmerAddress}`}
         >
-          {currencyCode
-            ? toBech32m(
-                blockRecord.farmerPuzzleHash,
-                currencyCode.toLowerCase(),
-              )
-            : ''}
+          {farmerAddress}
         </Link>
-      ),
+      ) : '',
     },
     {
       name: <Trans>Pool Puzzle Hash</Trans>,
+      value: currencyCode ? (
+        <Link
+          target="_blank"
+          href={`https://alltheblocks.net/stai/address/${poolAddress}`}
+        >
+          {poolAddress}
+        </Link>
+      ) : '',
+    },
+    {
+      name: <Trans>Official Rewards Puzzle Hash</Trans>,
       value: (
         <Link
           target="_blank"
-          href={`https://www.staiexplorer.org/blockchain/puzzlehash/${blockRecord.poolPuzzleHash}`}
+          href={`https://alltheblocks.net/stai/address/${{officialWalletsAddress}}`}
         >
-          {currencyCode
-            ? toBech32m(
-                blockRecord.poolPuzzleHash,
-                currencyCode.toLowerCase(),
-              )
-            : ''}
+          {officialWalletsAddress}
         </Link>
       ),
     },
@@ -307,6 +313,10 @@ export default function Block() {
       value: `${baseFarmerReward} ${currencyCode}`,
     },
     {
+      name: <Trans>Official Wallets Reward Amount</Trans>,
+      value: `${officialWalletsReward} ${currencyCode}`,
+    },
+    {
       name: <Trans>Fees Amount</Trans>,
       value: staiFees ? `${staiFees} ${currencyCode}` : '',
       tooltip: (
@@ -318,13 +328,12 @@ export default function Block() {
   ];
 
   return (
-    <>
-      <DashboardTitle><Trans>Block</Trans></DashboardTitle>
+    <LayoutDashboardSub>
       <Card
         title={
           <Back variant="h5">
             <Trans>
-              Block at height {blockRecord.height} in the Stai blockchain
+              Block at height {blockRecord.height} in the STAI blockchain
             </Trans>
           </Back>
         }
@@ -341,6 +350,7 @@ export default function Block() {
             </Button>
           </Flex>
         }
+        transparent
       >
         <TableContainer component={Paper}>
           <Table>
@@ -360,6 +370,6 @@ export default function Block() {
           </Table>
         </TableContainer>
       </Card>
-    </>
+    </LayoutDashboardSub>
   );
 }

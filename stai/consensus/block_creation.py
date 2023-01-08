@@ -5,6 +5,7 @@ from typing import Callable, Dict, List, Optional, Tuple
 
 import blspy
 from blspy import G1Element, G2Element
+from chia_rs import compute_merkle_set_root
 from chiabip158 import PyBIP158
 
 from stai.consensus.block_record import BlockRecord
@@ -15,7 +16,7 @@ from stai.consensus.constants import ConsensusConstants
 from stai.consensus.cost_calculator import NPCResult
 from stai.full_node.mempool_check_conditions import get_name_puzzle_conditions
 from stai.full_node.signage_point import SignagePoint
-from stai.types.blockchain_format.coin import Coin, hash_coin_list
+from stai.types.blockchain_format.coin import Coin, hash_coin_ids
 from stai.types.blockchain_format.foliage import Foliage, FoliageBlockData, FoliageTransactionBlock, TransactionsInfo
 from stai.types.blockchain_format.pool_target import PoolTarget
 from stai.types.blockchain_format.proof_of_space import ProofOfSpace
@@ -28,16 +29,12 @@ from stai.types.generator_types import BlockGenerator
 from stai.types.unfinished_block import UnfinishedBlock
 from stai.util.hash import std_hash
 from stai.util.ints import uint8, uint32, uint64, uint128
-from stai.util.merkle_set import MerkleSet
 from stai.util.prev_transaction_block import get_prev_transaction_block
 from stai.util.recursive_replace import recursive_replace
 
 log = logging.getLogger(__name__)
 
 
-# TODO: address hint error and remove ignore
-#       error: Incompatible default for argument "seed" (default has type "bytes", argument has type "bytes32")
-#       [assignment]
 def create_foliage(
     constants: ConsensusConstants,
     reward_block_unfinished: RewardChainBlockUnfinished,
@@ -54,7 +51,7 @@ def create_foliage(
     pool_target: PoolTarget,
     get_plot_signature: Callable[[bytes32, G1Element], G2Element],
     get_pool_signature: Callable[[PoolTarget, Optional[G1Element]], Optional[G2Element]],
-    seed: bytes32 = b"",  # type: ignore[assignment]
+    seed: bytes = b"",
 ) -> Tuple[Foliage, Optional[FoliageTransactionBlock], Optional[TransactionsInfo]]:
     """
     Creates a foliage for a given reward chain block. This may or may not be a tx block. In the case of a tx block,
@@ -71,7 +68,7 @@ def create_foliage(
         total_iters_sp: total iters at the signage point
         timestamp: timestamp to put into the foliage block
         farmer_reward_puzzlehash: where to pay out farming reward
-        officialwallets_reward_puzzlehash: where to pay out officialwallets reward
+        officialwallets_reward_puzzlehash: where to pay out Community rewards
         pool_target: where to pay out pool reward
         get_plot_signature: retrieve the signature corresponding to the plot public key
         get_pool_signature: retrieve the signature corresponding to the pool public key
@@ -90,14 +87,14 @@ def create_foliage(
 
     random.seed(seed)
     # Use the extension data to create different blocks based on header hash
-    extension_data: bytes32 = random.randint(8, 100000000).to_bytes(32, "big")
+    extension_data: bytes32 = random.randint(9, 100000000).to_bytes(32, "big")
     if prev_block is None:
         height: uint32 = uint32(0)
     else:
         height = uint32(prev_block.height + 1)
 
     # Create filter
-    byte_array_tx: List[bytes32] = []
+    byte_array_tx: List[bytearray] = []
     tx_additions: List[Coin] = []
     tx_removals: List[bytes32] = []
 
@@ -207,43 +204,33 @@ def create_foliage(
         additions.extend(reward_claims_incorporated.copy())
         for coin in additions:
             tx_additions.append(coin)
-            # TODO: address hint error and remove ignore
-            #       error: Argument 1 to "append" of "list" has incompatible type "bytearray"; expected "bytes32"
-            #       [arg-type]
-            byte_array_tx.append(bytearray(coin.puzzle_hash))  # type: ignore[arg-type]
+            byte_array_tx.append(bytearray(coin.puzzle_hash))
         for coin in removals:
-            tx_removals.append(coin.name())
-            # TODO: address hint error and remove ignore
-            #       error: Argument 1 to "append" of "list" has incompatible type "bytearray"; expected "bytes32"
-            #       [arg-type]
-            byte_array_tx.append(bytearray(coin.name()))  # type: ignore[arg-type]
+            cname = coin.name()
+            tx_removals.append(cname)
+            byte_array_tx.append(bytearray(cname))
 
         bip158: PyBIP158 = PyBIP158(byte_array_tx)
         encoded = bytes(bip158.GetEncoded())
 
-        removal_merkle_set = MerkleSet()
-        addition_merkle_set = MerkleSet()
-
-        # Create removal Merkle set
-        for coin_name in tx_removals:
-            removal_merkle_set.add_already_hashed(coin_name)
+        additions_merkle_items: List[bytes32] = []
 
         # Create addition Merkle set
-        puzzlehash_coin_map: Dict[bytes32, List[Coin]] = {}
+        puzzlehash_coin_map: Dict[bytes32, List[bytes32]] = {}
 
         for coin in tx_additions:
             if coin.puzzle_hash in puzzlehash_coin_map:
-                puzzlehash_coin_map[coin.puzzle_hash].append(coin)
+                puzzlehash_coin_map[coin.puzzle_hash].append(coin.name())
             else:
-                puzzlehash_coin_map[coin.puzzle_hash] = [coin]
+                puzzlehash_coin_map[coin.puzzle_hash] = [coin.name()]
 
         # Addition Merkle set contains puzzlehash and hash of all coins with that puzzlehash
-        for puzzle, coins in puzzlehash_coin_map.items():
-            addition_merkle_set.add_already_hashed(puzzle)
-            addition_merkle_set.add_already_hashed(hash_coin_list(coins))
+        for puzzle, coin_ids in puzzlehash_coin_map.items():
+            additions_merkle_items.append(puzzle)
+            additions_merkle_items.append(hash_coin_ids(coin_ids))
 
-        additions_root = addition_merkle_set.get_root()
-        removals_root = removal_merkle_set.get_root()
+        additions_root = bytes32(compute_merkle_set_root(additions_merkle_items))
+        removals_root = bytes32(compute_merkle_set_root(tx_removals))
 
         generator_hash = bytes32([0] * 32)
         if block_generator is not None:
@@ -304,9 +291,6 @@ def create_foliage(
     return foliage, foliage_transaction_block, transactions_info
 
 
-# TODO: address hint error and remove ignore
-#       error: Incompatible default for argument "seed" (default has type "bytes", argument has type "bytes32")
-#       [assignment]
 def create_unfinished_block(
     constants: ConsensusConstants,
     sub_slot_start_total_iters: uint128,
@@ -324,13 +308,13 @@ def create_unfinished_block(
     signage_point: SignagePoint,
     timestamp: uint64,
     blocks: BlockchainInterface,
-    seed: bytes32 = b"",  # type: ignore[assignment]
+    seed: bytes = b"",
     block_generator: Optional[BlockGenerator] = None,
     aggregate_sig: G2Element = G2Element(),
     additions: Optional[List[Coin]] = None,
     removals: Optional[List[Coin]] = None,
     prev_block: Optional[BlockRecord] = None,
-    finished_sub_slots_input: List[EndOfSubSlotBundle] = None,
+    finished_sub_slots_input: Optional[List[EndOfSubSlotBundle]] = None,
 ) -> UnfinishedBlock:
     """
     Creates a new unfinished block using all the information available at the signage point. This will have to be
@@ -346,7 +330,7 @@ def create_unfinished_block(
         proof_of_space: proof of space of the block to create
         slot_cc_challenge: challenge hash at the sp sub-slot
         farmer_reward_puzzle_hash: where to pay out farmer rewards
-        officialwallets_reward_puzzle_hash: where to pay out officialwallets rewards
+        officialwallets_reward_puzzle_hash: where to pay out Community rewards
         pool_target: where to pay out pool rewards
         get_plot_signature: function that returns signature corresponding to plot public key
         get_pool_signature: function that returns signature corresponding to pool public key
@@ -547,8 +531,9 @@ def unfinished_block_to_full_block(
         new_generator,
         new_generator_ref_list,
     )
-    return recursive_replace(
+    ret = recursive_replace(
         ret,
         "foliage.reward_block_hash",
         ret.reward_chain_block.get_hash(),
     )
+    return ret

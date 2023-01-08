@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Trans } from '@lingui/macro';
 import { staiToMojo, AlertDialog, Amount, Fee, Back, ButtonLoading, Card, Flex, Form } from '@stai/core';
-import { Box, Grid } from '@material-ui/core';
+import { Box, Grid } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 
@@ -72,7 +72,7 @@ export default function WalletCATCreateNew() {
     <Form methods={methods} onSubmit={handleSubmit}>
       <Flex flexDirection="column" gap={3}>
         <Back variant="h5">
-          <Trans>Create New Stai Asset Token Wallet</Trans>
+          <Trans>Create New STAI Asset Token Wallet</Trans>
         </Back>
         <Card>
           <Grid spacing={2} container>

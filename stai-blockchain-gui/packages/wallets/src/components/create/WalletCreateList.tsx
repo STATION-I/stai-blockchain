@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory, useRouteMatch } from "react-router";
 import { Trans } from '@lingui/macro';
-import { Grid, Typography } from '@material-ui/core';
-import { Share as ShareIcon, Speed as SpeedIcon, HomeWork as HomeWorkIcon } from '@material-ui/icons';
+import { Grid, Typography } from '@mui/material';
+import { Share as ShareIcon, Speed as SpeedIcon, HomeWork as HomeWorkIcon } from '@mui/icons-material';
 import { Flex } from '@stai/core';
 import WalletCreateCard from './WalletCreateCard';
 
@@ -29,7 +29,7 @@ export default function WalletCreateList() {
         <Grid xs={12} sm={6} md={4} item>
           <WalletCreateCard
             onSelect={handleCreateCAT}
-            title={<Trans>Stai Asset Token</Trans>}
+            title={<Trans>STAI Asset Token</Trans>}
             icon={<HomeWorkIcon fontSize="large" color="primary" />}
           />
         </Grid>

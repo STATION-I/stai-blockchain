@@ -1,15 +1,13 @@
 import React from 'react';
 import { Trans } from '@lingui/macro';
 import styled from 'styled-components';
-import { Link, Typography, Tooltip, IconButton } from '@material-ui/core';
-import { Delete as DeleteIcon } from '@material-ui/icons';
+import { Link, Typography, Tooltip, IconButton } from '@mui/material';
+import { Delete as DeleteIcon } from '@mui/icons-material';
 import {
-  Flex,
   Table,
   Card,
   FormatBytes,
   FormatConnectionStatus,
-  Loading,
 } from '@stai/core';
 import { useGetFarmerFullNodeConnectionsQuery, useIsServiceRunningQuery } from '@stai/api-react';
 import type { Connection } from '@stai/api';
@@ -48,14 +46,14 @@ const cols = [
         <>
           <FormatBytes
             value={row.bytesWritten}
-            unit="kiB"
+            unit="KiB"
             removeUnit
             fixedDecimals
           />
           /
           <FormatBytes
             value={row.bytesRead}
-            unit="kiB"
+            unit="KiB"
             removeUnit
             fixedDecimals
           />
@@ -90,31 +88,29 @@ export default function FarmFullNodeConnections() {
 
   return (
     <Card
+      gap={1}
       title={<Trans>Your Full Node Connection</Trans>}
+      titleVariant="h6"
       tooltip={
         <Trans>
           {'The full node that your farmer is connected to is below. '}
           <Link
             target="_blank"
-            href="https://github.com/STATION-I/stai-blockchain/wiki/Network-Architecture"
+            href="https://github.com/Chia-Network/chia-blockchain/wiki/Network-Architecture"
           >
             Learn more
           </Link>
         </Trans>
       }
       interactive
+      transparent
     >
-      <Flex justifyContent="flex-end" gap={1}>
-        <Typography variant="caption" color="textSecondary">
-          <Trans>Connection Status:</Trans>
-        </Typography>
+      <Typography variant="caption" color="textSecondary">
+        <Trans>Connection Status:</Trans>
+        &nbsp;
         <FormatConnectionStatus connected={isRunning} />
-      </Flex>
-      {isLoading ? (
-        <Loading center />
-      ) : (
-        <Table cols={cols} rows={connections} />
-      )}
+      </Typography>
+      <Table cols={cols} rows={connections} isLoading={isLoading} />
     </Card>
   );
 }

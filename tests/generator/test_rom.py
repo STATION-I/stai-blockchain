@@ -1,4 +1,3 @@
-from clvm.casts import int_to_bytes
 from clvm_tools import binutils
 from clvm_tools.clvmc import compile_clvm_text
 
@@ -6,19 +5,17 @@ from stai.full_node.generator import run_generator_unsafe
 from stai.full_node.mempool_check_conditions import get_name_puzzle_conditions
 from stai.types.blockchain_format.program import Program, SerializedProgram
 from stai.types.blockchain_format.sized_bytes import bytes32
-from stai.types.condition_opcodes import ConditionOpcode
-from stai.types.condition_with_args import ConditionWithArgs
-from stai.types.name_puzzle_condition import NPC
 from stai.types.generator_types import BlockGenerator
 from stai.util.ints import uint32
 from stai.wallet.puzzles.load_clvm import load_clvm
 from stai.consensus.condition_costs import ConditionCost
+from stai.types.spend_bundle_conditions import Spend
 
 MAX_COST = int(1e15)
 COST_PER_BYTE = int(12000)
 
 
-DESERIALIZE_MOD = load_clvm("stailisp_deserialisation.clvm", package_or_requirement="stai.wallet.puzzles")
+DESERIALIZE_MOD = load_clvm("chialisp_deserialisation.clvm", package_or_requirement="stai.wallet.puzzles")
 
 
 GENERATOR_CODE = """
@@ -109,18 +106,17 @@ class TestROM:
         assert npc_result.cost == EXPECTED_COST + ConditionCost.CREATE_COIN.value + (
             len(bytes(gen.program)) * COST_PER_BYTE
         )
-        cond_1 = ConditionWithArgs(ConditionOpcode.CREATE_COIN, [bytes([0] * 31 + [1]), int_to_bytes(500)])
-        CONDITIONS = [
-            (ConditionOpcode.CREATE_COIN, [cond_1]),
-        ]
 
-        npc = NPC(
-            coin_name=bytes32.fromhex("e8538c2d14f2a7defae65c5c97f5d4fae7ee64acef7fec9d28ad847a0880fd03"),
+        spend = Spend(
+            coin_id=bytes32.fromhex("e8538c2d14f2a7defae65c5c97f5d4fae7ee64acef7fec9d28ad847a0880fd03"),
             puzzle_hash=bytes32.fromhex("9dcf97a184f32623d11a73124ceb99a5709b083721e878a16d78f596718ba7b2"),
-            conditions=CONDITIONS,
+            height_relative=None,
+            seconds_relative=0,
+            create_coin=[(bytes([0] * 31 + [1]), 500, None)],
+            agg_sig_me=[],
         )
 
-        assert npc_result.npc_list == [npc]
+        assert npc_result.conds.spends == [spend]
 
     def test_coin_extras(self):
         # the ROM supports extra data after a coin. This test checks that it actually gets passed through

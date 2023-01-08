@@ -4,7 +4,7 @@ from stai.types.blockchain_format.program import Program, INFINITE_COST
 from stai.util.byte_types import hexstr_to_bytes
 from stai.wallet.puzzles.load_clvm import load_clvm
 
-DESERIALIZE_MOD = load_clvm("stailisp_deserialisation.clvm", package_or_requirement="stai.wallet.puzzles")
+DESERIALIZE_MOD = load_clvm("chialisp_deserialisation.clvm", package_or_requirement="stai.wallet.puzzles")
 
 
 def serialized_atom_overflow(size):

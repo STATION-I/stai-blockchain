@@ -8,8 +8,8 @@ from stai.types.blockchain_format.program import Program, SerializedProgram
 wallet_program_files = set(
     [
         "stai/wallet/puzzles/calculate_synthetic_public_key.clvm",
-        "stai/wallet/puzzles/cat.clvm",
-        "stai/wallet/puzzles/stailisp_deserialisation.clvm",
+        "chia/wallet/puzzles/cat_v2.clvm",
+        "stai/wallet/puzzles/chialisp_deserialisation.clvm",
         "stai/wallet/puzzles/rom_bootstrap_generator.clvm",
         "stai/wallet/puzzles/generator_for_single_coin.clvm",
         "stai/wallet/puzzles/lock.inner.puzzle.clvm",
@@ -40,9 +40,12 @@ wallet_program_files = set(
         "stai/wallet/puzzles/delegated_tail.clvm",
         "stai/wallet/puzzles/settlement_payments.clvm",
         "stai/wallet/puzzles/genesis_by_coin_id.clvm",
-        "stai/wallet/puzzles/genesis-by-puzzle-hash-with-0.clvm",
-        "stai/wallet/puzzles/delegated_genesis_checker.clvm",
-        "stai/wallet/puzzles/genesis-by-coin-id-with-0.clvm",
+        "stai/wallet/puzzles/singleton_top_layer_v1_1.clvm",
+        "stai/wallet/puzzles/nft_metadata_updater_default.clvm",
+        "stai/wallet/puzzles/nft_metadata_updater_updateable.clvm",
+        "stai/wallet/puzzles/nft_state_layer.clvm",
+        "stai/wallet/puzzles/nft_ownership_layer.clvm",
+        "stai/wallet/puzzles/nft_ownership_transfer_program_one_way_claim_with_royalties.clvm",
     ]
 )
 
@@ -157,7 +160,7 @@ class TestClvmCompilation(TestCase):
             self.assertEqual(
                 s.get_tree_hash().hex(),
                 existing_sha,
-                msg=f"Checked-in shatree hash file does not match shatree hash of loaded SerializedProgram: {prog_path}",  # noqa
+                msg=f"Checked-in shatree hash file does not match hash of loaded SerializedProgram: {prog_path}",
             )
             self.assertEqual(
                 p.get_tree_hash().hex(),

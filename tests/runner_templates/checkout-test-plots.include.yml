@@ -1,14 +1,15 @@
-    - name: Checkout test blocks and plots
-      uses: actions/checkout@v2
+    - name: Cache test blocks and plots
+      uses: actions/cache@v2
+      id: test-blocks-plots
       with:
-        repository: 'STATION-I/test-cache'
-        path: '.stai'
-        ref: '0.28.0'
-        fetch-depth: 1
+        path: |
+          ${{ github.workspace }}/.stai/blocks
+          ${{ github.workspace }}/.stai/test-plots
+        key: 0.29.0
 
-    - name: Link home directory
+    - name: Checkout test blocks and plots
+      if: steps.test-blocks-plots.outputs.cache-hit != 'true'
       run: |
-        cd $HOME
-        ln -s $GITHUB_WORKSPACE/.stai
-        echo "$HOME/.stai"
-        ls -al $HOME/.stai
+        wget -qO- https://github.com/STATION-I/test-cache/archive/refs/tags/0.29.0.tar.gz | tar xzf -
+        mkdir ${{ github.workspace }}/.stai
+        mv ${{ github.workspace }}/test-cache-0.29.0/* ${{ github.workspace }}/.stai

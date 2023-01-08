@@ -1,6 +1,6 @@
+import { toBech32m, fromBech32m } from '@stai/api';
 import type { PlotNFT } from '@stai/api';
 import { useSetPayoutInstructionsMutation, useGetNetworkInfoQuery } from '@stai/api-react';
-import { toBech32m, fromBech32m } from '@stai/core';
 
 export default function usePayoutAddress(nft: PlotNFT): {
   loading: boolean;

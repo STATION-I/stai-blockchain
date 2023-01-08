@@ -60,6 +60,8 @@ async def print_connections(client, time, NodeType, trusted_peers: Dict):
 async def show_async(
     rpc_port: Optional[int],
     state: bool,
+    sync_speed: bool,
+    sync_speed_delay: Optional[int],
     show_connections: bool,
     exit_node: bool,
     add_connection: str,
@@ -80,7 +82,7 @@ async def show_async(
     from stai.util.config import load_config
     from stai.util.default_root import DEFAULT_ROOT_PATH
     from stai.util.ints import uint16
-    from stai.util.misc import format_bytes
+    from stai.util.misc import format_bytes, format_minutes
 
     try:
         config = load_config(DEFAULT_ROOT_PATH, "config.yaml")
@@ -88,6 +90,34 @@ async def show_async(
         if rpc_port is None:
             rpc_port = config["full_node"]["rpc_port"]
         client = await FullNodeRpcClient.create(self_hostname, uint16(rpc_port), DEFAULT_ROOT_PATH, config)
+
+        #Get Highest Reporting Peer
+        #
+        #Error Codes:
+        #-1: No full node peers are connected.
+        #-2: At least 1 full node peer is connected, but none are reporting their height.
+        def get_peak_peer_height(connections):
+            peak_peer_height = -1
+            no_blank_peers = True
+
+            for con in connections:
+                #If the connection is not a full node...
+                if NodeType(con["type"]) is not NodeType.FULL_NODE:
+                    continue #...skip
+
+                peer_height = con["peak_height"]
+
+                if peer_height is None:
+                    no_blank_peers = False
+                    continue
+
+                if peer_height > peak_peer_height:
+                    peak_peer_height = peer_height
+
+            if peak_peer_height != -1 or no_blank_peers:
+                return peak_peer_height
+            else:
+                return -2
 
         if state:
             blockchain_state = await client.get_blockchain_state()
@@ -107,24 +137,44 @@ async def show_async(
             full_node_port = config["full_node"]["port"]
             full_node_rpc_port = config["full_node"]["rpc_port"]
 
-            print(f"Network: {network_name}    Port: {full_node_port}   Rpc Port: {full_node_rpc_port}")
+            print(f"Network: {network_name}    Peer Port: {full_node_port}   RPC Port: {full_node_rpc_port}")
             print(f"Node ID: {node_id}")
 
             print(f"Genesis Challenge: {genesis_challenge}")
 
             if synced:
-                print("Current Blockchain Status: Full Node Synced")
+                print("Current Status: Full Node Synced")
                 print("\nPeak: Hash:", peak.header_hash if peak is not None else "")
             elif peak is not None and sync_mode:
                 sync_max_block = blockchain_state["sync"]["sync_tip_height"]
                 sync_current_block = blockchain_state["sync"]["sync_progress_height"]
                 print(
-                    f"Current Blockchain Status: Syncing {sync_current_block}/{sync_max_block} "
+                    f"Current Status: Syncing {sync_current_block}/{sync_max_block} "
                     f"({sync_max_block - sync_current_block} behind)."
                 )
                 print("Peak: Hash:", peak.header_hash if peak is not None else "")
             elif peak is not None:
-                print(f"Current Blockchain Status: Not Synced. Peak height: {peak.height}")
+                current_sync_height = peak.height
+
+                connections = await client.get_connections()
+                peak_peer_height = get_peak_peer_height(connections)
+
+                if peak_peer_height == -1:
+                    print(f"Current Status: Not Connected to Peers. Current height: {current_sync_height}")
+                elif peak_peer_height == -2:
+                    print(f"Current Status: Not Enough Peer Info. Current height: {current_sync_height}")
+                elif current_sync_height > peak_peer_height:
+                    print(
+                        f"Current Status: Peer(s) Behind. Current height: {current_sync_height}/{peak_peer_height} "
+                        f"({current_sync_height - peak_peer_height} ahead)"
+                    )
+                elif current_sync_height == peak_peer_height:
+                    print(
+                        f"Current Status: Peer(s) Stalled. Current node height: "
+                        f"{current_sync_height}/{peak_peer_height} ({peak_peer_height - current_sync_height} behind)"
+                    )
+                else:
+                    print(f"Current Status: Not Synced. Current node height: {current_sync_height}")
             else:
                 print("\nSearching for an initial chain\n")
                 print("You may be able to expedite with 'stai show -a host:port' using a known node.\n")
@@ -165,6 +215,160 @@ async def show_async(
             else:
                 print("Blockchain has no blocks yet")
 
+            # if called together with sync_speed_delay, leave a blank line
+            if sync_speed_delay:
+                print("")
+        if sync_speed:
+            sync_speed_delay = 10
+        if sync_speed_delay is not None:
+            if not isinstance(sync_speed_delay, int) or sync_speed_delay <= 0:
+                print("You must specify a valid number of seconds.")
+
+                client.close()
+                await client.await_closed()
+                return None
+
+            #Get Current Node Synced Height
+            #
+            #Error Codes:
+            #-1: "There is no blockchain found yet. Try again shortly"
+            #-2: "Searching for an initial chain"
+            def get_current_sync_height(blockchain_state):
+                if blockchain_state is None:
+                    return -1
+
+                peak: Optional[BlockRecord] = blockchain_state["peak"]
+
+                if peak is None:
+                    return -2
+                else:
+                    return peak.height
+
+            #First Measurement
+
+            time_1 = time.time() #Current Time in Microseconds
+
+            blockchain_state = await client.get_blockchain_state()
+            is_synced_1 = blockchain_state["sync"]["synced"]
+            sync_mode_1 = blockchain_state["sync"]["sync_mode"]
+            sync_height_1 = get_current_sync_height(blockchain_state)
+
+            connections = await client.get_connections()
+            peak_peer_height_1 = get_peak_peer_height(connections)
+
+            blocks_behind_1 = peak_peer_height_1 - sync_height_1
+
+            if not sync_mode_1:
+                if is_synced_1:
+                    print(f"Synced. Height: {sync_height_1}")
+                elif peak_peer_height_1 == -1:
+                    print(f"Not connected to peers.")
+                elif peak_peer_height_1 == -2:
+                    print(f"Not enough peer info.")
+                elif sync_height_1 > peak_peer_height_1:
+                    print(f"Peers are behind. Height: {sync_height_1}/{peak_peer_height_1}")
+                elif sync_height_1 == peak_peer_height_1:
+                    print(f"Peers have stalled. Height: {sync_height_1}")
+                else:
+                    print(f"Not synced. Height: {sync_height_1}")
+
+                client.close()
+                await client.await_closed()
+                return None
+            if sync_height_1 < 0:
+                if sync_height_1 == -1:
+                    print("There is no blockchain found yet. Try again shortly.")
+                else:
+                    print("\nSearching for an initial chain\n")
+                    print("You may be able to expedite with 'stai show -a host:port' using a known node.\n")
+
+                client.close()
+                await client.await_closed()
+                return None
+
+            print(f"Measurement 1 performed. Height: {sync_height_1}/{peak_peer_height_1} ({blocks_behind_1} behind)")
+
+            #Delay
+
+            print(f"Waiting {sync_speed_delay} second(s)...", end="", flush=True)
+            time.sleep(sync_speed_delay)
+            print("") #Blank Line
+
+            #Second Measurement
+
+            time_2 = time.time() #Current Time in Microseconds
+
+            blockchain_state = await client.get_blockchain_state()
+            is_synced_2 = blockchain_state["sync"]["synced"]
+            sync_mode_2 = blockchain_state["sync"]["sync_mode"]
+            sync_height_2 = get_current_sync_height(blockchain_state)
+
+            connections = await client.get_connections()
+            peak_peer_height_2 = get_peak_peer_height(connections)
+
+            blocks_behind_2 = peak_peer_height_2 - sync_height_2
+
+            if not sync_mode_2:
+                if is_synced_2:
+                    print(f"Synced. Height: {sync_height_2}")
+                elif peak_peer_height_2 == -1:
+                    print(f"Not connected to peers.")
+                elif peak_peer_height_2 == -2:
+                    print(f"Not enough peer info.")
+                elif sync_height_2 > peak_peer_height_2:
+                    print(f"Peers are behind. Height: {sync_height_2}/{peak_peer_height_2}")
+                elif sync_height_2 == peak_peer_height_2:
+                    print(f"Peers have stalled. Height: {sync_height_2}")
+                else:
+                    print(f"Not synced. Height: {sync_height_2}")
+
+                client.close()
+                await client.await_closed()
+
+                return None
+
+            print(f"Measurement 2 performed. Height: {sync_height_2}/{peak_peer_height_2} ({blocks_behind_2} behind)")
+
+            #Calculation
+
+            blocks_synced = sync_height_2 - sync_height_1
+            peer_blocks_synced = peak_peer_height_2 - peak_peer_height_1
+            time_range = time_2 - time_1 #Seconds
+
+            print("") #Blank Line
+
+            print(f"Measurements completed in {time_range:.2f} seconds across {blocks_synced} blocks.")
+
+            if peer_blocks_synced >= 0:
+                time_range /= 60 #Convert to Minutes
+                peer_sync_speed = peer_blocks_synced / time_range #Blocks per Minute
+
+                print(f"Peers synced {peer_blocks_synced} blocks during the measurement ({peer_sync_speed:.2f} blocks/minute).")
+            else:
+                print(f"Highest peer disconnected during measurement. Height: {peak_peer_height_2} => {peak_peer_height_1}")
+
+                client.close()
+                await client.await_closed()
+                return None
+
+            print("") #Blank Line
+
+            gap_closure = blocks_behind_1 - blocks_behind_2
+
+            if gap_closure > 0:
+                gap_closing_speed = gap_closure / time_range #Blocks per Minute
+                time_to_full_sync = blocks_behind_2 / gap_closing_speed #Minutes
+
+                print(f"Gap Closure: {gap_closure}")
+                print(f"Gap Closing Speed: {gap_closing_speed:.2f} blocks/minute")
+                print(f"Estimated Time to Full Sync: {format_minutes(round(time_to_full_sync))}")
+            elif gap_closure < 0:
+                print("Second blocks behind measurement was higher, can't estimate time to full sync.")
+            else:
+                print(f"Gap Closure: 0")
+                print(f"Gap Closing Speed: 0 blocks/minute")
+                print(f"Estimated Time to Full Sync: Never")
+
             # if called together with show_connections, leave a blank line
             if show_connections:
                 print("")
@@ -179,7 +383,7 @@ async def show_async(
             print(node_stop, "Node stopped")
         if add_connection:
             if ":" not in add_connection:
-                print("Enter a valid IP and port in the following format: 10.5.4.3:8000")
+                print("Enter a valid IP and port in the following format: 10.5.4.3:1999")
             else:
                 ip, port = (
                     ":".join(add_connection.split(":")[:-1]),
@@ -256,25 +460,25 @@ async def show_async(
                     else "Pay to pool puzzle hash"
                 )
                 print(
-                    f"Block Height           {block.height}\n"
-                    f"Header Hash            0x{block.header_hash.hex()}\n"
-                    f"Timestamp              {block_time_string}\n"
-                    f"Weight                 {block.weight}\n"
-                    f"Previous Block         0x{block.prev_hash.hex()}\n"
-                    f"Difficulty             {difficulty}\n"
-                    f"Sub-slot iters         {block.sub_slot_iters}\n"
-                    f"Cost                   {cost}\n"
-                    f"Total VDF Iterations   {block.total_iters}\n"
-                    f"Is a Transaction Block?{block.is_transaction_block}\n"
-                    f"Deficit                {block.deficit}\n"
-                    f"PoSpace 'k' Size       {full_block.reward_chain_block.proof_of_space.size}\n"
-                    f"Plot Public Key        0x{full_block.reward_chain_block.proof_of_space.plot_public_key}\n"
-                    f"Pool Public Key        {pool_pk}\n"
-                    f"Tx Filter Hash         {tx_filter_hash}\n"
-                    f"Farmer Address         {farmer_address}\n"
-                    f"Community Address      {officialwallets_address}\n"
-                    f"Pool Address           {pool_address}\n"
-                    f"Fees Amount            {fees}\n"
+                    f"Block Height             {block.height}\n"
+                    f"Header Hash              0x{block.header_hash.hex()}\n"
+                    f"Timestamp                {block_time_string}\n"
+                    f"Weight                   {block.weight}\n"
+                    f"Previous Block           0x{block.prev_hash.hex()}\n"
+                    f"Difficulty               {difficulty}\n"
+                    f"Sub-slot iters           {block.sub_slot_iters}\n"
+                    f"Cost                     {cost}\n"
+                    f"Total VDF Iterations     {block.total_iters}\n"
+                    f"Is a Transaction Block   {block.is_transaction_block}\n"
+                    f"Deficit                  {block.deficit}\n"
+                    f"PoSpace 'k' Size         {full_block.reward_chain_block.proof_of_space.size}\n"
+                    f"Plot Public Key          0x{full_block.reward_chain_block.proof_of_space.plot_public_key}\n"
+                    f"Pool Public Key          {pool_pk}\n"
+                    f"Tx Filter Hash           {tx_filter_hash}\n"
+                    f"Farmer Address           {farmer_address}\n"
+                    f"Official Wallets Address {officialwallets_address}\n"
+                    f"Pool Address             {pool_address}\n"
+                    f"Fees Amount              {fees}\n"
                 )
             else:
                 print("Block with header hash", block_header_hash_by_height, "not found")
@@ -309,7 +513,30 @@ async def show_async(
     type=int,
     default=None,
 )
-@click.option("-s", "--state", help="Show the current state of the blockchain", is_flag=True, type=bool, default=False)
+@click.option(
+    "-s", "--state", help="Show the current state of the node and blockchain", is_flag=True, type=bool, default=False
+)
+@click.option(
+    "-ss",
+    "--sync-speed",
+    help=(
+        "Estimate the syncing speed and remaining time before the node is fully synced, by taking 2 measurements "
+        "10 seconds apart. You may want to run this command a few times as the speed can fluctuate sometimes."
+    ),
+    is_flag=True,
+    type=int,
+    default=False,
+)
+@click.option(
+    "-ssc",
+    "--sync-speed-custom",
+    help=(
+        "Estimate the syncing speed and remaining time before the node is fully synced, but with a custom delay "
+        "in seconds between the measurements. Suggested values are 5, 10 and 60 (the longer, the more accurate)."
+    ),
+    type=int,
+    default=None,
+)
 @click.option(
     "-c", "--connections", help="List nodes connected to this Full Node", is_flag=True, type=bool, default=False
 )
@@ -326,6 +553,8 @@ def show_cmd(
     rpc_port: Optional[int],
     wallet_rpc_port: Optional[int],
     state: bool,
+    sync_speed: bool,
+    sync_speed_custom: Optional[int],
     connections: bool,
     exit_node: bool,
     add_connection: str,
@@ -339,6 +568,8 @@ def show_cmd(
         show_async(
             rpc_port,
             state,
+            sync_speed,
+            sync_speed_custom,
             connections,
             exit_node,
             add_connection,

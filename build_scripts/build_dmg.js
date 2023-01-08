@@ -44,8 +44,8 @@ async function main(opts) {
     console.log('Finished');
 }
 
-const appName = 'Stai';
-const dmgIcon = '../stai-blockchain-gui/packages/gui/src/assets/img/Stai.icns';
+const appName = 'STAI';
+const dmgIcon = '../stai-blockchain-gui/packages/gui/src/assets/img/stai.icns';
 const dmgBackground = './assets/dmg/background.tiff';
 const outputDir = './final_installer';
 const appPath = process.argv[2]; // required

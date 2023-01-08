@@ -1,10 +1,11 @@
 import React, { useMemo } from 'react';
 import { Trans } from '@lingui/macro';
-import { useCurrencyCode, mojoToStaiLocaleString, CardSimple } from '@stai/core';
+import { useCurrencyCode, mojoToStaiLocaleString, CardSimple, useLocale } from '@stai/core';
 import { useGetFarmedAmountQuery } from '@stai/api-react';
 
 export default function FarmCardTotalStaiFarmed() {
   const currencyCode = useCurrencyCode();
+  const [locale] = useLocale();
   const { data, isLoading, error } = useGetFarmedAmountQuery();
 
   const farmedAmount = data?.farmedAmount;
@@ -13,17 +14,17 @@ export default function FarmCardTotalStaiFarmed() {
     if (farmedAmount !== undefined) {
       return (
         <>
-          {mojoToStaiLocaleString(farmedAmount)}
+          {mojoToStaiLocaleString(farmedAmount, locale)}
           &nbsp;
           {currencyCode}
         </>
       );
     }
-  }, [farmedAmount]);
+  }, [farmedAmount, locale, currencyCode]);
 
   return (
     <CardSimple
-      title={<Trans>Total Stai Farmed</Trans>}
+      title={<Trans>Total STAI Farmed</Trans>}
       value={totalStaiFarmed}
       loading={isLoading}
       error={error}

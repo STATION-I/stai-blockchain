@@ -1,8 +1,9 @@
-#!/bin/bash
-set -e
+#!/bin/sh
+
+set -o errexit
 
 USAGE_TEXT="\
-Usage: $0 [-d]
+Usage: $0 [-adh]
 
   -a                          automated install, no questions
   -d                          install development dependencies
@@ -46,15 +47,20 @@ fi
 if [ "$(uname -m)" = "armv7l" ]; then
   echo ""
   echo "WARNING:"
-  echo "The Stai Blockchain requires a 64 bit OS and this is 32 bit armv7l"
+  echo "stai-blockchain requires a 64 bit OS and this is 32 bit armv7l"
   echo "For more information, see"
-  echo "https://github.com/STATION-I/stai-blockchain/wiki/Raspberry-Pi"
+  echo "https://github.com/Chia-Network/chia-blockchain/wiki/Raspberry-Pi"
   echo "Exiting."
   exit 1
 fi
+# Get submodules
 git submodule update --init mozilla-ca
 
-UBUNTU_PRE_2004=false
+UBUNTU_PRE_20=0
+UBUNTU_20=0
+UBUNTU_21=0
+UBUNTU_22=0
+
 if $UBUNTU; then
   LSB_RELEASE=$(lsb_release -rs)
   # In case Ubuntu minimal does not come with bc
@@ -62,8 +68,15 @@ if $UBUNTU; then
     sudo apt install bc -y
   fi
   # Mint 20.04 responds with 20 here so 20 instead of 20.04
-  UBUNTU_PRE_2004=$(echo "$LSB_RELEASE<20" | bc)
-  UBUNTU_2100=$(echo "$LSB_RELEASE>=21" | bc)
+  if [ "$(echo "$LSB_RELEASE<20" | bc)" = "1" ]; then
+    UBUNTU_PRE_20=1
+  elif [ "$(echo "$LSB_RELEASE<21" | bc)" = "1" ]; then
+    UBUNTU_20=1
+  elif [ "$(echo "$LSB_RELEASE<22" | bc)" = "1" ]; then
+    UBUNTU_21=1
+  else
+    UBUNTU_22=1
+  fi
 fi
 
 install_python3_and_sqlite3_from_source_with_yum() {
@@ -94,11 +107,11 @@ install_python3_and_sqlite3_from_source_with_yum() {
   sudo make install | stdbuf -o0 cut -b1-"$(tput cols)" | sed -u 'i\\o033[2K' | stdbuf -o0 tr '\n' '\r'; echo
   # yum install python3 brings Python3.6 which is not supported by stai
   cd ..
-  echo "wget https://www.python.org/ftp/python/3.9.9/Python-3.9.9.tgz"
-  wget https://www.python.org/ftp/python/3.9.9/Python-3.9.9.tgz
-  tar xf Python-3.9.9.tgz
-  echo "cd Python-3.9.9"
-  cd Python-3.9.9
+  echo "wget https://www.python.org/ftp/python/3.9.11/Python-3.9.11.tgz"
+  wget https://www.python.org/ftp/python/3.9.11/Python-3.9.11.tgz
+  tar xf Python-3.9.11.tgz
+  echo "cd Python-3.9.11"
+  cd Python-3.9.11
   echo "LD_RUN_PATH=/usr/local/lib ./configure --prefix=/usr/local"
   # '| stdbuf ...' seems weird but this makes command outputs stay in single line.
   LD_RUN_PATH=/usr/local/lib ./configure --prefix=/usr/local | stdbuf -o0 cut -b1-"$(tput cols)" | sed -u 'i\\o033[2K' | stdbuf -o0 tr '\n' '\r'; echo
@@ -112,40 +125,43 @@ install_python3_and_sqlite3_from_source_with_yum() {
 # Manage npm and other install requirements on an OS specific basis
 if [ "$(uname)" = "Linux" ]; then
   #LINUX=1
-  if [ "$UBUNTU" = "true" ] && [ "$UBUNTU_PRE_2004" = "1" ]; then
+  if [ "$UBUNTU_PRE_20" = "1" ]; then
     # Ubuntu
-    echo "Installing on Ubuntu pre 20.04 LTS."
+    echo "Installing on Ubuntu pre 20.*."
     sudo apt-get update
+    # distutils must be installed as well to avoid a complaint about ensurepip while
+    # creating the venv.  This may be related to a mis-check while using or
+    # misconfiguration of the secondary Python version 3.7.  The primary is Python 3.6.
     sudo apt-get install -y python3.7-venv python3.7-distutils openssl
-  elif [ "$UBUNTU" = "true" ] && [ "$UBUNTU_PRE_2004" = "0" ] && [ "$UBUNTU_2100" = "0" ]; then
-    echo "Installing on Ubuntu 20.04 LTS."
+  elif [ "$UBUNTU_20" = "1" ]; then
+    echo "Installing on Ubuntu 20.*."
     sudo apt-get update
-    sudo apt-get install -y python3.8-venv python3-distutils openssl
-  elif [ "$UBUNTU" = "true" ] && [ "$UBUNTU_2100" = "1" ]; then
-    echo "Installing on Ubuntu 21.04 or newer."
+    sudo apt-get install -y python3.8-venv openssl
+  elif [ "$UBUNTU_21" = "1" ]; then
+    echo "Installing on Ubuntu 21.*."
     sudo apt-get update
-    sudo apt-get install -y python3.9-venv python3-distutils openssl
+    sudo apt-get install -y python3.9-venv openssl
+  elif [ "$UBUNTU_22" = "1" ]; then
+    echo "Installing on Ubuntu 22.* or newer."
+    sudo apt-get update
+    sudo apt-get install -y python3.10-venv openssl
   elif [ "$DEBIAN" = "true" ]; then
     echo "Installing on Debian."
     sudo apt-get update
     sudo apt-get install -y python3-venv openssl
   elif type pacman >/dev/null 2>&1 && [ -f "/etc/arch-release" ]; then
     # Arch Linux
+    # Arch provides latest python version. User will need to manually install python 3.9 if it is not present
     echo "Installing on Arch Linux."
-    echo "Python <= 3.9.9 is required. Installing python-3.9.9-1"
     case $(uname -m) in
-      x86_64)
-        sudo pacman ${PACMAN_AUTOMATED} -U --needed https://archive.archlinux.org/packages/p/python/python-3.9.9-1-x86_64.pkg.tar.zst
-        ;;
-      aarch64)
-        sudo pacman ${PACMAN_AUTOMATED} -U --needed http://tardis.tiny-vps.com/aarm/packages/p/python/python-3.9.9-1-aarch64.pkg.tar.xz
+      x86_64|aarch64)
+        sudo pacman ${PACMAN_AUTOMATED} -S --needed git openssl
         ;;
       *)
         echo "Incompatible CPU architecture. Must be x86_64 or aarch64."
         exit 1
         ;;
-      esac
-    sudo pacman ${PACMAN_AUTOMATED} -S --needed git
+    esac
   elif type yum >/dev/null 2>&1 && [ ! -f "/etc/redhat-release" ] && [ ! -f "/etc/centos-release" ] && [ ! -f "/etc/fedora-release" ]; then
     # AMZN 2
     echo "Installing on Amazon Linux 2."
@@ -188,15 +204,19 @@ fi
 find_python() {
   set +e
   unset BEST_VERSION
-  for V in 39 3.9 38 3.8 37 3.7 3; do
+  for V in 310 3.10 39 3.9 38 3.8 37 3.7 3; do
     if command -v python$V >/dev/null; then
       if [ "$BEST_VERSION" = "" ]; then
         BEST_VERSION=$V
         if [ "$BEST_VERSION" = "3" ]; then
           PY3_VERSION=$(python$BEST_VERSION --version | cut -d ' ' -f2)
-          if [[ "$PY3_VERSION" =~ 3.10.* ]]; then
-            echo "Stai requires Python version <= 3.9.9"
-            echo "Current Python version = $PY3_VERSION"
+          if [[ "$PY3_VERSION" =~ 3.11.* ]]; then
+            echo "stai-blockchain requires Python version < 3.11.0" >&2
+            echo "Current Python version = $PY3_VERSION" >&2
+            # If Arch, direct to Arch Wiki
+            if type pacman >/dev/null 2>&1 && [ -f "/etc/arch-release" ]; then
+              echo "Please see https://wiki.archlinux.org/title/python#Old_versions for support." >&2
+            fi
             exit 1
           fi
         fi
@@ -277,13 +297,52 @@ python -m pip install wheel
 python -m pip install --extra-index-url https://pypi.chia.net/simple/ miniupnpc==2.2.2
 python -m pip install -e ."${EXTRAS}" --extra-index-url https://pypi.chia.net/simple/
 
+LOGO="
+                                       /////
+                      @@@            /////////
+                  @@@@@@@@            ////////
+               @@@@@@@@@@@             //////              @
+             @@@@@@@@@@@@                                @@@@@@
+           @@@@@@@@@@@                                  @@@@@@@@@
+         @@@@@@@@@@                  ///                 @@@@@@@@@
+        @@@@@@@@@                   //////                @@@@@@@@@@
+      @@@@@@@@@                     ///////                 @@@@@@@@@
+      @@@@@@@@                     ////////                  @@@@@@@@@
+     @@@@@@@@                      ///////                    @@@@@@@@@
+    @@@@@@@@@                     ////////                     @@@@@@@@
+    @@@@@@@@                      ///////                      @@@@@@@@
+    @@@@@@@@                      ///////                      @@@@@@@@
+    @@@@@@@@                     ///////                       @@@@@@@@
+    @@@@@@@@@                    ///////                       @@@@@@@@
+     @@@@@@@@                   ////////                      @@@@@@@@
+      @@@@@@@@                  ///////                      @@@@@@@@@
+       @@@@@@@@                  //////                     @@@@@@@@@
+        @@@@@@@@@                   //                    @@@@@@@@@@
+         @@@@@@@@@@                                     @@@@@@@@@@
+           @@@@@@@@@@@                               @@@@@@@@@@@
+             @@@@@@@@@@@@@                       @@@@@@@@@@@@@@
+               @@@@@@@@@@@@@@@@@@@        @@@@@@@@@@@@@@@@@@
+                   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                       @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                              @@@@@@@@@@@@@@@
+"
+
+GREEN_HEADER="[38;2;148;189;12m" #RGB: 148, 189, 12
+GREY_HEADER="[38;2;118;118;118m" #RGB: 118,118,118
+FOOTER="[0m"
+
+LOGO_GREEN=$(echo "\033$GREEN_HEADER$LOGO\033$FOOTER")
+LOGO_COLORED=$(echo "$LOGO_GREEN" | sed -r "s|(/+)|\x1B$FOOTER\x1B$GREY_HEADER\1\x1B$FOOTER\x1B$GREEN_HEADER|") #Grey 'i'
+
+printf "$LOGO_COLORED"
+
 echo ""
-echo "Stai blockchain install.sh complete."
+echo "stai-blockchain install.sh complete."
 echo "For assistance join us on Discord in the #support chat channel:"
-echo "https://discord.gg/AYpMVKa2h7"
+echo "https://discord.gg/stai-blockchain"
 echo ""
-echo "Try the Quick Start Guide to running stai-blockchain:"
-echo "https://github.com/STATION-I/stai-blockchain/wiki/Quick-Start-Guide"
+echo "Try chia-blockchain's Quick Start Guide for running stai-blockchain:"
+echo "https://github.com/Chia-Network/chia-blockchain/wiki/Quick-Start-Guide"
 echo ""
 echo "To install the GUI type 'sh install-gui.sh' after '. ./activate'."
 echo ""

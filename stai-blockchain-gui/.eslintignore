@@ -1,9 +1,0 @@
-node_modules
-dist
-examples
-daemon
-build
-*_old
-packages/*/src/tests
-packages/*/test/fixtures
-packages/wallet/*

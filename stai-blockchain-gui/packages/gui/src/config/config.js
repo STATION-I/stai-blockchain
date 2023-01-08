@@ -1,5 +1,5 @@
 export default {
   multipleWallets: process.env.MULTIPLE_WALLETS === 'true',
   local_test: process.env.LOCAL_TEST === 'true',
-  backup_host: 'https://backup.stainetwork.org',
+  backup_host: 'https://backup.STATION-I.de',
 };

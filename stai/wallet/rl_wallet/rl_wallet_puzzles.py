@@ -7,7 +7,7 @@ from stai.types.blockchain_format.program import Program
 from stai.types.blockchain_format.sized_bytes import bytes32
 from stai.types.condition_opcodes import ConditionOpcode
 from stai.util.ints import uint64
-from stai.wallet.stailisp import sexp
+from stai.wallet.chialisp import sexp
 from stai.wallet.puzzles.load_clvm import load_clvm
 
 RATE_LIMITED_MODE = 1
