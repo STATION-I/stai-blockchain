@@ -345,6 +345,7 @@ full_node:
   # If you modify this, please change the hardcode as well from FullNode.set_server()
   dns_servers:
     - "dns-introducer.staicoin.com"
+    - "introducer.staicoin.com"
   farmer_peer:
       host: *self_hostname
       port: 1692
@@ -423,6 +424,7 @@ wallet:
 
   dns_servers:
     - "dns-introducer.staicoin.com"
+    - "introducer.staicoin.com"
 
   full_node_peer:
     host: *self_hostname
