@@ -160,12 +160,12 @@ async def show_async(
                 peak_peer_height = get_peak_peer_height(connections)
 
                 if peak_peer_height == -1:
-                    print(f"Current Status: Not Connected to Peers. Current height: {current_sync_height}")
+                    print(f"Current Status: Not Connected to Peers. Current node height: {current_sync_height}")
                 elif peak_peer_height == -2:
-                    print(f"Current Status: Not Enough Peer Info. Current height: {current_sync_height}")
+                    print(f"Current Status: Not Enough Peer Info. Current node height: {current_sync_height}")
                 elif current_sync_height > peak_peer_height:
                     print(
-                        f"Current Status: Peer(s) Behind. Current height: {current_sync_height}/{peak_peer_height} "
+                        f"Current Status: Peer(s) Behind. Current node height: {current_sync_height}/{peak_peer_height} "
                         f"({current_sync_height - peak_peer_height} ahead)"
                     )
                 elif current_sync_height == peak_peer_height:
