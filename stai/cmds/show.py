@@ -171,12 +171,12 @@ async def show_async(
                         f"({current_sync_height - peak_peer_height} ahead)"
                     )
                 elif current_sync_height == peak_peer_height:
-                    print(
-                        f"Current Status: Peer(s) Stalled. Current node height: "
-                        f"{current_sync_height}/{peak_peer_height} ({peak_peer_height - current_sync_height} behind)"
-                    )
+                    print(f"Current Status: Peer(s) Stalled. Current node height: {current_sync_height}")
                 else:
-                    print(f"Current Status: Not Synced. Current node height: {current_sync_height}")
+                    print(
+                        f"Current Status: Not Synced. Current node height: {current_sync_height}/{peak_peer_height} "
+                        f"({peak_peer_height - current_sync_height} behind)"
+                    )
             else:
                 print("\nSearching for an initial chain\n")
                 print("You may be able to expedite with 'stai show -a host:port' using a known node.\n")
