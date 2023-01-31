@@ -91,12 +91,14 @@ async def show_async(
             rpc_port = config["full_node"]["rpc_port"]
         client = await FullNodeRpcClient.create(self_hostname, uint16(rpc_port), DEFAULT_ROOT_PATH, config)
 
-        #Get Highest Reporting Peer
-        #
-        #Error Codes:
-        #-1: No full node peers are connected.
-        #-2: At least 1 full node peer is connected, but none are reporting their height.
         def get_peak_peer_height(connections):
+            """
+            Get the highest height reported by full node peers.
+
+            Returns -1 if no full node peers are connected.
+            Returns -2 if at least 1 full node peer is connected, but none of them are reporting their height.
+            """
+
             peak_peer_height = -1
             no_blank_peers = True
 

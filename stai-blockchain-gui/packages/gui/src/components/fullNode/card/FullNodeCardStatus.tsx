@@ -9,13 +9,12 @@ const StyledWarning = styled.span`
   color: ${StateColor.WARNING};
 `;
 
-/*
-  Get Highest Reporting Peer
-
-  Error Codes:
-  -1: No full node peers are connected.
-  -2: At least 1 full node peer is connected, but none are reporting their height.
-*/
+/**
+ * Get the highest height reported by full node peers.
+ * 
+ * Returns -1 if no full node peers are connected.
+ * Returns -2 if at least 1 full node peer is connected, but none of them are reporting their height.
+ */
 function getPeakPeerHeight(connections) {
   if (connections === undefined) {
     return -1;
