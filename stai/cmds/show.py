@@ -248,7 +248,7 @@ async def show_async(
 
             #First Measurement
 
-            time_1 = time.time() #Current Time in Microseconds
+            time_1 = time.time() #Current time as a Unix timestamp in seconds.
 
             blockchain_state = await client.get_blockchain_state()
             is_synced_1 = blockchain_state["sync"]["synced"]
@@ -298,7 +298,7 @@ async def show_async(
 
             #Second Measurement
 
-            time_2 = time.time() #Current Time in Microseconds
+            time_2 = time.time() #Current time as a Unix timestamp in seconds.
 
             blockchain_state = await client.get_blockchain_state()
             is_synced_2 = blockchain_state["sync"]["synced"]
