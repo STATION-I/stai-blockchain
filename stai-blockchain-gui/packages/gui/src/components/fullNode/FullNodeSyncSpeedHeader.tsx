@@ -5,8 +5,8 @@ import moment from 'moment';
 import { ButtonGroup, Button } from '@mui/material';
 import { TooltipIcon, Flex } from '@stai/core';
 
-global.syncSpeedMeasurement1 = null;//emptySyncSpeedMeasurement;
-global.syncSpeedMeasurement2 = null;//emptySyncSpeedMeasurement;
+global.syncSpeedMeasurement1 = null;
+global.syncSpeedMeasurement2 = null;
 
 const syncSpeedCounterSize = 10;
 global.syncSpeedCounterValue = syncSpeedCounterSize;
@@ -17,62 +17,68 @@ function useCounter() {
   return syncSpeedCounterValue;
 }
 
-export function recordMeasurement(blocksBehind)
+export function recordMeasurement(peakHeight, peakPeerHeight)
 {
   let timestamp = Date.now() //Unix Timestamp in Milliseconds
 
-  if (blocksBehind === null) {
-    syncSpeedMeasurement1 = null;
-    syncSpeedMeasurement2 = null;
-
-    syncSpeedCounterValue = syncSpeedCounterSize;
-  } else if (useCounter() === 0) {
-    //If there is no measurement 2...
+  if (useCounter() === 0) {
+    //If measurement 2 is defined...
     if (syncSpeedMeasurement2 !== null) {
       syncSpeedMeasurement1 = {...syncSpeedMeasurement2}; //Copy measurement 2 into measurement 1.
     }
 
     syncSpeedMeasurement2 = {
-      blocksBehind: blocksBehind,
+      peakHeight: peakHeight,
+      peakPeerHeight: peakPeerHeight,
       timestamp: timestamp,
     };
   }
 }
 
+export function resetSyncSpeedHeader()
+{
+  syncSpeedMeasurement1 = null;
+  syncSpeedMeasurement2 = null;
+}
+
 export default function FullNodeSyncSpeedHeader() {
+  const networkBlockRate = 3.2 //Blocks per Minute
   const blank = (<ButtonGroup variant="outlined" color="secondary" size="small" />);
 
   useGetBlockchainStateQuery(); //Used to update with the status card.
 
-  //If the node was not in sync mode in either measurement...
+  //If one of the measurements are empty...
   if (syncSpeedMeasurement1 === null || syncSpeedMeasurement2 === null) {
     return blank;
   }
 
-  let blocksBehind1 = syncSpeedMeasurement1.blocksBehind;
+  let peakHeight1 = syncSpeedMeasurement1.peakHeight;
   let timestamp1 = syncSpeedMeasurement1.timestamp;
 
-  let blocksBehind2 = syncSpeedMeasurement2.blocksBehind;
+  let peakHeight2 = syncSpeedMeasurement2.peakHeight;
   let timestamp2 = syncSpeedMeasurement2.timestamp;
 
-  let progress = blocksBehind1 - blocksBehind2;
-  let timeRange = timestamp2 - timestamp1;
+  let peakPeerHeight = syncSpeedMeasurement2.peakPeerHeight;
+
+  let blocksSynced = peakHeight2 - peakHeight1;
+  let timeRange = timestamp2 - timestamp1; //Milliseconds
   let minutes = timeRange / 60000;
 
   if (minutes === 0) {
     return blank;
   }
 
-  let speed = progress / minutes;
+  let catchupSpeed = blocksSynced / minutes - networkBlockRate; //Blocks per Minute;
+
   let blocksPerMinute;
   let expectedTimeToSync;
 
-  if (progress === 0) {
+  if (blocksSynced === 0) {
     blocksPerMinute = 0;
     expectedTimeToSync = 'Never';
-  } else if (progress > 0) {
-    blocksPerMinute = speed.toFixed(2)
-    let timeLeft = blocksBehind2 / speed;
+  } else if (blocksSynced > 0) {
+    blocksPerMinute = catchupSpeed.toFixed(2)
+    let timeLeft = (peakPeerHeight - peakHeight2) / catchupSpeed;
 
     expectedTimeToSync = moment.duration({
       minutes: timeLeft,

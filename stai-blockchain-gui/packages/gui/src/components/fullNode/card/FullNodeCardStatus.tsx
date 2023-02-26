@@ -3,7 +3,7 @@ import { Trans } from '@lingui/macro';
 import { FormatLargeNumber, CardSimple, StateColor } from '@stai/core';
 import { useGetBlockchainStateQuery, useGetFullNodeConnectionsQuery } from '@stai/api-react';
 import styled from 'styled-components';
-import { recordMeasurement } from '../FullNodeSyncSpeedHeader';
+import { recordMeasurement, resetSyncSpeedHeader } from '../FullNodeSyncSpeedHeader';
 
 const StyledWarning = styled.span`
   color: ${StateColor.WARNING};
@@ -52,7 +52,7 @@ function getPeakPeerHeight(connections) {
 
 function printNotSynced(peakHeight, peakPeerHeight)
 {
-  recordMeasurement(null, 2);
+  resetSyncSpeedHeader();
 
   if (peakPeerHeight === -1) {
     return {
@@ -105,7 +105,6 @@ function getData(state, connections) {
   let peakPeerHeight = getPeakPeerHeight(connections);
 
   if (!sync) {
-    recordMeasurement(null);
     return printNotSynced(peakHeight, peakPeerHeight);
   }
 
@@ -113,7 +112,7 @@ function getData(state, connections) {
     const progress = sync.syncProgressHeight;
     const tip = sync.syncTipHeight;
 
-    recordMeasurement(peakPeerHeight - progress); //For sync speed measurement.
+    recordMeasurement(peakHeight, peakPeerHeight); //For sync speed measurement.
 
     return {
       value: (
@@ -134,10 +133,9 @@ function getData(state, connections) {
       ),
     };
   } else if (!sync.synced) {
-    recordMeasurement(null);
     return printNotSynced(peakHeight, peakPeerHeight);
   } else {
-    recordMeasurement(null);
+    resetSyncSpeedHeader();
 
     return {
       value: <Trans>Synced</Trans>,

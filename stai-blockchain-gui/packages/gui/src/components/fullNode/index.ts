@@ -1,1 +1,1 @@
-export { recordMeasurement } from './FullNodeSyncSpeedHeader';
+export { recordMeasurement, resetSyncSpeedHeader } from './FullNodeSyncSpeedHeader';
