@@ -366,7 +366,7 @@ async def show_async(
                 print(f"Sync Speed: {sync_speed:.2f} blocks/minute")
                 print(f"Network Block Rate: {network_block_rate:.2f} blocks/minute")
                 print("") #Blank Line
-                print(f"Catchup Speed: {catchup_speed:.2f} blocks/minute")
+                print(f"Catch-Up Speed: {catchup_speed:.2f} blocks/minute")
                 print(f"Estimated Time to Full Sync: {format_minutes(round(time_to_full_sync))}")
             else:
                 print(f"Blocks Synced: 0")
