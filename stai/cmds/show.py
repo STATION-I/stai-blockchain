@@ -4,7 +4,7 @@ from stai.types.blockchain_format.sized_bytes import bytes32
 import click
 
 from stai.util.network import is_trusted_inner
-
+from stai.consensus.default_constants import DEFAULT_CONSTANTS
 
 async def print_connections(client, time, NodeType, trusted_peers: Dict):
     connections = await client.get_connections()
@@ -272,7 +272,7 @@ async def show_async(
                 elif sync_height_1 == peak_peer_height_1:
                     print(f"Peers have stalled. Height: {sync_height_1}")
                 else:
-                    print(f"Not synced. Height: {sync_height_1}")
+                    print(f"Not synced. Height: {sync_height_1}/{peak_peer_height_1}")
 
                 client.close()
                 await client.await_closed()
@@ -322,7 +322,7 @@ async def show_async(
                 elif sync_height_2 == peak_peer_height_2:
                     print(f"Peers have stalled. Height: {sync_height_2}")
                 else:
-                    print(f"Not synced. Height: {sync_height_2}")
+                    print(f"Not synced. Height: {sync_height_2}/{peak_peer_height_1}")
 
                 client.close()
                 await client.await_closed()
@@ -333,19 +333,18 @@ async def show_async(
 
             #Calculation
 
+            print("") #Blank Line
+
             blocks_synced = sync_height_2 - sync_height_1
             peer_blocks_synced = peak_peer_height_2 - peak_peer_height_1
             time_range = time_2 - time_1 #Seconds
-
-            print("") #Blank Line
 
             print(f"Measurements completed in {time_range:.2f} seconds across {blocks_synced} blocks.")
 
             if peer_blocks_synced >= 0:
                 time_range /= 60 #Convert to Minutes
-                peer_sync_speed = peer_blocks_synced / time_range #Blocks per Minute
 
-                print(f"Peers synced {peer_blocks_synced} blocks during the measurement ({peer_sync_speed:.2f} blocks/minute).")
+                print(f"Peers synced {peer_blocks_synced} blocks during the measurement.")
             else:
                 print(f"Highest peer disconnected during measurement. Height: {peak_peer_height_2} => {peak_peer_height_1}")
 
@@ -355,20 +354,23 @@ async def show_async(
 
             print("") #Blank Line
 
-            gap_closure = blocks_behind_1 - blocks_behind_2
+            if blocks_synced > 0:
+                sync_speed = blocks_synced / time_range #Blocks per Minute
+                network_block_rate = DEFAULT_CONSTANTS.SLOT_BLOCKS_TARGET / DEFAULT_CONSTANTS.SUB_SLOT_TIME_TARGET #Blocks per Second
+                network_block_rate *= 60 #Convert to Blocks per Minute
 
-            if gap_closure > 0:
-                gap_closing_speed = gap_closure / time_range #Blocks per Minute
-                time_to_full_sync = blocks_behind_2 / gap_closing_speed #Minutes
+                catchup_speed = sync_speed - network_block_rate
+                time_to_full_sync = blocks_behind_2 / catchup_speed #Minutes
 
-                print(f"Gap Closure: {gap_closure}")
-                print(f"Gap Closing Speed: {gap_closing_speed:.2f} blocks/minute")
+                print(f"Blocks Synced: {blocks_synced}")
+                print(f"Sync Speed: {sync_speed:.2f} blocks/minute")
+                print(f"Network Block Rate: {network_block_rate:.2f} blocks/minute")
+                print("") #Blank Line
+                print(f"Catchup Speed: {catchup_speed:.2f} blocks/minute")
                 print(f"Estimated Time to Full Sync: {format_minutes(round(time_to_full_sync))}")
-            elif gap_closure < 0:
-                print("Second blocks behind measurement was higher, can't estimate time to full sync.")
             else:
-                print(f"Gap Closure: 0")
-                print(f"Gap Closing Speed: 0 blocks/minute")
+                print(f"Blocks Synced: 0")
+                print(f"Sync Speed: 0 blocks/minute")
                 print(f"Estimated Time to Full Sync: Never")
 
             # if called together with show_connections, leave a blank line
@@ -522,7 +524,7 @@ async def show_async(
     "-ss",
     "--sync-speed",
     help=(
-        "Estimate the syncing speed and remaining time before the node is fully synced, by taking 2 measurements "
+        "Estimate the sync speed and remaining time before the node is fully synced, by taking 2 measurements "
         "10 seconds apart. You may want to run this command a few times as the speed can fluctuate sometimes."
     ),
     is_flag=True,
@@ -533,7 +535,7 @@ async def show_async(
     "-ssc",
     "--sync-speed-custom",
     help=(
-        "Estimate the syncing speed and remaining time before the node is fully synced, but with a custom delay "
+        "Estimate the sync speed and remaining time before the node is fully synced, but with a custom delay "
         "in seconds between the measurements. Suggested values are 5, 10 and 60 (the longer, the more accurate)."
     ),
     type=int,
