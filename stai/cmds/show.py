@@ -145,13 +145,13 @@ async def show_async(
             print(f"Genesis Challenge: {genesis_challenge}")
 
             if synced:
-                print("Current Status: Full Node Synced")
+                print("Current Node Status: Full Node Synced")
                 print("\nPeak: Hash:", peak.header_hash if peak is not None else "")
             elif peak is not None and sync_mode:
                 sync_max_block = blockchain_state["sync"]["sync_tip_height"]
                 sync_current_block = blockchain_state["sync"]["sync_progress_height"]
                 print(
-                    f"Current Status: Syncing {sync_current_block}/{sync_max_block} "
+                    f"Current Node Status: Syncing {sync_current_block}/{sync_max_block} "
                     f"({sync_max_block - sync_current_block} behind)."
                 )
                 print("Peak: Hash:", peak.header_hash if peak is not None else "")
@@ -162,19 +162,19 @@ async def show_async(
                 peak_peer_height = get_peak_peer_height(connections)
 
                 if peak_peer_height == -1:
-                    print(f"Current Status: Not Connected to Peers. Current node height: {current_sync_height}")
+                    print(f"Current Node Status: Not Connected to Peers. Current node height: {current_sync_height}")
                 elif peak_peer_height == -2:
-                    print(f"Current Status: Not Enough Peer Info. Current node height: {current_sync_height}")
+                    print(f"Current Node Status: Not Enough Peer Info. Current node height: {current_sync_height}")
                 elif current_sync_height > peak_peer_height:
                     print(
-                        f"Current Status: Peer(s) Behind. Current node height: {current_sync_height}/{peak_peer_height} "
+                        f"Current Node Status: Peer(s) Behind. Current node height: {current_sync_height}/{peak_peer_height} "
                         f"({current_sync_height - peak_peer_height} ahead)"
                     )
                 elif current_sync_height == peak_peer_height:
-                    print(f"Current Status: Peer(s) Stalled. Current node height: {current_sync_height}")
+                    print(f"Current Node Status: Peer(s) Stalled. Current node height: {current_sync_height}")
                 else:
                     print(
-                        f"Current Status: Not Synced. Current node height: {current_sync_height}/{peak_peer_height} "
+                        f"Current Node Status: Not Synced. Current node height: {current_sync_height}/{peak_peer_height} "
                         f"({peak_peer_height - current_sync_height} behind)"
                     )
             else:
