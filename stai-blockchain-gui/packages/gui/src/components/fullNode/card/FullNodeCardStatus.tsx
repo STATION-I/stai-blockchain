@@ -24,11 +24,11 @@ function getPeakPeerHeight(connections) {
   let noBlankPeers = true;
 
   connections.forEach((connection) => {
-    let peerHeight; //Declaration
+    let peerHeight;
 
-    //If connection is a full node...
+    //If connection isn't a full node...
     if (connection.type !== 1) {
-      return;
+      return; //...skip
     }
 
     peerHeight = connection.peakHeight;
