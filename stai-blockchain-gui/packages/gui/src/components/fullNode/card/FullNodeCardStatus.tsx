@@ -43,7 +43,7 @@ function getPeakPeerHeight(connections) {
     }
   });
 
-  if(peakPeerHeight !== 1 || noBlankPeers) {
+  if(peakPeerHeight !== -1 || noBlankPeers) {
     return peakPeerHeight;
   } else {
     return -2;
