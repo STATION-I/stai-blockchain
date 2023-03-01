@@ -260,16 +260,26 @@ async def show_async(
 
             blocks_behind_1 = peak_peer_height_1 - sync_height_1
 
-            if not sync_mode_1:
-                if is_synced_1:
-                    print(f"Synced. Height: {sync_height_1}")
-                elif peak_peer_height_1 == -1:
+            if is_synced_1:
+                print(f"Synced. Height: {sync_height_1}")
+
+                client.close()
+                await client.await_closed()
+                return None
+
+            if sync_height_1 > peak_peer_height_1:
+                if peak_peer_height_1 == -1:
                     print(f"Not connected to peers.")
                 elif peak_peer_height_1 == -2:
                     print(f"Not enough peer info.")
-                elif sync_height_1 > peak_peer_height_1:
+                else:
                     print(f"Peers are behind. Height: {sync_height_1}/{peak_peer_height_1}")
-                elif sync_height_1 == peak_peer_height_1:
+
+                client.close()
+                await client.await_closed()
+                return None
+            elif not sync_mode_1:
+                if sync_height_1 == peak_peer_height_1:
                     print(f"Peers have stalled. Height: {sync_height_1}")
                 else:
                     print(f"Not synced. Height: {sync_height_1}/{peak_peer_height_1}")
@@ -277,6 +287,7 @@ async def show_async(
                 client.close()
                 await client.await_closed()
                 return None
+
             if sync_height_1 < 0:
                 if sync_height_1 == -1:
                     print("There is no blockchain found yet. Try again shortly.")
@@ -310,23 +321,32 @@ async def show_async(
 
             blocks_behind_2 = peak_peer_height_2 - sync_height_2
 
-            if not sync_mode_2:
-                if is_synced_2:
-                    print(f"Synced. Height: {sync_height_2}")
-                elif peak_peer_height_2 == -1:
-                    print(f"Not connected to peers.")
-                elif peak_peer_height_2 == -2:
-                    print(f"Not enough peer info.")
-                elif sync_height_2 > peak_peer_height_2:
-                    print(f"Peers are behind. Height: {sync_height_2}/{peak_peer_height_2}")
-                elif sync_height_2 == peak_peer_height_2:
-                    print(f"Peers have stalled. Height: {sync_height_2}")
-                else:
-                    print(f"Not synced. Height: {sync_height_2}/{peak_peer_height_1}")
+            if is_synced_2:
+                print(f"Synced. Height: {sync_height_2}")
 
                 client.close()
                 await client.await_closed()
+                return None
 
+            if sync_height_2 > peak_peer_height_2:
+                if peak_peer_height_2 == -1:
+                    print(f"Not connected to peers.")
+                elif peak_peer_height_2 == -2:
+                    print(f"Not enough peer info.")
+                else:
+                    print(f"Peers are behind. Height: {sync_height_2}/{peak_peer_height_2}")
+
+                client.close()
+                await client.await_closed()
+                return None
+            elif not sync_mode_2:
+                if sync_height_2 == peak_peer_height_2:
+                    print(f"Peers have stalled. Height: {sync_height_2}")
+                else:
+                    print(f"Not synced. Height: {sync_height_2}/{peak_peer_height_2}")
+
+                client.close()
+                await client.await_closed()
                 return None
 
             print(f"Measurement 2 performed. Height: {sync_height_2}/{peak_peer_height_2} ({blocks_behind_2} behind)")
@@ -338,19 +358,9 @@ async def show_async(
             blocks_synced = sync_height_2 - sync_height_1
             peer_blocks_synced = peak_peer_height_2 - peak_peer_height_1
             time_range = time_2 - time_1 #Seconds
+            time_range /= 60 #Convert to Minutes
 
-            print(f"Measurements completed in {time_range:.2f} seconds across {blocks_synced} blocks.")
-
-            if peer_blocks_synced >= 0:
-                time_range /= 60 #Convert to Minutes
-
-                print(f"Peers synced {peer_blocks_synced} blocks during the measurement.")
-            else:
-                print(f"Highest peer disconnected during measurement. Height: {peak_peer_height_2} => {peak_peer_height_1}")
-
-                client.close()
-                await client.await_closed()
-                return None
+            print(f"Measurements completed in {time_range:.2f} seconds.")
 
             print("") #Blank Line
 
