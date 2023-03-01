@@ -112,7 +112,15 @@ function getData(state, connections) {
     const progress = sync.syncProgressHeight;
     const tip = sync.syncTipHeight;
 
-    recordMeasurement(peakHeight, peakPeerHeight); //For sync speed measurement.
+    //If a negative error code was returned or peers are behind...
+    if(peakHeight > peakPeerHeight)
+    {
+      resetSyncSpeedHeader();
+    }
+    else
+    {
+      recordMeasurement(peakHeight, peakPeerHeight); //For sync speed measurement.
+    }
 
     return {
       value: (
