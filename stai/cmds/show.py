@@ -361,13 +361,13 @@ async def show_async(
             blocks_synced = sync_height_2 - sync_height_1
             peer_blocks_synced = peak_peer_height_2 - peak_peer_height_1
             time_range = time_2 - time_1 #Seconds
-            time_range /= 60 #Convert to Minutes
 
             print(f"Measurements completed in {time_range:.2f} seconds.")
 
             print("") #Blank Line
 
             if blocks_synced > 0:
+                time_range /= 60 #Convert to Minutes
                 sync_speed = blocks_synced / time_range #Blocks per Minute
                 network_block_rate = DEFAULT_CONSTANTS.SLOT_BLOCKS_TARGET / DEFAULT_CONSTANTS.SUB_SLOT_TIME_TARGET #Blocks per Second
                 network_block_rate *= 60 #Convert to Blocks per Minute
