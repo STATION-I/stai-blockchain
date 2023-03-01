@@ -89,7 +89,6 @@ export default function FullNodeSyncSpeedHeader() {
 
   return (
     <Flex gap={1} alignItems="center">
-      <TooltipIcon>Estimated catch-up speed and time to fully sync</TooltipIcon>
       <ButtonGroup variant="outlined" color="secondary" size="small">
         <Button>
           <Trans>{blocksPerMinute} block(s)/minute</Trans>
@@ -98,6 +97,7 @@ export default function FullNodeSyncSpeedHeader() {
           <Trans>ETS: {expectedTimeToSync}</Trans>
         </Button>
       </ButtonGroup>
+      <TooltipIcon>Estimated catch-up speed and time to fully sync</TooltipIcon>
     </Flex>
   );
 }
