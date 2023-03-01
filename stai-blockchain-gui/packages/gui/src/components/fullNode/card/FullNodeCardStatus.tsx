@@ -33,7 +33,8 @@ function getPeakPeerHeight(connections) {
 
     peerHeight = connection.peakHeight;
 
-    if (peerHeight === null) {
+    //Negative heights are to be treated as unreported heights.
+    if (peerHeight === null || peerHeight < 0) {
       noBlankPeers = false;
       return;
     }

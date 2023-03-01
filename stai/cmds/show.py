@@ -109,7 +109,8 @@ async def show_async(
 
                 peer_height = con["peak_height"]
 
-                if peer_height is None:
+                #Negative heights are to be treated as unreported heights.
+                if peer_height is None or peer_height < 0:
                     no_blank_peers = False
                     continue
 
