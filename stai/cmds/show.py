@@ -230,12 +230,14 @@ async def show_async(
                 await client.await_closed()
                 return None
 
-            #Get Current Node Synced Height
-            #
-            #Error Codes:
-            #-1: "There is no blockchain found yet. Try again shortly"
-            #-2: "Searching for an initial chain"
             def get_current_sync_height(blockchain_state):
+                """
+                Get Current Node Synced Height
+
+                Returns -1 for "There is no blockchain found yet. Try again shortly".
+                Returns -2 for "Searching for an initial chain"
+                """
+
                 if blockchain_state is None:
                     return -1
 
