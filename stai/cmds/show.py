@@ -124,8 +124,16 @@ async def show_async(
 
         if state:
             blockchain_state = await client.get_blockchain_state()
+            connections = await client.get_connections()
+
+            peak_peer_height = get_peak_peer_height(connections)
+
             if blockchain_state is None:
                 print("There is no blockchain found yet. Try again shortly")
+
+                if peak_peer_height == -1:
+                    print("\nAdditionally, no peers are connected.")
+
                 return None
             peak: Optional[BlockRecord] = blockchain_state["peak"]
             node_id = blockchain_state["node_id"]
@@ -158,9 +166,6 @@ async def show_async(
                 print("Peak: Hash:", peak.header_hash if peak is not None else "")
             elif peak is not None:
                 current_sync_height = peak.height
-
-                connections = await client.get_connections()
-                peak_peer_height = get_peak_peer_height(connections)
 
                 if peak_peer_height == -1:
                     print(f"Current Node Status: Not Connected to Peers. Current node height: {current_sync_height}")
@@ -218,6 +223,9 @@ async def show_async(
             else:
                 print("Blockchain has no blocks yet")
 
+                if peak_peer_height == -1:
+                    print("\nAdditionally, no peers are connected.")
+
             # if called together with sync_speed_delay, leave a blank line
             if sync_speed_delay:
                 print("")
@@ -249,6 +257,17 @@ async def show_async(
                 else:
                     return peak.height
 
+            def print_blockchain_error(sync_height, peak_peer_height):
+                if sync_height == -1:
+                    print("There is no blockchain found yet. Try again shortly.")
+                else:
+                    print("\nSearching for an initial chain\n")
+                    print("You may be able to expedite with 'stai show -a host:port' using a known node.\n")
+                    print("Blockchain has no blocks yet")
+
+                if peak_peer_height == -1:
+                    print("\nAdditionally, no peers are connected.")
+
             #First Measurement
 
             time_1 = time.time() #Current time as a Unix timestamp in seconds.
@@ -261,7 +280,7 @@ async def show_async(
             connections = await client.get_connections()
             peak_peer_height_1 = get_peak_peer_height(connections)
 
-            blocks_behind_1 = peak_peer_height_1 - sync_height_1
+            #Error Checking
 
             if is_synced_1:
                 print(f"Synced. Height: {sync_height_1}")
@@ -270,7 +289,14 @@ async def show_async(
                 await client.await_closed()
                 return None
 
-            if sync_height_1 > peak_peer_height_1:
+            if sync_height_1 < 0:
+                print_blockchain_error(sync_height_1, peak_peer_height_1)
+
+                client.close()
+                await client.await_closed()
+                return None
+
+            if peak_peer_height_1 < sync_height_1:
                 if peak_peer_height_1 == -1:
                     print(f"Not connected to peers.")
                 elif peak_peer_height_1 == -2:
@@ -281,7 +307,8 @@ async def show_async(
                 client.close()
                 await client.await_closed()
                 return None
-            elif not sync_mode_1:
+
+            if not sync_mode_1:
                 if sync_height_1 == peak_peer_height_1:
                     print(f"Peers have stalled. Height: {sync_height_1}")
                 else:
@@ -291,23 +318,14 @@ async def show_async(
                 await client.await_closed()
                 return None
 
-            if sync_height_1 < 0:
-                if sync_height_1 == -1:
-                    print("There is no blockchain found yet. Try again shortly.")
-                else:
-                    print("\nSearching for an initial chain\n")
-                    print("You may be able to expedite with 'stai show -a host:port' using a known node.\n")
-                    print("Blockchain has no blocks yet")
+            #Print Measurement
 
-                client.close()
-                await client.await_closed()
-                return None
-
+            blocks_behind_1 = peak_peer_height_1 - sync_height_1
             print(f"Measurement 1 performed. Height: {sync_height_1}/{peak_peer_height_1} ({blocks_behind_1} behind)")
 
             #Delay
 
-            print(f"Waiting {sync_speed_delay} second(s)...", end="", flush=True)
+            print(f"Waiting {sync_speed_delay} second(s)...", end="", flush=True) #Flush forces an instant print.
             time.sleep(sync_speed_delay)
             print("") #Blank Line
 
@@ -323,7 +341,7 @@ async def show_async(
             connections = await client.get_connections()
             peak_peer_height_2 = get_peak_peer_height(connections)
 
-            blocks_behind_2 = peak_peer_height_2 - sync_height_2
+            #Error Checking
 
             if is_synced_2:
                 print(f"Synced. Height: {sync_height_2}")
@@ -332,7 +350,14 @@ async def show_async(
                 await client.await_closed()
                 return None
 
-            if sync_height_2 > peak_peer_height_2:
+            if sync_height_2 < 0:
+                print_blockchain_error(sync_height_2, peak_peer_height_2)
+
+                client.close()
+                await client.await_closed()
+                return None
+
+            if peak_peer_height_2 < sync_height_2:
                 if peak_peer_height_2 == -1:
                     print(f"Not connected to peers.")
                 elif peak_peer_height_2 == -2:
@@ -343,7 +368,8 @@ async def show_async(
                 client.close()
                 await client.await_closed()
                 return None
-            elif not sync_mode_2:
+
+            if not sync_mode_2:
                 if sync_height_2 == peak_peer_height_2:
                     print(f"Peers have stalled. Height: {sync_height_2}")
                 else:
@@ -353,6 +379,9 @@ async def show_async(
                 await client.await_closed()
                 return None
 
+            #Print Measurement
+
+            blocks_behind_2 = peak_peer_height_2 - sync_height_2
             print(f"Measurement 2 performed. Height: {sync_height_2}/{peak_peer_height_2} ({blocks_behind_2} behind)")
 
             #Calculation
