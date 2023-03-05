@@ -297,6 +297,7 @@ async def show_async(
                 else:
                     print("\nSearching for an initial chain\n")
                     print("You may be able to expedite with 'stai show -a host:port' using a known node.\n")
+                    print("Blockchain has no blocks yet")
 
                 client.close()
                 await client.await_closed()
