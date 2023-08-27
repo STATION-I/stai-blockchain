@@ -402,19 +402,23 @@ async def show_async(
                 network_block_rate = DEFAULT_CONSTANTS.SLOT_BLOCKS_TARGET / DEFAULT_CONSTANTS.SUB_SLOT_TIME_TARGET #Blocks per Second
                 network_block_rate *= 60 #Convert to Blocks per Minute
 
-                catchup_speed = sync_speed - network_block_rate
-                time_to_full_sync = blocks_behind_2 / catchup_speed #Minutes
-
                 print(f"Blocks Synced: {blocks_synced}")
                 print(f"Sync Speed: {sync_speed:.2f} blocks/minute")
                 print(f"Network Block Rate: {network_block_rate:.2f} blocks/minute")
+
                 print("") #Blank Line
-                print(f"Catch-Up Speed: {catchup_speed:.2f} blocks/minute")
-                print(f"Estimated Time to Full Sync: {format_minutes(round(time_to_full_sync))}")
+
+                catchup_speed = sync_speed - network_block_rate
+
+                if catchup_speed > 0:
+                    time_to_full_sync = blocks_behind_2 / catchup_speed #Minutes
+
+                    print(f"Catch-Up Speed: {catchup_speed:.2f} blocks/minute")
+                    print(f"Estimated Time to Full Sync: {format_minutes(round(time_to_full_sync))}")
+                else
+                    print("Sync speed isn't higher than network block rate.")
             else:
-                print(f"Blocks Synced: 0")
-                print(f"Sync Speed: 0 blocks/minute")
-                print(f"Estimated Time to Full Sync: Never")
+                print(f"No blocks were synced during between the measurements.")
 
             # if called together with show_connections, leave a blank line
             if show_connections:
