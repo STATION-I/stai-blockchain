@@ -94,7 +94,7 @@ export default function FullNodeSyncSpeedHeader() {
           <Trans>{blocksPerMinute} block(s)/minute</Trans>
         </Button>
         <Button>
-          <Trans>ETS: {expectedTimeToSync}</Trans>
+          <Trans>{expectedTimeToSync}</Trans>
         </Button>
       </ButtonGroup>
       <TooltipIcon>Estimated catch-up speed and time to fully sync</TooltipIcon>
