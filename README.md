@@ -6,36 +6,36 @@ STAI is a PoST (proof of space and time) cryptocurrency that was created for use
 
 ## Websites
 
-- STAI: https://stai.global/
-  - Whitepaper: https://docs.google.com/document/d/12rGkr_p6m7cLrLFPVvz4QqYm9aLwj68K/
-- Station-i: https://www.station-i.de/stai/en
+* STAI: https://stai.global/
+  * Whitepaper: https://docs.google.com/document/d/12rGkr_p6m7cLrLFPVvz4QqYm9aLwj68K/
+* Station-i: https://www.station-i.de/stai/en
 
 ## Community
 
-- Discord: https://discord.com/invite/stai-blockchain
-- Twitter: https://twitter.com/staiglobal
-- Facebook: https://www.facebook.com/STAIGlobal
-- Instagram: https://www.instagram.com/staiglobal/
+* Discord: https://discord.com/invite/stai-blockchain
+* Twitter: https://twitter.com/staiglobal
+* Facebook: https://www.facebook.com/STAIGlobal
+* Instagram: https://www.instagram.com/staiglobal/
 
 ## Pay with STAI
 
-- STAI Energy: https://lumenaza.community/staienergy/
-- Shop: https://shop.stai.global/
-  - STAI Card: https://shop.stai.global/product/stai-goldcard/
-  - STAI Classifieds: https://classifieds.stai.global/
-- STAI Cashback: https://cashback.stai.global/
-- Hire a Freelancer: https://webfreelance.work/
+* STAI Energy: https://lumenaza.community/staienergy/
+* Shop: https://shop.stai.global/
+  * STAI Card: https://shop.stai.global/product/stai-goldcard/
+  * STAI Classifieds: https://classifieds.stai.global/
+* STAI Cashback: https://cashback.stai.global/
+* Hire a Freelancer: https://webfreelance.work/
 
 ## Downloads
 
 You will need to download and install a STAI client in order to access or farm to a STAI wallet.
 
-- Windows 10: https://github.com/STATION-I/stai-blockchain/releases/download/1.3.0/STAISetup-1.3.0.exe
-- Mac OS: https://github.com/STATION-I/stai-blockchain/releases/download/1.3.0/Stai-1.3.0.dmg
-- Linux (Debian/Ubuntu):
-  - GUI + CLI: https://github.com/STATION-I/stai-blockchain/releases/download/1.3.0/stai-blockchain_1.3.0_amd64.deb
-  - No GUI: https://github.com/STATION-I/stai-blockchain/releases/download/1.3.0/stai-blockchain-cli_1.3.0-1_amd64.deb
-- Source Install: https://github.com/STATION-I/stai-blockchain/wiki/Install-STAI#install-from-source
+* Windows 10: https://github.com/STATION-I/stai-blockchain/releases/download/1.3.0/STAISetup-1.3.0.exe
+* Mac OS: https://github.com/STATION-I/stai-blockchain/releases/download/1.3.0/Stai-1.3.0.dmg
+* Linux (Debian/Ubuntu):
+  * GUI + CLI: https://github.com/STATION-I/stai-blockchain/releases/download/1.3.0/stai-blockchain_1.3.0_amd64.deb
+  * No GUI: https://github.com/STATION-I/stai-blockchain/releases/download/1.3.0/stai-blockchain-cli_1.3.0-1_amd64.deb
+* Source Install: https://github.com/STATION-I/stai-blockchain/wiki/Install-STAI#install-from-source
 
 ## Connecting to the STAI Blockchain Network
 
