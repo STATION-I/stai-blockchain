@@ -135,6 +135,7 @@ def configure(
                 mainnet_port = "1999"
                 mainnet_introducer = "introducer.staicoin.com"
                 mainnet_dns_introducer = "dns-introducer.staicoin.com"
+                mainnet_dns_introducer_2 = "introducer.staicoin.com"
                 bootstrap_peers = ["node.stainetwork.org"]
                 net = "mainnet"
                 config["full_node"]["port"] = int(mainnet_port)
@@ -145,7 +146,7 @@ def configure(
                 config["wallet"]["introducer_peer"]["port"] = int(mainnet_port)
                 config["introducer"]["port"] = int(mainnet_port)
                 config["full_node"]["introducer_peer"]["host"] = mainnet_introducer
-                config["full_node"]["dns_servers"] = [mainnet_dns_introducer]
+                config["full_node"]["dns_servers"] = [mainnet_dns_introducer, mainnet_dns_introducer_2]
                 config["wallet"]["introducer_peer"]["host"] = mainnet_introducer
                 config["wallet"]["dns_servers"] = [mainnet_dns_introducer]
                 config["selected_network"] = net
