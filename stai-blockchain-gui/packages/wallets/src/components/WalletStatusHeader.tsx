@@ -23,6 +23,7 @@ export default function WalletStatusHeader() {
       <Button>
         <WalletStatus
           color={theme.palette.text.primary}
+          height
           indicator
           reversed
           justChildren
