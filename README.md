@@ -30,11 +30,11 @@ STAI is a PoST (proof of space and time) cryptocurrency that was created for use
 
 You will need to download and install a STAI client in order to access or farm to a STAI wallet.
 
-* Windows 10: https://github.com/STATION-I/stai-blockchain/releases/download/1.3.0/STAISetup-1.3.0.exe
-* Mac OS: https://github.com/STATION-I/stai-blockchain/releases/download/1.3.0/Stai-1.3.0.dmg
+* Windows 10: https://github.com/STATION-I/stai-blockchain/releases/download/1.3.0/STAISetup-1.3.1.exe
+* Mac OS: https://github.com/STATION-I/stai-blockchain/releases/download/1.3.0/Stai-1.3.1.dmg
 * Linux (Debian/Ubuntu):
-  * GUI + CLI: https://github.com/STATION-I/stai-blockchain/releases/download/1.3.0/stai-blockchain_1.3.0_amd64.deb
-  * No GUI: https://github.com/STATION-I/stai-blockchain/releases/download/1.3.0/stai-blockchain-cli_1.3.0-1_amd64.deb
+  * GUI + CLI: https://github.com/STATION-I/stai-blockchain/releases/download/1.3.1/stai-blockchain_1.3.1_amd64.deb
+  * No GUI: https://github.com/STATION-I/stai-blockchain/releases/download/1.3.1/stai-blockchain-cli_1.3.1-1_amd64.deb
 * Source Install: https://github.com/STATION-I/stai-blockchain/wiki/Install-STAI#install-from-source
 
 ## Connecting to the STAI Blockchain Network
