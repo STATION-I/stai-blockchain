@@ -1,12 +1,10 @@
 contact_links:
-  - about: Ask a question or request support here
+  - about: Ask a question or request support here.
     name: Ask for Support
-    url: >-
-      https://github.com/STATION-I/stai-blockchain/discussions/new?category=support
-  - about: Request a new feature or idea here
+    url: 'https://github.com/STATION-I/stai-blockchain/issues/new?labels=help%20wanted'
+  - about: Request a new feature or idea here.
     name: Make a Request
-    url: >-
-      https://github.com/STATION-I/stai-blockchain/discussions/new?category=ideas
+    url: 'https://github.com/STATION-I/stai-blockchain/issues/new?labels=enhancement'
   - about: Get support on the STAI Discord chat channels.
-    name: Join the Discord.io support chat
-    url: 'https://discord.gg/TgJyxsEFFc'
+    name: Join the Discord Server
+    url: 'https://discord.gg/stai-blockchain'
